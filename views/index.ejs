@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>telc – Zertifikatsprüfung</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Überprüfung des telc-Zertifikats</h1>
+
+      <form method="post" action="/subscribe" novalidate>
+        <label>Teilnehmernummer <span class="req">*</span></label>
+        <input name="userNumber" value="<%= values.userNumber || '' %>" />
+        <% if (errors.userNumber) { %>
+          <div class="err"><%= errors.userNumber %></div>
+        <% } %>
+
+        <label>Geburtsdatum <span class="req">*</span></label>
+        <input type="date" name="birthDate" value="<%= values.birthDate || '' %>" inputmode="numeric"/>
+        <% if (errors.birthDate) { %>
+          <div class="err"><%= errors.birthDate %></div>
+        <% } %>
+
+        <label>Prüfungsdatum <span class="req">*</span></label>
+        <input type="date" name="examDate" value="<%= values.examDate || '' %>" inputmode="numeric"/>
+        <% if (errors.examDate) { %>
+          <div class="err"><%= errors.examDate %></div>
+        <% } %>
+
+        <label>E-Mail-Adresse <span class="req">*</span></label>
+        <input type="email" name="email" value="<%= values.email || '' %>" />
+        <% if (errors.email) { %>
+          <div class="err"><%= errors.email %></div>
+        <% } %>
+
+        <button type="submit">Prüfung starten</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
