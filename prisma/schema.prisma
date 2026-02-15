@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum CheckStatus {
+  EMAIL_UNCONFIRMED
+  EMAIL_EXPIRED
+  ACTIVE
+  CHECKING_EXPIRED
+  CERTIFICATE_FOUND
+  CERTIFICATE_FAILED
+}
+
+model CertificateCheck {
+  id         Int      @id @default(autoincrement())
+
+  email      String
+  emailLower String
+
+  createdAt  DateTime @default(now())
+  finishedAt DateTime?
+
+  userNumber String
+  examDate   DateTime
+  birthDate  DateTime
+
+  status     CheckStatus
+
+  // подтверждение запроса
+  confirmToken          String? @unique
+  confirmTokenExpiresAt DateTime?
+  confirmedAt           DateTime?
+
+  // публичная ссылка на статус
+  publicToken String @unique
+
+  // планирование cron
+  nextRunAt      DateTime?
+  cursorOffset   Int      @default(0)
+  activeUntil    DateTime?
+
+  @@index([status, nextRunAt])
+  @@index([emailLower])
+  // защита от дублей (одна и та же попытка)
+  @@unique([emailLower, userNumber, examDate, birthDate])
+}
