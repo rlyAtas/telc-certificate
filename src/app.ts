@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import { indexRouter } from './routes/index.js';
-import { testRouter } from './routes/test.js';
 import { subscribeRouter } from './routes/subscribe.js';
 
 export const app = express();

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>telc – Zertifikatsprüfung</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Hinweis</h1>
+      <p class="hint"><%= message %></p>
+
+      <div class="card subcard">
+        <p class="subcard__title">Hilfe / Kontakt</p>
+        <p class="subcard__text">
+          Wenn das Problem weiterhin besteht, schreiben Sie bitte an:
+        </p>
+
+        <p class="subcard__email">
+          <a href="mailto:<%= supportEmail %>"><%= supportEmail %></a>
+        </p>
+      </div>
+
+      <div class="backlink">
+        <a href="/">← Zur Startseite</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

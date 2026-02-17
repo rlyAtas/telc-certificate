@@ -9,6 +9,7 @@
 }
 
 *{ box-sizing:border-box; }
+
 body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -117,4 +118,40 @@ button:active{
 .req {
   color: #b00020;
   margin-left: 2px;
+}
+
+/* ---- Добавлено для страницы ошибки/подсказки ---- */
+
+a{
+  color: inherit;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+a:hover{
+  text-decoration-thickness: 2px;
+}
+
+.subcard{
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.subcard__title{
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.subcard__text{
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.subcard__email{
+  margin: 0;
+  font-size: 16px;
+}
+
+.backlink{
+  margin-top: 16px;
 }

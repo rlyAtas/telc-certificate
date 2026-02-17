@@ -1,45 +1,33 @@
 import { Router } from 'express';
 import { validateSubscribe } from '../validators/subscribeValidator.js';
+import { normalizeSubscribe } from '../utils/normalizeSubscribe.js';
+import { CertificateCheckService } from '../services/certificateCheckService.js';
 
 export const subscribeRouter = Router();
 
-subscribeRouter.post('/', (req, res) => {
+subscribeRouter.post('/', async (req, res) => {
   console.log('POST /subscribe');
 
-  const {
-    userNumber,
-    birthDate,
-    examDate,
-    email,
-  } = req.body as Record<string, string>;
-
   const { values, errors } = validateSubscribe(req.body);
-  console.log('values', values);
-  console.log('errors', errors);
+  console.log('Validation result:', { values, errors });
 
   if (Object.keys(errors).length > 0) {
     return res.status(400).render('index', {
       errors,
-      values: {
-        userNumber,
-        birthDate,
-        examDate,
-        email,
-      },
+      values,
     });
   }
 
-  /**
-   * TODO:
-   *  - сохранить в БД (Prisma)
-   *  - сгенерировать confirmToken / publicToken
-   *  - отправить email
-   */
+  const data = normalizeSubscribe(values);
+  try {
+    await CertificateCheckService.create(data);
+  } catch (error: unknown) {
+    return res.render('hinweis', {
+      message:
+        'Es gab ein Problem mit Ihrer Anfrage. Bitte versuchen Sie es später erneut.',
+      supportEmail: process.env.SUPPORT_EMAIL || 'stas.s.shevchenko@gmail.com',
+    });
+  }
 
-  // временный успех
-  res.render('message', {
-    title: 'Anfrage erhalten',
-    message:
-      'Vielen Dank! Bitte bestätigen Sie Ihre E-Mail-Adresse über den Link, den wir Ihnen geschickt haben.',
-  });
+  return res.render('success');
 });
