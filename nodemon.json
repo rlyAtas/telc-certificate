@@ -4,5 +4,5 @@
   },
   "ext": ".ts,.js",
   "watch": ["src", ".env"],
-  "exec": "npx tsx ./src/index.ts"
+  "exec": "npx tsx ./src/server.ts"
 }
