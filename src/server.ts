@@ -2,6 +2,8 @@ import 'dotenv/config';
 import { app } from './app.js';
 import http from 'http';
 import { prisma } from './db.js';
+import cron from 'node-cron';
+import { checkCertificates } from './cron/checkCertificates.js';
 
 let server: http.Server | undefined;
 
@@ -10,6 +12,9 @@ const appEnv = process.env.NODE_ENV ?? 'development';
 
 let ngrokUrl: string | undefined;
 let ngrokInstance: typeof import('@ngrok/ngrok') | undefined;
+
+let cronTask: cron.ScheduledTask | undefined;
+let cronRunning = false;
 
 async function main() {
   server = app.listen(appPort, () => {
@@ -31,6 +36,19 @@ async function main() {
     ngrokUrl = url;
     console.log(`[server] Ngrok URL: ${ngrokUrl}`);
   }
+
+  cronTask = cron.schedule('*/5 * * * * *', async () => {
+    if (cronRunning) return;
+    cronRunning = true;
+    try {
+      await checkCertificates();
+    } catch (error) {
+      console.error('[cron] error:', error);
+    } finally {
+      cronRunning = false;
+    }
+  });
+
 }
 
 let shuttingDown = false;
@@ -39,6 +57,12 @@ async function shutdown(signal: string) {
   shuttingDown = true;
 
   console.log(`[server] received ${signal}, shutting down...`);
+
+  try {
+    cronTask?.stop();
+  } catch (error) {
+    console.warn('[server] cron stop failed:', error);
+  }
 
   if (ngrokInstance) {
     try {

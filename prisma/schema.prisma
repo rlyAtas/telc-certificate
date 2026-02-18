@@ -16,7 +16,7 @@ enum CheckStatus {
   ACTIVE
   CHECKING_EXPIRED
   CERTIFICATE_FOUND
-  CERTIFICATE_FAILED
+  CERTIFICATE_FAILED // не уверен, что этот статус существует
 }
 
 model CertificateCheck {

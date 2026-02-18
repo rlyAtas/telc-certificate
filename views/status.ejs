@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>telc – Status der Anfrage</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Status Ihrer Anfrage</h1>
+
+      <% if (status === 'ACTIVE') { %>
+        <p class="hint">
+          🕒 Ihre Anfrage ist aktiv. Die Überprüfung des Zertifikats läuft.
+        </p>
+      <% } %>
+
+      <% if (status === 'CERTIFICATE_FOUND') { %>
+        <p class="hint">
+          ✅ Das Zertifikat wurde gefunden. Wir haben Sie per E-Mail informiert.
+        </p>
+      <% } %>
+
+      <% if (status === 'CERTIFICATE_FAILED') { %>
+        <p class="hint">
+          ❌ Das Zertifikat konnte innerhalb des Prüfzeitraums nicht gefunden werden.
+        </p>
+      <% } %>
+
+      <% if (status === 'CHECKING_EXPIRED') { %>
+        <p class="hint">
+          ℹ️ Die Überprüfung wurde abgeschlossen.
+          Leider konnte innerhalb des Prüfzeitraums kein Zertifikat gefunden werden.
+        </p>
+      <% } %>
+
+      <div class="card subcard">
+        <p class="subcard__title">Details</p>
+
+        <p class="subcard__text">
+          <strong>Prüfungsdatum:</strong>
+          <%= new Date(examDate).toLocaleDateString('de-DE') %>
+        </p>
+
+        <p class="subcard__text">
+          <strong>Anfrage erstellt am:</strong>
+          <%= new Date(createdAt).toLocaleDateString('de-DE') %>
+        </p>
+
+        <% if (finishedAt) { %>
+          <p class="subcard__text">
+            <strong>Abgeschlossen am:</strong>
+            <%= new Date(finishedAt).toLocaleDateString('de-DE') %>
+          </p>
+        <% } %>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

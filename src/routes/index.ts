@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-export const indexRouter = Router();
+export const routerIndex = Router();
 
-indexRouter.get('/', (_req, res) => {
+routerIndex.get('/', (_req, res) => {
   console.log('GET /');
   res.render('index', {
     errors: {},

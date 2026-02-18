@@ -1,7 +1,10 @@
 import express from 'express';
 import path from 'path';
-import { indexRouter } from './routes/index.js';
-import { subscribeRouter } from './routes/subscribe.js';
+import { routerIndex } from './routes/index.js';
+import { routerSubscribe } from './routes/subscribe.js';
+import { routerConfirm } from './routes/confirm.js';
+import { router404 } from './routes/404.js';
+import { routerStatus } from './routes/status.js';
 
 export const app = express();
 
@@ -13,9 +16,9 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(process.cwd(), 'views'));
 
-app.use('/', indexRouter);
-app.use('/subscribe', subscribeRouter);
+app.use('/', routerIndex);
+app.use('/subscribe', routerSubscribe);
+app.use('/confirm', routerConfirm);
+app.use('/status', routerStatus);
 
-app.use((_req, res) => {
-  res.status(404).send('Not found');
-});
+app.use(router404);

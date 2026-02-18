@@ -9,24 +9,24 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>Fast fertig</h1>
+      <h1>Bestätigt</h1>
 
       <p class="hint">
-        Ihre Anfrage wurde erfolgreich gespeichert.
+        Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt.
+        Die Überprüfung wird gestartet.
       </p>
 
       <div class="card subcard">
-        <p class="subcard__title">Nächster Schritt</p>
+        <p class="subcard__title">Status Ihrer Anfrage</p>
         <p class="subcard__text">
-          Wir haben Ihnen eine E-Mail mit einem Bestätigungslink geschickt.
-          Bitte öffnen Sie diese E-Mail und bestätigen Sie Ihre Adresse,
-          damit wir mit der Überprüfung beginnen können.
+          Sie können den Status jederzeit über diesen Link überprüfen:
+        </p>
+
+        <p class="subcard__email">
+          <a href="<%= urlStatus %>"><%= urlStatus %></a>
         </p>
       </div>
 
-      <div class="backlink">
-        <a href="/">← Zur Startseite</a>
-      </div>
     </div>
   </div>
 </body>
