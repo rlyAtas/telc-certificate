@@ -1,4 +1,5 @@
 import { prisma } from '../db.js';
+import { telcCheck } from './telcCheck.js';
 
 const MAX_WINDOW_DAYS = 28;           // 0..27
 const NEXT_TICK_MS = 5_000;           // 5 seconds
@@ -11,12 +12,7 @@ type TelcCheckParams = {
   evalDate: Date; // examDate + cursorOffset
 };
 
-type TelcCheckResult =
-  | { found: true }
-  | { found: false }
-  | { retry: true; reason?: string };
-
-  export async function checkCertificates(): Promise<void> {
+export async function checkCertificates(): Promise<void> {
   const now = new Date();
 
   // 1) берём одну запись, которую пора обработать
@@ -66,17 +62,18 @@ type TelcCheckResult =
     evalDate: checkDate,
   });
 
-  // если временная ошибка — просто отложим на 5 секунд, курсор не двигаем
-  if ('retry' in telc && telc.retry) {
+  // если сертификат не найден из-за технических проблем (например, telc недоступен) -> nextRunAt + 5s
+  if (telc === null) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
-      data: { nextRunAt: new Date(now.getTime() + NEXT_TICK_MS) },
+      data: { 
+        nextRunAt: new Date(now.getTime() + NEXT_TICK_MS) },
     });
     return;
   }
 
   // 6) если найден -> CERTIFICATE_FOUND + finishedAt
-  if ('found' in telc && telc.found) {
+  if (telc === true) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
@@ -96,13 +93,6 @@ type TelcCheckResult =
       nextRunAt: new Date(now.getTime() + NEXT_TICK_MS),
     },
   });
-}
-
-/**
- * ЗАГЛУШКА telc-запроса. Заменишь на реальный HTTP.
- */
-async function telcCheck(_params: TelcCheckParams): Promise<TelcCheckResult> {
-  return { found: false };
 }
 
 /* ----------------- helpers ----------------- */
