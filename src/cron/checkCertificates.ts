@@ -62,12 +62,12 @@ export async function checkCertificates(): Promise<void> {
     evalDate: checkDate,
   });
 
-  // если сертификат не найден из-за технических проблем (например, telc недоступен) -> nextRunAt + 5s
+  // если сертификат не найден из-за технических проблем (например, telc недоступен) -> nextRunAt + 10s
   if (telc === null) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: { 
-        nextRunAt: new Date(now.getTime() + NEXT_TICK_MS) },
+        nextRunAt: new Date(now.getTime() + 2 * NEXT_TICK_MS) },
     });
     return;
   }
