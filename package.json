@@ -7,7 +7,7 @@
   "scripts": {
     "start": "NODE_ENV=production node dist/server.js",
     "dev": "NODE_ENV=development npx nodemon",
-    "build": "npx tsc"
+    "build": "npx prisma generate && npx tsc"
   },
   "keywords": [],
   "author": "",
