@@ -66,8 +66,10 @@ export async function checkCertificates(): Promise<void> {
   if (telc === null) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
-      data: { 
-        nextRunAt: new Date(now.getTime() + 2 * NEXT_TICK_MS) },
+      data: {
+        lastCheckedAt: now,
+        nextRunAt: new Date(now.getTime() + 2 * NEXT_TICK_MS),
+      },
     });
     return;
   }
@@ -79,6 +81,7 @@ export async function checkCertificates(): Promise<void> {
       data: {
         status: 'CERTIFICATE_FOUND',
         finishedAt: now,
+        lastCheckedAt: now,
         nextRunAt: null,
       },
     });
@@ -90,6 +93,7 @@ export async function checkCertificates(): Promise<void> {
     where: { id: record.id },
     data: {
       cursorOffset: record.cursorOffset + 1,
+      lastCheckedAt: now,
       nextRunAt: new Date(now.getTime() + NEXT_TICK_MS),
     },
   });

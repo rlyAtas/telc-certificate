@@ -31,6 +31,7 @@ routerStatus.get('/:publicToken', async (req, res) => {
       examDate: record.examDate,
       createdAt: record.createdAt,
       finishedAt: record.finishedAt,
+      lastCheckedAt: record.lastCheckedAt,
       nextRunAt: record.nextRunAt,
     });
   } catch (error) {

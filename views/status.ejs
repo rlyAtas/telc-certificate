@@ -49,6 +49,11 @@
           <%= new Date(createdAt).toLocaleDateString('de-DE') %>
         </p>
 
+        <p class="subcard__text">
+          <strong>Letzte Überprüfung:</strong>
+          <%= lastCheckedAt ? new Date(lastCheckedAt).toLocaleString('de-DE') : 'Noch nicht geprüft' %>
+        </p>
+
         <% if (finishedAt) { %>
           <p class="subcard__text">
             <strong>Abgeschlossen am:</strong>
@@ -56,11 +61,11 @@
           </p>
         <% } %>
 
-        <% const shouldShowNextCheck = status !== 'CERTIFICATE_FOUND' && status !== 'CHECKING_EXPIRED'; %>
+        <% const shouldShowNextCheck = status === 'ACTIVE'; %>
         <% if (shouldShowNextCheck) { %>
           <p class="subcard__text">
             <strong>Nächste Überprüfung:</strong>
-            <%= nextRunAt ? new Date(nextRunAt).toLocaleString('de-DE') : 'Noch nicht geprüft' %>
+            <%= nextRunAt ? new Date(nextRunAt).toLocaleString('de-DE') : 'Wird geplant' %>
           </p>
         <% } %>
       </div>
