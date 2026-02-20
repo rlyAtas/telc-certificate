@@ -8,25 +8,49 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="card">
-      <h1>Bestätigt</h1>
+    <div class="card card--confirm">
+      <h1 class="confirm-title">Bestätigt</h1>
 
-      <p class="hint">
-        Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt.
-        Die Überprüfung wird gestartet.
-      </p>
+      <section class="status-banner status-banner--success confirm-banner">
+        <span class="status-chip status-chip--success">✅ E-Mail bestätigt</span>
+        <p class="status-banner__message">
+          Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt.
+          Die Überprüfung des Zertifikats ist gestartet.
+        </p>
+      </section>
 
-      <div class="card subcard">
-        <p class="subcard__title">Status Ihrer Anfrage</p>
+      <section class="card subcard confirm-next">
+        <p class="subcard__title">Nächster Schritt</p>
         <p class="subcard__text">
-          Sie können den Status jederzeit über diesen Link überprüfen:
+          Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.
+          Sie können den Status jederzeit über Ihren persönlichen Link überprüfen.
         </p>
 
-        <p class="subcard__email">
+        <a class="confirm-cta" href="<%= urlStatus %>">Status jetzt öffnen</a>
+
+        <p class="confirm-url-label">Direkter Status-Link</p>
+        <p class="subcard__email confirm-url">
           <a href="<%= urlStatus %>"><%= urlStatus %></a>
         </p>
-      </div>
+      </section>
 
+      <section class="card subcard confirm-progress" aria-label="Statusprozess">
+        <p class="subcard__title">Statusprozess</p>
+        <ol class="home-steps__list">
+          <li class="home-steps__item">
+            <span class="home-steps__num">1</span>
+            <span>E-Mail bestätigt</span>
+          </li>
+          <li class="home-steps__item">
+            <span class="home-steps__num">2</span>
+            <span>Zertifikat wird regelmäßig geprüft</span>
+          </li>
+          <li class="home-steps__item">
+            <span class="home-steps__num">3</span>
+            <span>Status jederzeit über den Link abrufen</span>
+          </li>
+        </ol>
+      </section>
     </div>
   </div>
 </body>

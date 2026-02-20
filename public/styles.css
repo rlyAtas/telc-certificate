@@ -263,6 +263,61 @@ a:hover{
   line-height: 1.35;
 }
 
+/* ---- Страница подтверждения ---- */
+
+.card--confirm{
+  padding: 22px 16px;
+}
+
+.confirm-title{
+  margin: 0 0 14px;
+}
+
+.confirm-banner{
+  margin-bottom: 14px;
+}
+
+.confirm-next{
+  margin-top: 0;
+}
+
+.confirm-cta{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: linear-gradient(180deg, #111827 0%, #101828 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.confirm-cta:hover{
+  text-decoration: none;
+}
+
+.confirm-url-label{
+  margin: 10px 0 6px;
+  color: #667085;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.confirm-url{
+  word-break: break-all;
+}
+
+.confirm-progress{
+  margin-top: 12px;
+}
+
 /* ---- Страница статуса ---- */
 
 .card--status{
@@ -418,6 +473,10 @@ a:hover{
   .home-steps,
   .home-form{
     padding: 14px;
+  }
+
+  .card--confirm{
+    padding: 24px 20px;
   }
 
   .card--status{
