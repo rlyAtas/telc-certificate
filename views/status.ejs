@@ -55,6 +55,14 @@
             <%= new Date(finishedAt).toLocaleDateString('de-DE') %>
           </p>
         <% } %>
+
+        <% const shouldShowNextCheck = status !== 'CERTIFICATE_FOUND' && status !== 'CHECKING_EXPIRED'; %>
+        <% if (shouldShowNextCheck) { %>
+          <p class="subcard__text">
+            <strong>Nächste Überprüfung:</strong>
+            <%= nextRunAt ? new Date(nextRunAt).toLocaleString('de-DE') : 'Noch nicht geprüft' %>
+          </p>
+        <% } %>
       </div>
 
     </div>
