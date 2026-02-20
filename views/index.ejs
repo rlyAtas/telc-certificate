@@ -8,10 +8,36 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="card">
-      <h1>Überprüfung des telc-Zertifikats</h1>
+    <div class="card card--index">
+      <section class="home-hero">
+        <span class="status-chip status-chip--active">🔎 Zertifikatsprüfung</span>
+        <h1 class="home-title">Überprüfung des telc-Zertifikats</h1>
+        <p class="home-subtitle">
+          Starten Sie Ihre Anfrage, bestätigen Sie Ihre E-Mail und verfolgen Sie den Status über einen persönlichen Link.
+        </p>
+      </section>
 
-      <form method="post" action="/subscribe" novalidate>
+      <section class="home-steps" aria-label="Ablauf">
+        <p class="home-steps__title">So funktioniert es</p>
+        <ol class="home-steps__list">
+          <li class="home-steps__item">
+            <span class="home-steps__num">1</span>
+            <span>Anfrage mit Teilnehmernummer, Geburtsdatum und Prüfungsdatum absenden.</span>
+          </li>
+          <li class="home-steps__item">
+            <span class="home-steps__num">2</span>
+            <span>E-Mail-Adresse über den zugesendeten Bestätigungslink verifizieren.</span>
+          </li>
+          <li class="home-steps__item">
+            <span class="home-steps__num">3</span>
+            <span>Status jederzeit über Ihren persönlichen Link aufrufen.</span>
+          </li>
+        </ol>
+      </section>
+
+      <form class="home-form" method="post" action="/subscribe" novalidate>
+        <p class="home-form__title">Anfrage starten</p>
+
         <label>Teilnehmernummer <span class="req">*</span></label>
         <input name="userNumber" value="<%= values.userNumber || '' %>" />
         <% if (errors.userNumber) { %>
@@ -38,6 +64,10 @@
 
         <button type="submit">Prüfung starten</button>
       </form>
+
+      <p class="home-note">
+        Hinweis: Nach der Bestätigung wird die Suche automatisch gestartet. Die Statusseite zeigt die letzte und nächste Überprüfung.
+      </p>
     </div>
   </div>
 </body>
