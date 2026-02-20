@@ -39,19 +39,14 @@
       <div class="card subcard">
         <p class="subcard__title">Details</p>
 
-        <p class="subcard__text">
+        <p class="subcard__text subcard__text--section-gap">
           <strong>Prüfungsdatum:</strong>
-          <%= new Date(examDate).toLocaleDateString('de-DE') %>
+          <%= new Date(examDate).toLocaleDateString('de-DE', {year: 'numeric', month: '2-digit', day: '2-digit'}) %>
         </p>
 
-        <p class="subcard__text">
-          <strong>Anfrage erstellt am:</strong>
-          <%= new Date(createdAt).toLocaleDateString('de-DE') %>
-        </p>
-
-        <p class="subcard__text">
+        <p class="subcard__text subcard__text--section-gap">
           <strong>Letzte Überprüfung:</strong>
-          <%= lastCheckedAt ? new Date(lastCheckedAt).toLocaleString('de-DE') : 'Noch nicht geprüft' %>
+          <%= lastCheckedAt ? new Date(lastCheckedAt).toLocaleString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'Noch nicht geprüft' %>
         </p>
 
         <% if (finishedAt) { %>
@@ -65,7 +60,7 @@
         <% if (shouldShowNextCheck) { %>
           <p class="subcard__text">
             <strong>Nächste Überprüfung:</strong>
-            <%= nextRunAt ? new Date(nextRunAt).toLocaleString('de-DE') : 'Wird geplant' %>
+            <%= nextRunAt ? new Date(nextRunAt).toLocaleString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'Wird geplant' %>
           </p>
         <% } %>
       </div>

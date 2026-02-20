@@ -147,6 +147,10 @@ a:hover{
   color: var(--muted);
 }
 
+.subcard__text--section-gap{
+  margin-top: 20px;
+}
+
 .subcard__email{
   margin: 0;
   font-size: 16px;

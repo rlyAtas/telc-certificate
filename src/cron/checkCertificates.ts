@@ -1,5 +1,5 @@
 import { prisma } from '../db.js';
-import { telcCheck } from './telcCheck.js';
+import { telcCheck } from '../utils/telcCheck.js';
 
 const MAX_WINDOW_DAYS = 28;           // 0..27
 const NEXT_TICK_MS = 5_000;           // 5 seconds
@@ -49,6 +49,7 @@ export async function checkCertificates(): Promise<void> {
       data: {
         cursorOffset: 0,
         nextRunAt: new Date(now.getTime() + AFTER_FULL_SCAN_MS),
+        lastCheckedAt: now,
       },
     });
     return;
@@ -67,7 +68,6 @@ export async function checkCertificates(): Promise<void> {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
-        lastCheckedAt: now,
         nextRunAt: new Date(now.getTime() + 2 * NEXT_TICK_MS),
       },
     });
@@ -93,7 +93,6 @@ export async function checkCertificates(): Promise<void> {
     where: { id: record.id },
     data: {
       cursorOffset: record.cursorOffset + 1,
-      lastCheckedAt: now,
       nextRunAt: new Date(now.getTime() + NEXT_TICK_MS),
     },
   });

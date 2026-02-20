@@ -29,7 +29,6 @@ routerStatus.get('/:publicToken', async (req, res) => {
     return res.render('status', {
       status: record.status,
       examDate: record.examDate,
-      createdAt: record.createdAt,
       finishedAt: record.finishedAt,
       lastCheckedAt: record.lastCheckedAt,
       nextRunAt: record.nextRunAt,
