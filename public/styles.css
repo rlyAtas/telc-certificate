@@ -159,3 +159,169 @@ a:hover{
 .backlink{
   margin-top: 16px;
 }
+
+/* ---- Страница статуса ---- */
+
+.card--status{
+  padding: 22px 16px;
+}
+
+.status-page__title{
+  margin: 0 0 14px;
+}
+
+.status-banner{
+  margin-bottom: 14px;
+  padding: 12px 12px 13px;
+  border-radius: 12px;
+  border: 1px solid #d0d5dd;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+}
+
+.status-banner__message{
+  margin: 10px 0 0;
+  color: #475467;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.status-chip{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.status-chip--active{
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.status-banner--active{
+  border-color: #bfdbfe;
+  background: linear-gradient(180deg, #f8fbff 0%, #f2f7ff 100%);
+}
+
+.status-chip--success{
+  color: #166534;
+  background: #ecfdf3;
+  border-color: #b7ebc6;
+}
+
+.status-banner--success{
+  border-color: #b7ebc6;
+  background: linear-gradient(180deg, #f4fff8 0%, #ecfdf3 100%);
+}
+
+.status-chip--warning{
+  color: #9a3412;
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.status-banner--warning{
+  border-color: #fed7aa;
+  background: linear-gradient(180deg, #fffbf5 0%, #fff7ed 100%);
+}
+
+.status-chip--error{
+  color: #b42318;
+  background: #fef3f2;
+  border-color: #fecdca;
+}
+
+.status-banner--error{
+  border-color: #fecdca;
+  background: linear-gradient(180deg, #fff9f9 0%, #fef3f2 100%);
+}
+
+.status-chip--neutral{
+  color: #344054;
+  background: #f2f4f7;
+  border-color: #d0d5dd;
+}
+
+.status-banner--neutral{
+  border-color: #d0d5dd;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fb 100%);
+}
+
+.status-details{
+  margin-top: 0;
+  padding: 14px 14px 10px;
+}
+
+.status-details__section + .status-details__section{
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #eaecf0;
+}
+
+.status-details__section-title{
+  margin: 0 0 8px;
+  color: #667085;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-details__hint{
+  margin: 0 0 8px;
+  color: #475467;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.status-kv{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  padding: 8px 0;
+}
+
+.status-kv + .status-kv{
+  border-top: 1px dashed #eaecf0;
+}
+
+.status-kv__label{
+  color: #667085;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status-kv__value{
+  color: #111827;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.status-kv__value--mono{
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 480px){
+  .card--status{
+    padding: 24px 20px;
+  }
+
+  .status-banner{
+    padding: 14px;
+  }
+
+  .status-kv{
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .status-kv__value{
+    text-align: right;
+  }
+}

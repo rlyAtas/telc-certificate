@@ -8,63 +8,115 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="card">
-      <h1>Status Ihrer Anfrage</h1>
+    <div class="card card--status">
+      <h1 class="status-page__title">Status Ihrer Anfrage</h1>
 
-      <% if (status === 'ACTIVE') { %>
-        <p class="hint">
-          🕒 Ihre Anfrage ist aktiv. Die Überprüfung des Zertifikats läuft.
-        </p>
-      <% } %>
+      <%
+        const statusMap = {
+          ACTIVE: {
+            tone: 'active',
+            badge: 'Aktiv',
+            icon: '🕒',
+            message: 'Die Überprüfung des Zertifikats läuft.',
+          },
+          CERTIFICATE_FOUND: {
+            tone: 'success',
+            badge: 'Gefunden',
+            icon: '✅',
+            message: 'Das Zertifikat wurde gefunden.',
+          },
+          CHECKING_EXPIRED: {
+            tone: 'warning',
+            badge: 'Abgeschlossen',
+            icon: 'ℹ️',
+            message: 'Die Überprüfung ist abgeschlossen. Im Prüfzeitraum wurde kein Zertifikat gefunden.',
+          },
+          CERTIFICATE_FAILED: {
+            tone: 'error',
+            badge: 'Nicht gefunden',
+            icon: '❌',
+            message: 'Das Zertifikat konnte innerhalb des Prüfzeitraums nicht gefunden werden.',
+          },
+        };
 
-      <% if (status === 'CERTIFICATE_FOUND') { %>
-        <p class="hint">
-          ✅ Das Zertifikat wurde gefunden. Wir haben Sie per E-Mail informiert.
-        </p>
-      <% } %>
+        const statusView = statusMap[status] ?? {
+          tone: 'neutral',
+          badge: 'Unbekannt',
+          icon: 'ℹ️',
+          message: 'Der aktuelle Status konnte nicht eindeutig bestimmt werden.',
+        };
 
-      <% if (status === 'CERTIFICATE_FAILED') { %>
-        <p class="hint">
-          ❌ Das Zertifikat konnte innerhalb des Prüfzeitraums nicht gefunden werden.
-        </p>
-      <% } %>
+        const dateFormatter = new Intl.DateTimeFormat('de-DE', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
 
-      <% if (status === 'CHECKING_EXPIRED') { %>
-        <p class="hint">
-          ℹ️ Die Überprüfung wurde abgeschlossen.
-          Leider konnte innerhalb des Prüfzeitraums kein Zertifikat gefunden werden.
-        </p>
-      <% } %>
+        const dateTimeFormatter = new Intl.DateTimeFormat('de-DE', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
 
-      <div class="card subcard">
-        <p class="subcard__title">Details</p>
+        const formatDate = (value) => dateFormatter.format(new Date(value));
+        const formatDateTime = (value) => dateTimeFormatter.format(new Date(value));
 
-        <p class="subcard__text subcard__text--section-gap">
-          <strong>Prüfungsdatum:</strong>
-          <%= new Date(examDate).toLocaleDateString('de-DE', {year: 'numeric', month: '2-digit', day: '2-digit'}) %>
-        </p>
+        const lastCheckValue = lastCheckedAt ? formatDateTime(lastCheckedAt) : 'Noch nicht geprüft';
+        const nextCheckValue = nextRunAt ? formatDateTime(nextRunAt) : 'Wird geplant';
+        const shouldShowNextCheck = status === 'ACTIVE';
+      %>
 
-        <p class="subcard__text subcard__text--section-gap">
-          <strong>Letzte Überprüfung:</strong>
-          <%= lastCheckedAt ? new Date(lastCheckedAt).toLocaleString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'Noch nicht geprüft' %>
-        </p>
+      <section class="status-banner status-banner--<%= statusView.tone %>">
+        <span class="status-chip status-chip--<%= statusView.tone %>">
+          <%= statusView.icon %> <%= statusView.badge %>
+        </span>
+        <p class="status-banner__message"><%= statusView.message %></p>
+      </section>
 
-        <% if (finishedAt) { %>
-          <p class="subcard__text">
-            <strong>Abgeschlossen am:</strong>
-            <%= new Date(finishedAt).toLocaleDateString('de-DE') %>
-          </p>
-        <% } %>
+      <div class="card subcard status-details">
+        <section class="status-details__section">
+          <p class="status-details__section-title">Anfrage</p>
 
-        <% const shouldShowNextCheck = status === 'ACTIVE'; %>
-        <% if (shouldShowNextCheck) { %>
-          <p class="subcard__text">
-            <strong>Nächste Überprüfung:</strong>
-            <%= nextRunAt ? new Date(nextRunAt).toLocaleString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'Wird geplant' %>
-          </p>
-        <% } %>
+          <div class="status-kv">
+            <span class="status-kv__label">Prüfungsdatum</span>
+            <span class="status-kv__value"><%= formatDate(examDate) %></span>
+          </div>
+
+          <div class="status-kv">
+            <span class="status-kv__label">Anfrage erstellt am</span>
+            <span class="status-kv__value"><%= formatDate(createdAt) %></span>
+          </div>
+
+          <% if (finishedAt) { %>
+            <div class="status-kv">
+              <span class="status-kv__label">Abgeschlossen am</span>
+              <span class="status-kv__value"><%= formatDate(finishedAt) %></span>
+            </div>
+          <% } %>
+        </section>
+
+        <section class="status-details__section status-details__section--checks">
+          <p class="status-details__section-title">Überprüfung</p>
+
+          <% if (shouldShowNextCheck) { %>
+            <p class="status-details__hint">Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.</p>
+          <% } %>
+
+          <div class="status-kv">
+            <span class="status-kv__label">Letzte Überprüfung</span>
+            <span class="status-kv__value status-kv__value--mono"><%= lastCheckValue %></span>
+          </div>
+
+          <% if (shouldShowNextCheck) { %>
+            <div class="status-kv">
+              <span class="status-kv__label">Nächste Überprüfung</span>
+              <span class="status-kv__value status-kv__value--mono"><%= nextCheckValue %></span>
+            </div>
+          <% } %>
+        </section>
       </div>
-
     </div>
   </div>
 </body>
