@@ -7,8 +7,6 @@ export const routerStatus = Router();
  * GET /status/:publicToken
  */
 routerStatus.get('/:publicToken', async (req, res) => {
-  console.log('GET /status/:publicToken');
-
   const publicToken = String(req.params.publicToken ?? '');
 
   if (!publicToken) {

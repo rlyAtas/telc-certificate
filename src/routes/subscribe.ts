@@ -3,14 +3,12 @@ import { validateSubscribe } from '../validators/subscribeValidator.js';
 import { normalizeSubscribe } from '../utils/normalizeSubscribe.js';
 import { CertificateCheckService } from '../services/certificateCheckService.js';
 import { sendConfirmLinkEmail } from '../email/send.js';
+import { logger } from '../services/logger.js';
 
 export const routerSubscribe = Router();
 
 routerSubscribe.post('/', async (req, res) => {
-  console.log('POST /subscribe');
-
   const { values, errors } = validateSubscribe(req.body);
-  console.log('Validation result:', { values, errors });
 
   if (Object.keys(errors).length > 0) {
     return res.status(400).render('index', {
@@ -32,6 +30,7 @@ routerSubscribe.post('/', async (req, res) => {
     return res.render('subscribe');
 
   } catch (error: unknown) {
+    logger.error(`[routes/subscribe] ${error instanceof Error ? error.stack || error.message : String(error)}`);
     return res.status(500).render('hint', {
       message:
         'Es gab ein Problem mit Ihrer Anfrage. Bitte versuchen Sie es später erneut.',

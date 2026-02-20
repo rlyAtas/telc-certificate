@@ -4,7 +4,6 @@ import { CertificateCheckService } from '../services/certificateCheckService.js'
 export const routerConfirm = Router();
 
 routerConfirm.get('/:token', async (req, res) => {
-  console.log('GET /confirm/:token');
 
   const token = String(req.params.token ?? '');
 

@@ -1,3 +1,5 @@
+import { logger } from '../services/logger.js';
+
 export type TelcCheckParams = {
   userNumber: string; // Teilnehmernummer
   birthDate: Date;    // Geburtsdatum
@@ -15,8 +17,9 @@ export type TelcCheckParams = {
  * пример ответа при не найденном сертификате: 404 Not Found или { "code": 404, "message": "certificate not found" }
  */
 export async function telcCheck(params: TelcCheckParams): Promise<boolean | null> {
+  logger.debug(`[cron/telcCheck/telcCheck] params=${JSON.stringify(params)}`);
+
   const type = params.type ?? 'paper';
-  console.log(`[telcCheck] Checking certificate for userNumber=${params.userNumber}, examDate=${toYmd(params.examDate)}, evalDate=${toYmd(params.evalDate)}, type=${type}`);
 
   // telc ожидает YYYY-MM-DD
   const birthdate = toYmd(params.birthDate);
@@ -38,22 +41,17 @@ export async function telcCheck(params: TelcCheckParams): Promise<boolean | null
       signal: AbortSignal.timeout(5_000),
     });
 
-    console.log(`[telcCheck] Received response: ${res.ok} ${res.statusText} for URL: ${url}`);
-
     const data: unknown = await res.json();
 
     if (isTelcSuccessResponse(data)) {
-      console.warn('[telcCheck] certificate found:', { examId: data.examId, attendeeId: data.attendeeId });
       return true;
     }
 
-    console.warn('[telcCheck] certificate not found, response:', data);
-
     // JSON есть, но сертификата нет
     return false;
-  } catch (err) {
+  } catch (error) {
     // сеть / таймаут / JSON parse error
-    console.warn('[telcCheck] request failed', err);
+    logger.error(`[cron/telcCheck/telcCheck] ${error}`);
     return null;
   }
 }

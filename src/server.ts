@@ -4,6 +4,8 @@ import http from 'http';
 import { prisma } from './db.js';
 import cron from 'node-cron';
 import { checkCertificates } from './cron/checkCertificates.js';
+import { logger } from './services/logger.js';
+import ngrok from '@ngrok/ngrok';
 
 let server: http.Server | undefined;
 
@@ -18,11 +20,11 @@ let cronRunning = false;
 
 async function main() {
   server = app.listen(appPort, () => {
-    console.log(`[server] Server started on port ${appPort} in ${appEnv} mode`);
+    logger.info(`[server] Server started on port ${appPort} in ${appEnv} mode`);
   });
 
   if (appEnv === 'development') {
-    const { default: ngrok } = await import('@ngrok/ngrok');
+    
     ngrokInstance = ngrok;
 
     const listener = await ngrok.forward({
@@ -34,7 +36,7 @@ async function main() {
     if (!url) throw new Error('Ngrok failed to provide a URL');
 
     ngrokUrl = url;
-    console.log(`[server] Ngrok URL: ${ngrokUrl}`);
+    logger.info(`[server] Ngrok URL: ${ngrokUrl}`);
   }
 
   cronTask = cron.schedule('*/5 * * * * *', async () => {
@@ -43,7 +45,7 @@ async function main() {
     try {
       await checkCertificates();
     } catch (error) {
-      console.error('[cron] error:', error);
+      logger.error(`[cron] error: ${error}`);
     } finally {
       cronRunning = false;
     }
@@ -56,31 +58,32 @@ async function shutdown(signal: string) {
   if (shuttingDown) return;
   shuttingDown = true;
 
-  console.log(`[server] received ${signal}, shutting down...`);
+  logger.info(`[server] received ${signal}, shutting down...`);
 
   try {
     cronTask?.stop();
   } catch (error) {
-    console.warn('[server] cron stop failed:', error);
+    logger.error(`[server] cron stop failed: ${error}`);
   }
 
   if (ngrokInstance) {
     try {
       await ngrokInstance.kill();
     } catch (error) {
-      console.warn(`[server] ngrok shutdown failed: ${error}`);
+      logger.error(`[server] ngrok shutdown failed: ${error}`);
     }
   }
 
   try {
     await prisma.$disconnect();
   } catch (error) {
-    console.warn('[server] prisma disconnect failed:', error);
+    logger.error(`[server] prisma disconnect failed: ${error}`);
   }
 
   server?.close((error) => {
   if (error) {
-    console.error('[server] error while closing server:', error);
+    logger.error(`[server] error while closing server: ${error}`);
+
     process.exit(1);
   }
   process.exit(0);
@@ -91,6 +94,6 @@ process.on('SIGINT', () => void shutdown('SIGINT'));
 process.on('SIGTERM', () => void shutdown('SIGTERM'));
 
 main().catch((error) => {
-  console.error(`[server] failed to start: ${error}`);
+  logger.error(`[server] error in main(): ${error}`);
   process.exit(1);
 });

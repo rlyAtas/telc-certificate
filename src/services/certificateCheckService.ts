@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import { prisma } from '../db.js';
 import type { SubscribeData } from '../types/subscribe.js';
 import { addDays } from '../utils/addDays.js';
+import { logger } from './logger.js';
 
 const ACTIVE_DAYS = 35;
 const EXPIRE_TOREN_HOURS = ACTIVE_DAYS * 24;
@@ -32,7 +33,7 @@ export class CertificateCheckService {
         },
       });
     } catch (error: unknown) {
-      console.error('[services/CertificateCheckService/create] Error creating certificate check:', error);
+      logger.error(`[services/CertificateCheckService/create] Error creating certificate check: ${error instanceof Error ? error.stack || error.message : String(error)}`);
       throw error;
     }
   }
