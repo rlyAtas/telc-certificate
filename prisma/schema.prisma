@@ -43,6 +43,7 @@ model CertificateCheck {
   publicToken String @unique
 
   // планирование cron
+  certificatePayloadJson Json?
   lastCheckedAt DateTime?
   nextRunAt      DateTime?
   cursorOffset   Int      @default(0)

@@ -74,14 +74,15 @@ export async function checkCertificates(): Promise<void> {
     return;
   }
 
-  // 6) если найден -> CERTIFICATE_FOUND + finishedAt
-  if (telc === true) {
+  // 6) если найден -> CERTIFICATE_FOUND + finishedAt + сохранение payload сертификата
+  if (telc) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
         status: 'CERTIFICATE_FOUND',
         finishedAt: now,
         lastCheckedAt: now,
+        certificatePayloadJson: telc,
         nextRunAt: null,
       },
     });
