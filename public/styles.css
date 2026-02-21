@@ -263,6 +263,39 @@ a:hover{
   line-height: 1.35;
 }
 
+/* ---- Страница отправки заявки ---- */
+
+.card--subscribe{
+  padding: 22px 16px;
+}
+
+.subscribe-title{
+  margin: 0 0 14px;
+}
+
+.subscribe-banner{
+  margin-bottom: 14px;
+}
+
+.subscribe-next{
+  margin-top: 0;
+}
+
+.subscribe-note{
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.subscribe-process{
+  margin-top: 12px;
+}
+
 /* ---- Страница подтверждения ---- */
 
 .card--confirm{
@@ -473,6 +506,10 @@ a:hover{
   .home-steps,
   .home-form{
     padding: 14px;
+  }
+
+  .card--subscribe{
+    padding: 24px 20px;
   }
 
   .card--confirm{

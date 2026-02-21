@@ -8,20 +8,45 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="card">
-      <h1>Fast fertig</h1>
+    <div class="card card--subscribe">
+      <h1 class="subscribe-title">Fast fertig</h1>
 
-      <p class="hint">Ihre Anfrage wurde erfolgreich gespeichert.</p>
+      <section class="status-banner status-banner--active subscribe-banner">
+        <span class="status-chip status-chip--active">📨 E-Mail gesendet</span>
+        <p class="status-banner__message">
+          Ihre Anfrage wurde erfolgreich gespeichert.
+          Wir haben Ihnen einen Bestätigungslink per E-Mail geschickt.
+        </p>
+      </section>
 
-      <div class="card subcard">
+      <section class="card subcard subscribe-next">
         <p class="subcard__title">Nächster Schritt</p>
         <p class="subcard__text">
-          Wir haben Ihnen eine E-Mail mit einem Bestätigungslink geschickt. 
-          Bitte öffnen Sie diese E-Mail und bestätigen Sie Ihre Adresse, 
-          damit wir mit der Überprüfung beginnen können.
+          Bitte öffnen Sie die E-Mail und bestätigen Sie Ihre Adresse,
+          damit die Überprüfung des Zertifikats starten kann.
         </p>
-      </div>
+        <p class="subscribe-note">
+          <strong>Hinweis:</strong> Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht im Posteingang erscheint.
+        </p>
+      </section>
 
+      <section class="card subcard subscribe-process" aria-label="Bestätigungsprozess">
+        <p class="subcard__title">Bestätigungsprozess</p>
+        <ol class="home-steps__list">
+          <li class="home-steps__item">
+            <span class="home-steps__num">1</span>
+            <span>E-Mail mit Bestätigungslink erhalten</span>
+          </li>
+          <li class="home-steps__item">
+            <span class="home-steps__num">2</span>
+            <span>Link in der E-Mail öffnen und Adresse bestätigen</span>
+          </li>
+          <li class="home-steps__item">
+            <span class="home-steps__num">3</span>
+            <span>Status-Link auf der nächsten Seite erhalten</span>
+          </li>
+        </ol>
+      </section>
     </div>
   </div>
 </body>
