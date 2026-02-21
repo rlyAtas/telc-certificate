@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { CertificateCheckService } from '../services/certificateCheckService.js';
+import { sendConfirmedStatusEmail } from '../email/send.js';
 
 export const routerConfirm = Router();
 
@@ -16,9 +17,9 @@ routerConfirm.get('/:token', async (req, res) => {
   }
 
   try {
-    const record = await CertificateCheckService.confirmByToken(token);
+    const confirmed = await CertificateCheckService.confirmByToken(token);
 
-    if (!record) {
+    if (!confirmed) {
       console.warn(`[routes/confirm] No record found for token: ${token}`);
       return res.status(404).render('hint', {
         message: 'Der Bestätigungslink ist ungültig oder abgelaufen.',
@@ -26,7 +27,16 @@ routerConfirm.get('/:token', async (req, res) => {
       });
     }
 
+    const { record, justConfirmed } = confirmed;
     const urlStatus = `${process.env.PUBLIC_BASE_URL}/status/${record.publicToken}`;
+
+    if (justConfirmed) {
+      await sendConfirmedStatusEmail({
+        to: record.email,
+        statusUrl: urlStatus,
+      });
+    }
+
     return res.render('confirm', { urlStatus });
 
   } catch (err) {

@@ -10,3 +10,16 @@ export function confirmEmailHtml(params: { confirmUrl: string }) {
     </div>
   `;
 }
+
+export function confirmedStatusEmailHtml(params: { statusUrl: string }) {
+  return `
+    <div style="font-family: system-ui, sans-serif; line-height: 1.4">
+      <h2>E-Mail erfolgreich bestätigt</h2>
+      <p>Ihre Anfrage wurde aktiviert. Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.</p>
+      <p><a href="${params.statusUrl}">Status Ihrer Anfrage öffnen</a></p>
+      <p style="color:#667085;font-size:14px">
+        Sie können den Status jederzeit über den Link oben prüfen.
+      </p>
+    </div>
+  `;
+}

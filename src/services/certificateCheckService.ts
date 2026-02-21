@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { prisma } from '../db.js';
 import type { SubscribeData } from '../types/subscribe.js';
+import type { CertificateCheck } from '../generated/prisma/client.js';
 import { addDays } from '../utils/addDays.js';
 import { logger } from './logger.js';
 
@@ -33,12 +34,19 @@ export class CertificateCheckService {
         },
       });
     } catch (error: unknown) {
-      logger.error(`[services/CertificateCheckService/create] Error creating certificate check: ${error instanceof Error ? error.stack || error.message : String(error)}`);
+      logger.error(`[services/CertificateCheckService/create] ${error}`);
       throw error;
     }
   }
 
-  static async confirmByToken(token: string) {
+  /**
+   * Подтверждает заявку по токену и возвращает флаг первого подтверждения.
+   * `justConfirmed = true` означает, что это первое успешное подтверждение e-mail.
+   */
+  static async confirmByToken(token: string): Promise<{
+    record: CertificateCheck;
+    justConfirmed: boolean;
+  } | null> {
     try {
       // нет проверки на протухание токена
 
@@ -47,12 +55,17 @@ export class CertificateCheckService {
       });
 
       if (!record) return null;
-      if (record.confirmedAt) return record;
+      if (record.confirmedAt) {
+        return {
+          record,
+          justConfirmed: false,
+        };
+      }
 
       const now = new Date();
       const activeUntil = addDays(record.examDate, ACTIVE_DAYS);
 
-      return prisma.certificateCheck.update({
+      const updatedRecord = await prisma.certificateCheck.update({
         where: { id: record.id },
         data: {
           status: 'ACTIVE',
@@ -62,6 +75,11 @@ export class CertificateCheckService {
           activeUntil,
         },
       });
+
+      return {
+        record: updatedRecord,
+        justConfirmed: true,
+      };
     } catch (error: unknown) {
       console.error('[services/CertificateCheckService/confirmByToken] Error confirming token:', error);
       throw error;
@@ -74,7 +92,7 @@ export class CertificateCheckService {
         where: { publicToken },
       });
     } catch (error: unknown) {
-      console.error('[services/CertificateCheckService/getByPublicToken] Error fetching by public token:', error);
+      console.error(`[services/CertificateCheckService/getByPublicToken] ${error}`);
       throw error;
     }
   }
