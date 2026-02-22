@@ -73,6 +73,9 @@
           <%= statusView.icon %> <%= statusView.badge %>
         </span>
         <p class="status-banner__message"><%= statusView.message %></p>
+        <% if (certificateUrl) { %>
+          <a class="status-cta" href="<%= certificateUrl %>">Zertifikat öffnen</a>
+        <% } %>
       </section>
 
       <div class="card subcard status-details">

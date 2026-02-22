@@ -314,7 +314,8 @@ a:hover{
   margin-top: 0;
 }
 
-.confirm-cta{
+.confirm-cta,
+.status-cta{
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -330,7 +331,8 @@ a:hover{
   text-decoration: none;
 }
 
-.confirm-cta:hover{
+.confirm-cta:hover,
+.status-cta:hover{
   text-decoration: none;
 }
 
