@@ -52,11 +52,8 @@ export async function telcCheck(params: TelcCheckParams): Promise<TelcSuccessRes
 
     const data: unknown = await res.json();
 
-    if (isTelcSuccessResponse(data)) {
-      return data;
-    }
+    if (isTelcSuccessResponse(data)) return data;
 
-    // JSON есть, но сертификата нет
     return false;
   } catch (error) {
     // сеть / таймаут / JSON parse error

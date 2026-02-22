@@ -3,21 +3,14 @@ import { sendCertificateFoundStatusEmail } from '../email/send.js';
 import { logger } from '../services/logger.js';
 import { telcCheck } from '../utils/telcCheck.js';
 
-const MAX_WINDOW_DAYS = 28;           // 0..27
-const NEXT_TICK_MS = 5_000;           // 5 seconds
+const ACTIVE_DAYS = 35;
+const NEXT_TICK_MS = 5_000; // 5 seconds
 const AFTER_FULL_SCAN_MS = 4 * 60 * 60 * 1000; // 4 hours
-
-type TelcCheckParams = {
-  userNumber: string;
-  birthDate: Date;
-  examDate: Date;
-  evalDate: Date; // examDate + cursorOffset
-};
 
 export async function checkCertificates(): Promise<void> {
   const now = new Date();
 
-  // 1) берём одну запись, которую пора обработать
+  // берём одну запись, которую пора обработать
   const record = await prisma.certificateCheck.findFirst({
     where: {
       status: 'ACTIVE',
@@ -26,38 +19,23 @@ export async function checkCertificates(): Promise<void> {
     },
     orderBy: [{ nextRunAt: 'asc' }, { id: 'asc' }],
   });
+  if (!record || !record.activeUntil) return;
 
-  if (!record) return;
-
-  // 2) если activeUntil меньше текущей даты -> CHECKING_EXPIRED
-  if (record.activeUntil && record.activeUntil < now) {
-    await prisma.certificateCheck.update({
-      where: { id: record.id },
-      data: {
-        status: 'CHECKING_EXPIRED',
-        finishedAt: now,
-        nextRunAt: null,
-      },
-    });
-    return;
-  }
-
-  // 3) если cursorOffset >= 28 -> nextRunAt + 4h, cursorOffset = 0
-  // 4) если examDate + cursorOffset > today -> анаологично, откладываем на 4 часа и обнуляем курсор (на всякий случай, если что-то пошло не так с датами)
+  // определим дату проверки экзамена
   const checkDate = addDaysUTC(record.examDate, record.cursorOffset);
-  if (record.cursorOffset >= MAX_WINDOW_DAYS || isAfterTodayUTC(checkDate, now)) {
+  if (isAfterDayUTC(checkDate, now)) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
         cursorOffset: 0,
-        nextRunAt: new Date(now.getTime() + AFTER_FULL_SCAN_MS),
         lastCheckedAt: now,
+        nextRunAt: new Date(now.getTime() + AFTER_FULL_SCAN_MS),
       },
     });
     return;
   }
 
-  // 5) проверяем наличие сертификата на дату examDate + cursorOffset
+  // запись существует, надо выполнять проверку наличия сертификата
   const telc = await telcCheck({
     userNumber: record.userNumber,
     birthDate: record.birthDate,
@@ -65,7 +43,7 @@ export async function checkCertificates(): Promise<void> {
     evalDate: checkDate,
   });
 
-  // если сертификат не найден из-за технических проблем (например, telc недоступен) -> nextRunAt + 10s
+  // если сертификат не найден из-за технических проблем (например, telc недоступен) -> выполним повторную проверку чуть позже (nextRunAt + 10s)
   if (telc === null) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
@@ -76,7 +54,7 @@ export async function checkCertificates(): Promise<void> {
     return;
   }
 
-  // 6) если найден -> CERTIFICATE_FOUND + finishedAt + сохранение payload сертификата
+  // сертификат найден -> CERTIFICATE_FOUND + finishedAt + сохранение payload сертификата и оповещение пользователя
   if (telc) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
@@ -97,7 +75,35 @@ export async function checkCertificates(): Promise<void> {
     return;
   }
 
-  // 7) не найден -> cursorOffset + 1, nextRunAt + 5s
+  // если проверили все дни и дата последней проверки (activeUntil) превышена, то CHECKING_EXPIRED
+  if (record.cursorOffset >= ACTIVE_DAYS && isAfterDayUTC(now, record.activeUntil)) {
+    await prisma.certificateCheck.update({
+      where: { id: record.id },
+      data: {
+        status: 'CHECKING_EXPIRED',
+        cursorOffset: 0,
+        finishedAt: now,
+        lastCheckedAt: now,
+        nextRunAt: null,
+      },
+    });
+    return;
+  }
+
+  // если проверили все дни и дата последней проверки (activeUntil) еще не превышена, то назначаем новую проверку через четыре часа
+  if (record.cursorOffset >= ACTIVE_DAYS && !isAfterDayUTC(now, record.activeUntil)) {
+    await prisma.certificateCheck.update({
+      where: { id: record.id },
+      data: {
+        cursorOffset: 0,
+        lastCheckedAt: now,
+        nextRunAt: new Date(now.getTime() + AFTER_FULL_SCAN_MS),
+      },
+    });
+    return;
+  }
+
+  // сертификат пока не найден, продолжим поиск через 5 секунд -> cursorOffset + 1, nextRunAt + 5s
   await prisma.certificateCheck.update({
     where: { id: record.id },
     data: {
@@ -107,25 +113,21 @@ export async function checkCertificates(): Promise<void> {
   });
 }
 
-/* ----------------- helpers ----------------- */
-
-/**
- * Стабильное прибавление дней в UTC (без сюрпризов из-за DST).
- */
+// Добавим дни к дате (используем без UTC).
 function addDaysUTC(date: Date, days: number): Date {
-  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const d = toUtcDateOnly(date);
   d.setUTCDate(d.getUTCDate() + days);
   return d;
 }
 
-/**
- * true, если date лежит "после сегодняшнего дня" (сравнение по дню в UTC).
- * То есть: date > today (не время, а именно день).
- */
-function isAfterTodayUTC(date: Date, now: Date): boolean {
-  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-  const d0 = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-  return d0.getTime() > today.getTime();
+// сравним две даты
+function isAfterDayUTC(left: Date, right: Date): boolean {
+  return toUtcDateOnly(left).getTime() > toUtcDateOnly(right).getTime();
+}
+
+// перевод даты в UTC
+function toUtcDateOnly(date: Date): Date {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
 }
 
 type NotifyCertificateFoundParams = {
@@ -138,25 +140,17 @@ type NotifyCertificateFoundParams = {
  * Ошибки доставки только логируются и не влияют на процесс проверки.
  */
 async function notifyCertificateFound(params: NotifyCertificateFoundParams): Promise<void> {
-  const statusUrl = buildStatusUrl(params.publicToken);
+  const publicBaseUrl = process.env.PUBLIC_BASE_URL;
 
-  if (!statusUrl) {
-    logger.warn('[cron/checkCertificates] PUBLIC_BASE_URL is missing, skip certificate found email');
+  if (!publicBaseUrl) {
+    logger.warn('[cron/checkCertificates/notifyCertificateFound] PUBLIC_BASE_URL is missing, skip certificate found email');
     return;
   }
+
+  const statusUrl = `${publicBaseUrl}/status/${params.publicToken}`;
 
   await sendCertificateFoundStatusEmail({
     to: params.email,
     statusUrl,
   });
-}
-
-function buildStatusUrl(publicToken: string): string | null {
-  const publicBaseUrl = process.env.PUBLIC_BASE_URL;
-
-  if (!publicBaseUrl) {
-    return null;
-  }
-
-  return `${publicBaseUrl}/status/${publicToken}`;
 }
