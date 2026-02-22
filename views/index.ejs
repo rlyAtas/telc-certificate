@@ -13,24 +13,41 @@
         <span class="status-chip status-chip--active">🔎 Zertifikatsprüfung</span>
         <h1 class="home-title">Überprüfung des telc-Zertifikats</h1>
         <p class="home-subtitle">
-          Starten Sie Ihre Anfrage, bestätigen Sie Ihre E-Mail und verfolgen Sie den Status über einen persönlichen Link.
+          Starten Sie Ihre Anfrage in wenigen Schritten. Sie sehen jederzeit klar, was bereits erledigt ist und was als Nächstes passiert.
         </p>
       </section>
 
-      <section class="home-steps" aria-label="Ablauf">
-        <p class="home-steps__title">So funktioniert es</p>
-        <ol class="home-steps__list">
-          <li class="home-steps__item">
-            <span class="home-steps__num">1</span>
-            <span>Anfrage mit Teilnehmernummer, Geburtsdatum und Prüfungsdatum absenden.</span>
+      <section class="home-steps" aria-label="Fortschritt">
+        <p class="home-steps__title">Aktueller Stand</p>
+        <p class="home-steps__intro">Sie befinden sich bei Schritt 1 von 4.</p>
+        <ol class="flow__list">
+          <li class="flow__item flow__item--active">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">1. Anfrage senden</p>
+              <p class="flow__text">Jetzt erforderlich: Formular mit Ihren Daten ausfüllen und absenden.</p>
+            </div>
           </li>
-          <li class="home-steps__item">
-            <span class="home-steps__num">2</span>
-            <span>E-Mail-Adresse über den zugesendeten Bestätigungslink verifizieren.</span>
+          <li class="flow__item flow__item--todo">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">2. E-Mail bestätigen</p>
+              <p class="flow__text">Nach dem Absenden erhalten Sie einen Bestätigungslink per E-Mail.</p>
+            </div>
           </li>
-          <li class="home-steps__item">
-            <span class="home-steps__num">3</span>
-            <span>Status jederzeit über Ihren persönlichen Link aufrufen.</span>
+          <li class="flow__item flow__item--todo">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">3. Automatische Prüfung läuft</p>
+              <p class="flow__text">Nach Bestätigung startet die Suche nach dem Zertifikat automatisch alle 4 Stunden.</p>
+            </div>
+          </li>
+          <li class="flow__item flow__item--todo">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">4. Ergebnis abrufen</p>
+              <p class="flow__text">Über Ihren Status-Link sehen Sie das Ergebnis und ggf. den Link zum Zertifikat.</p>
+            </div>
           </li>
         </ol>
       </section>
@@ -66,7 +83,7 @@
       </form>
 
       <p class="home-note">
-        Hinweis: Nach der Bestätigung wird die Suche automatisch gestartet. Die Statusseite zeigt die letzte und nächste Überprüfung.
+        Nach dem Absenden ist Ihr nächster Schritt die E-Mail-Bestätigung. Erst danach startet die automatische Prüfung.
       </p>
     </div>
   </div>

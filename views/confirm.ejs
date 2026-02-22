@@ -9,13 +9,13 @@
 <body>
   <div class="wrap">
     <div class="card card--confirm">
-      <h1 class="confirm-title">Bestätigt</h1>
+      <h1 class="confirm-title">Schritt 3 von 4</h1>
 
       <section class="status-banner status-banner--success confirm-banner">
         <span class="status-chip status-chip--success">✅ E-Mail bestätigt</span>
         <p class="status-banner__message">
           Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt.
-          Die Überprüfung des Zertifikats ist gestartet.
+          Die automatische Überprüfung des Zertifikats ist gestartet.
         </p>
       </section>
 
@@ -23,7 +23,8 @@
         <p class="subcard__title">Nächster Schritt</p>
         <p class="subcard__text">
           Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.
-          Sie können den Status jederzeit über Ihren persönlichen Link überprüfen.
+          Sobald ein Zertifikat gefunden wird, senden wir Ihnen eine weitere E-Mail.
+          Den aktuellen Stand sehen Sie jederzeit über Ihren persönlichen Status-Link.
         </p>
 
         <a class="confirm-cta" href="<%= urlStatus %>">Status jetzt öffnen</a>
@@ -34,20 +35,36 @@
         </p>
       </section>
 
-      <section class="card subcard confirm-progress" aria-label="Statusprozess">
-        <p class="subcard__title">Statusprozess</p>
-        <ol class="home-steps__list">
-          <li class="home-steps__item">
-            <span class="home-steps__num">1</span>
-            <span>E-Mail bestätigt</span>
+      <section class="card subcard confirm-progress" aria-label="Fortschritt">
+        <p class="subcard__title">Ihr Fortschritt</p>
+        <ol class="flow__list">
+          <li class="flow__item flow__item--done">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">1. Anfrage senden</p>
+              <p class="flow__text">Erledigt: Ihre Anfrage wurde erstellt.</p>
+            </div>
           </li>
-          <li class="home-steps__item">
-            <span class="home-steps__num">2</span>
-            <span>Zertifikat wird regelmäßig geprüft</span>
+          <li class="flow__item flow__item--done">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">2. E-Mail bestätigen</p>
+              <p class="flow__text">Erledigt: Ihre E-Mail-Adresse ist bestätigt.</p>
+            </div>
           </li>
-          <li class="home-steps__item">
-            <span class="home-steps__num">3</span>
-            <span>Status jederzeit über den Link abrufen</span>
+          <li class="flow__item flow__item--active">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">3. Automatische Prüfung läuft</p>
+              <p class="flow__text">Aktiv: Das System prüft alle 4 Stunden automatisch.</p>
+            </div>
+          </li>
+          <li class="flow__item flow__item--todo">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">4. Ergebnis abrufen</p>
+              <p class="flow__text">Sobald ein Treffer vorliegt, wird der Zertifikat-Link im Status angezeigt.</p>
+            </div>
           </li>
         </ol>
       </section>

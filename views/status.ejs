@@ -66,6 +66,60 @@
         const lastCheckValue = lastCheckedAt ? formatDateTime(lastCheckedAt) : 'Noch nicht geprüft';
         const nextCheckValue = nextRunAt ? formatDateTime(nextRunAt) : 'Wird geplant';
         const shouldShowNextCheck = status === 'ACTIVE';
+
+        const progressMap = {
+          ACTIVE: {
+            step1: 'done',
+            step2: 'done',
+            step3: 'active',
+            step4: 'todo',
+            step3Text: 'Aktiv: Das System prüft den Prüfzeitraum automatisch weiter.',
+            step4Title: 'Ergebnis abrufen',
+            step4Text: 'Sobald ein Zertifikat gefunden wird, erscheint hier der direkte Link.',
+            nextText: 'Wir prüfen automatisch alle 4 Stunden weiter. Sie erhalten zusätzlich eine E-Mail, sobald ein Zertifikat gefunden wurde.',
+          },
+          CERTIFICATE_FOUND: {
+            step1: 'done',
+            step2: 'done',
+            step3: 'done',
+            step4: 'done',
+            step3Text: 'Abgeschlossen: Die automatische Prüfung ist beendet.',
+            step4Title: 'Zertifikat gefunden',
+            step4Text: 'Der direkte Zertifikat-Link ist verfügbar.',
+            nextText: 'Die Prüfung ist abgeschlossen. Öffnen Sie Ihr Zertifikat über die Schaltfläche oben.',
+          },
+          CHECKING_EXPIRED: {
+            step1: 'done',
+            step2: 'done',
+            step3: 'done',
+            step4: 'done',
+            step3Text: 'Abgeschlossen: Die automatische Prüfung ist beendet.',
+            step4Title: 'Prüfung abgeschlossen',
+            step4Text: 'Im Prüfzeitraum wurde kein Zertifikat gefunden.',
+            nextText: 'Die automatische Suche ist beendet. Falls nötig, können Sie eine neue Anfrage starten.',
+          },
+          CERTIFICATE_FAILED: {
+            step1: 'done',
+            step2: 'done',
+            step3: 'done',
+            step4: 'done',
+            step3Text: 'Abgeschlossen: Die automatische Prüfung ist beendet.',
+            step4Title: 'Prüfung abgeschlossen',
+            step4Text: 'Im Prüfzeitraum wurde kein Zertifikat gefunden.',
+            nextText: 'Die automatische Suche ist beendet. Falls nötig, können Sie eine neue Anfrage starten.',
+          },
+        };
+
+        const progressView = progressMap[status] ?? {
+          step1: 'done',
+          step2: 'done',
+          step3: 'active',
+          step4: 'todo',
+          step3Text: 'Aktiv: Das System prüft den Prüfzeitraum automatisch weiter.',
+          step4Title: 'Ergebnis abrufen',
+          step4Text: 'Sobald ein Zertifikat gefunden wird, erscheint hier der direkte Link.',
+          nextText: 'Die Anfrage wird aktuell verarbeitet. Bitte prüfen Sie den Status erneut.',
+        };
       %>
 
       <section class="status-banner status-banner--<%= statusView.tone %>">
@@ -76,6 +130,43 @@
         <% if (certificateUrl) { %>
           <a class="status-cta" href="<%= certificateUrl %>">Zertifikat öffnen</a>
         <% } %>
+      </section>
+
+      <section class="card subcard status-flow" aria-label="Fortschritt">
+        <p class="subcard__title">Ihr Fortschritt</p>
+        <ol class="flow__list">
+          <li class="flow__item flow__item--<%= progressView.step1 %>">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">1. Anfrage senden</p>
+              <p class="flow__text">Erledigt: Ihre Anfrage wurde erstellt.</p>
+            </div>
+          </li>
+          <li class="flow__item flow__item--<%= progressView.step2 %>">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">2. E-Mail bestätigen</p>
+              <p class="flow__text">Erledigt: Ihre E-Mail-Adresse wurde bestätigt.</p>
+            </div>
+          </li>
+          <li class="flow__item flow__item--<%= progressView.step3 %>">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">3. Automatische Prüfung läuft</p>
+              <p class="flow__text"><%= progressView.step3Text %></p>
+            </div>
+          </li>
+          <li class="flow__item flow__item--<%= progressView.step4 %>">
+            <span class="flow__marker" aria-hidden="true"></span>
+            <div>
+              <p class="flow__title">4. <%= progressView.step4Title %></p>
+              <p class="flow__text"><%= progressView.step4Text %></p>
+            </div>
+          </li>
+        </ol>
+
+        <p class="status-next__title">Was passiert als Nächstes?</p>
+        <p class="status-next__text"><%= progressView.nextText %></p>
       </section>
 
       <div class="card subcard status-details">
