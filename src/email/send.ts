@@ -31,10 +31,10 @@ async function sendEmail(params: {
     });
 
     if (error) {
-      logger.error(`[email/send/sendEmail] ${error}`);
+      logger.error(`[email/send/sendEmail] ${JSON.stringify(error)}`);
     }
   } catch (error) {
-    logger.error(`[email/send/sendEmail}] ${error}`);
+    logger.error(`[email/send/sendEmail}] ${JSON.stringify(error)}`);
   }
 }
 
