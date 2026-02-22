@@ -31,10 +31,10 @@ async function sendEmail(params: {
     });
 
     if (error) {
-      logger.error(`[email/${params.context}] ${formatEmailError(error)}`);
+      logger.error(`[email/send/sendEmail] ${error}`);
     }
   } catch (error) {
-    logger.error(`[email/${params.context}] ${formatEmailError(error)}`);
+    logger.error(`[email/send/sendEmail}] ${error}`);
   }
 }
 
