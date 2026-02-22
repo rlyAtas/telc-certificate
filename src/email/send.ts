@@ -1,6 +1,10 @@
 import { Resend } from 'resend';
 import { logger } from '../services/logger.js';
-import { confirmEmailHtml, confirmedStatusEmailHtml } from './templates.js';
+import {
+  certificateFoundStatusEmailHtml,
+  confirmEmailHtml,
+  confirmedStatusEmailHtml,
+} from './templates.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 const fallbackFromEmail = 'telc Zertifikatsprüfung <something@resend.dev>';
@@ -27,10 +31,10 @@ async function sendEmail(params: {
     });
 
     if (error) {
-      logger.error(`[email/sendEmail] ${formatEmailError(error)}`);
+      logger.error(`[email/${params.context}] ${formatEmailError(error)}`);
     }
   } catch (error) {
-    logger.error(`[email/sendEmail] ${formatEmailError(error)}`);
+    logger.error(`[email/${params.context}] ${formatEmailError(error)}`);
   }
 }
 
@@ -59,5 +63,21 @@ export async function sendConfirmedStatusEmail(params: {
     subject: 'telc – E-Mail bestätigt, Status-Link',
     html: confirmedStatusEmailHtml({ statusUrl: params.statusUrl }),
     context: 'sendConfirmedStatusEmail',
+  });
+}
+
+/**
+ * Отправляет письмо, когда сертификат найден,
+ * со ссылкой на страницу статуса заявки.
+ */
+export async function sendCertificateFoundStatusEmail(params: {
+  to: string;
+  statusUrl: string;
+}) {
+  await sendEmail({
+    to: params.to,
+    subject: 'telc – Zertifikat gefunden',
+    html: certificateFoundStatusEmailHtml({ statusUrl: params.statusUrl }),
+    context: 'sendCertificateFoundStatusEmail',
   });
 }

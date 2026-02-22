@@ -23,3 +23,16 @@ export function confirmedStatusEmailHtml(params: { statusUrl: string }) {
     </div>
   `;
 }
+
+export function certificateFoundStatusEmailHtml(params: { statusUrl: string }) {
+  return `
+    <div style="font-family: system-ui, sans-serif; line-height: 1.4">
+      <h2>Zertifikat gefunden</h2>
+      <p>Gute Nachricht: Ihr Zertifikat wurde gefunden.</p>
+      <p><a href="${params.statusUrl}">Status Ihrer Anfrage öffnen</a></p>
+      <p style="color:#667085;font-size:14px">
+        Auf der Statusseite können Sie direkt zum Zertifikat wechseln.
+      </p>
+    </div>
+  `;
+}

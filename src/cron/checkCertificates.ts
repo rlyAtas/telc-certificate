@@ -1,4 +1,6 @@
 import { prisma } from '../db.js';
+import { sendCertificateFoundStatusEmail } from '../email/send.js';
+import { logger } from '../services/logger.js';
 import { telcCheck } from '../utils/telcCheck.js';
 
 const MAX_WINDOW_DAYS = 28;           // 0..27
@@ -86,6 +88,12 @@ export async function checkCertificates(): Promise<void> {
         nextRunAt: null,
       },
     });
+
+    await notifyCertificateFound({
+      email: record.email,
+      publicToken: record.publicToken,
+    });
+
     return;
   }
 
@@ -118,4 +126,37 @@ function isAfterTodayUTC(date: Date, now: Date): boolean {
   const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   const d0 = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   return d0.getTime() > today.getTime();
+}
+
+type NotifyCertificateFoundParams = {
+  email: string;
+  publicToken: string;
+};
+
+/**
+ * Отправляет письмо о найденном сертификате.
+ * Ошибки доставки только логируются и не влияют на процесс проверки.
+ */
+async function notifyCertificateFound(params: NotifyCertificateFoundParams): Promise<void> {
+  const statusUrl = buildStatusUrl(params.publicToken);
+
+  if (!statusUrl) {
+    logger.warn('[cron/checkCertificates] PUBLIC_BASE_URL is missing, skip certificate found email');
+    return;
+  }
+
+  await sendCertificateFoundStatusEmail({
+    to: params.email,
+    statusUrl,
+  });
+}
+
+function buildStatusUrl(publicToken: string): string | null {
+  const publicBaseUrl = process.env.PUBLIC_BASE_URL;
+
+  if (!publicBaseUrl) {
+    return null;
+  }
+
+  return `${publicBaseUrl}/status/${publicToken}`;
 }
