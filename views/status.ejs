@@ -55,7 +55,7 @@
         const formatDate = (value) => dateFormatter.format(new Date(value));
         const shouldShowNextCheck = status === 'ACTIVE';
         const nextRunAtIso = nextRunAt ? new Date(nextRunAt).toISOString() : '';
-        const initialNextCheckValue = nextRunAtIso ? 'wird berechnet...' : 'wird geplant';
+        const initialNextCheckValue = nextRunAtIso ? '--:--' : 'wird geplant';
 
         const lastCheckValueMap = {
           ACTIVE: 'Zertifikat nicht gefunden',
@@ -229,32 +229,26 @@
           return;
         }
 
-        const formatNextCheck = (diffMs) => {
-          if (diffMs <= 0) {
-            return 'wird jetzt ausgeführt';
-          }
+        const formatNextCheck = (diffMs, blinkOn) => {
+          if (diffMs <= 0) return 'wird jetzt ausgeführt';
 
           const totalMinutes = Math.ceil(diffMs / 60000);
           const hours = Math.floor(totalMinutes / 60);
           const minutes = totalMinutes % 60;
 
-          if (hours > 0 && minutes > 0) {
-            return 'in ' + hours + ' Std. ' + minutes + ' Min.';
-          }
-
-          if (hours > 0) {
-            return 'in ' + hours + ' Std.';
-          }
-
-          return 'in ' + minutes + ' Min.';
+          const hh = String(hours).padStart(2, '0');
+          const mm = String(minutes).padStart(2, '0');
+          const separator = blinkOn ? ':' : ' ';
+          return hh + separator + mm;
         };
 
         const update = () => {
-          valueNode.textContent = formatNextCheck(runAtMs - Date.now());
+          const blinkOn = Math.floor(Date.now() / 1000) % 2 === 0;
+          valueNode.textContent = formatNextCheck(runAtMs - Date.now(), blinkOn);
         };
 
         update();
-        window.setInterval(update, 60000);
+        window.setInterval(update, 1000);
       })();
     </script>
   <% } %>
