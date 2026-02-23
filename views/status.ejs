@@ -52,20 +52,19 @@
           day: '2-digit',
         });
 
-        const dateTimeFormatter = new Intl.DateTimeFormat('de-DE', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-        });
-
         const formatDate = (value) => dateFormatter.format(new Date(value));
-        const formatDateTime = (value) => dateTimeFormatter.format(new Date(value));
-
-        const lastCheckValue = lastCheckedAt ? formatDateTime(lastCheckedAt) : 'Noch nicht geprüft';
-        const nextCheckValue = nextRunAt ? formatDateTime(nextRunAt) : 'Wird geplant';
         const shouldShowNextCheck = status === 'ACTIVE';
+        const nextRunAtIso = nextRunAt ? new Date(nextRunAt).toISOString() : '';
+        const initialNextCheckValue = nextRunAtIso ? 'wird berechnet...' : 'wird geplant';
+
+        const lastCheckValueMap = {
+          ACTIVE: 'Zertifikat nicht gefunden',
+          CERTIFICATE_FOUND: 'Zertifikat gefunden',
+          CHECKING_EXPIRED: 'Die Prüfung ist abgeschlossen',
+          CERTIFICATE_FAILED: 'Die Prüfung ist abgeschlossen',
+        };
+
+        const lastCheckValue = lastCheckValueMap[status] ?? 'Status wird verarbeitet';
 
         const progressMap = {
           ACTIVE: {
@@ -195,18 +194,69 @@
 
           <div class="status-kv">
             <span class="status-kv__label">Letzte Überprüfung</span>
-            <span class="status-kv__value status-kv__value--mono"><%= lastCheckValue %></span>
+            <span class="status-kv__value"><%= lastCheckValue %></span>
           </div>
 
           <% if (shouldShowNextCheck) { %>
             <div class="status-kv">
               <span class="status-kv__label">Nächste Überprüfung</span>
-              <span class="status-kv__value status-kv__value--mono"><%= nextCheckValue %></span>
+              <span
+                id="next-check-relative"
+                class="status-kv__value status-kv__value--mono"
+                data-next-run-at="<%= nextRunAtIso %>"
+              ><%= initialNextCheckValue %></span>
             </div>
           <% } %>
         </section>
       </div>
     </div>
   </div>
+  <% if (shouldShowNextCheck) { %>
+    <script>
+      (() => {
+        const valueNode = document.getElementById('next-check-relative');
+        if (!valueNode) return;
+
+        const iso = valueNode.dataset.nextRunAt || '';
+        if (!iso) {
+          valueNode.textContent = 'wird geplant';
+          return;
+        }
+
+        const runAtMs = Date.parse(iso);
+        if (Number.isNaN(runAtMs)) {
+          valueNode.textContent = 'wird geplant';
+          return;
+        }
+
+        const formatNextCheck = (diffMs) => {
+          if (diffMs <= 0) {
+            return 'wird jetzt ausgeführt';
+          }
+
+          const totalMinutes = Math.ceil(diffMs / 60000);
+          const hours = Math.floor(totalMinutes / 60);
+          const minutes = totalMinutes % 60;
+
+          if (hours > 0 && minutes > 0) {
+            return 'in ' + hours + ' Std. ' + minutes + ' Min.';
+          }
+
+          if (hours > 0) {
+            return 'in ' + hours + ' Std.';
+          }
+
+          return 'in ' + minutes + ' Min.';
+        };
+
+        const update = () => {
+          valueNode.textContent = formatNextCheck(runAtMs - Date.now());
+        };
+
+        update();
+        window.setInterval(update, 60000);
+      })();
+    </script>
+  <% } %>
 </body>
 </html>
