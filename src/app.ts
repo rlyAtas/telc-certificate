@@ -5,6 +5,7 @@ import { routerSubscribe } from './routes/subscribe.js';
 import { routerConfirm } from './routes/confirm.js';
 import { router404 } from './routes/404.js';
 import { routerStatus } from './routes/status.js';
+import { routerAdminDbDownload } from './routes/adminDbDownload.js';
 
 export const app = express();
 
@@ -20,5 +21,6 @@ app.use('/', routerIndex);
 app.use('/subscribe', routerSubscribe);
 app.use('/confirm', routerConfirm);
 app.use('/status', routerStatus);
+app.use('/admin/db', routerAdminDbDownload);
 
 app.use(router404);
