@@ -8,24 +8,37 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="card">
-      <h1>Hinweis</h1>
-      <p class="hint"><%= message %></p>
+    <div class="card card--hint">
+      <h1 class="page-title">Überprüfung des telc Zertifikats</h1>
 
-      <div class="card subcard">
-        <p class="subcard__title">Hilfe / Kontakt</p>
+      <section class="status-banner status-banner--warning hint-banner">
+        <span class="status-chip status-chip--warning">⚠️ Hinweis</span>
+        <p class="status-banner__message"><%= message %></p>
+      </section>
+
+      <section class="card subcard hint-next">
+        <p class="subcard__title">Was können Sie jetzt tun?</p>
         <p class="subcard__text">
-          Wenn das Problem weiterhin besteht, schreiben Sie bitte an:
+          Prüfen Sie bitte den verwendeten Link und versuchen Sie es erneut.
         </p>
+        <a class="confirm-cta" href="/">Zur Startseite</a>
+      </section>
 
-        <p class="subcard__email">
-          <a href="mailto:<%= supportEmail %>"><%= supportEmail %></a>
-        </p>
-      </div>
-
-      <div class="backlink">
-        <a href="/">← Zur Startseite</a>
-      </div>
+      <section class="card subcard hint-support">
+        <p class="subcard__title">Hilfe / Kontakt</p>
+        <% if (supportEmail) { %>
+          <p class="subcard__text">
+            Wenn das Problem weiterhin besteht, schreiben Sie bitte an:
+          </p>
+          <p class="subcard__email">
+            <a href="mailto:<%= supportEmail %>"><%= supportEmail %></a>
+          </p>
+        <% } else { %>
+          <p class="subcard__text">
+            Wenn das Problem weiterhin besteht, kontaktieren Sie bitte den Support.
+          </p>
+        <% } %>
+      </section>
     </div>
   </div>
 </body>
