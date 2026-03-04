@@ -55,7 +55,7 @@
         const formatDate = (value) => dateFormatter.format(new Date(value));
         const shouldShowNextCheck = status === 'ACTIVE';
         const nextRunAtIso = nextRunAt ? new Date(nextRunAt).toISOString() : '';
-        const initialNextCheckValue = nextRunAtIso ? '--:--' : 'wird geplant';
+        const initialNextCheckValue = 'wird geplant';
 
         const lastCheckValueMap = {
           ACTIVE: 'Zertifikat nicht gefunden',
@@ -202,9 +202,17 @@
               <span class="status-kv__label">Nächste Überprüfung</span>
               <span
                 id="next-check-relative"
-                class="status-kv__value status-kv__value--mono"
+                class="status-kv__value status-kv__value--mono status-timer"
                 data-next-run-at="<%= nextRunAtIso %>"
-              ><%= initialNextCheckValue %></span>
+              >
+                <span class="status-timer__live" data-role="live">
+                  <span class="status-timer__prefix" data-role="prefix">in</span>
+                  <span data-role="hh">--</span>
+                  <span class="status-timer__sep" data-role="sep">:</span>
+                  <span data-role="mm">--</span>
+                </span>
+                <span class="status-timer__text" data-role="text" hidden><%= initialNextCheckValue %></span>
+              </span>
             </div>
           <% } %>
         </section>
@@ -213,42 +221,68 @@
   </div>
   <% if (shouldShowNextCheck) { %>
     <script>
+      const BLINK_INTERVAL_MS = 500;
+
       (() => {
         const valueNode = document.getElementById('next-check-relative');
         if (!valueNode) return;
+        const liveNode = valueNode.querySelector('[data-role="live"]');
+        const textNode = valueNode.querySelector('[data-role="text"]');
+        const prefixNode = valueNode.querySelector('[data-role="prefix"]');
+        const hhNode = valueNode.querySelector('[data-role="hh"]');
+        const sepNode = valueNode.querySelector('[data-role="sep"]');
+        const mmNode = valueNode.querySelector('[data-role="mm"]');
 
         const iso = valueNode.dataset.nextRunAt || '';
+        const showText = (message) => {
+          if (!liveNode || !textNode) {
+            valueNode.textContent = message;
+            return;
+          }
+          liveNode.hidden = true;
+          textNode.hidden = false;
+          textNode.textContent = message;
+        };
+
+        const showTimer = (hours, minutes, blinkOn) => {
+          if (!liveNode || !textNode || !prefixNode || !hhNode || !sepNode || !mmNode) {
+            return;
+          }
+          liveNode.hidden = false;
+          textNode.hidden = true;
+          prefixNode.textContent = 'in';
+          hhNode.textContent = String(hours).padStart(2, '0');
+          mmNode.textContent = String(minutes).padStart(2, '0');
+          sepNode.classList.toggle('status-timer__sep--off', !blinkOn);
+        };
+
         if (!iso) {
-          valueNode.textContent = 'wird geplant';
+          showText('wird geplant');
           return;
         }
 
         const runAtMs = Date.parse(iso);
         if (Number.isNaN(runAtMs)) {
-          valueNode.textContent = 'wird geplant';
+          showText('wird geplant');
           return;
         }
 
-        const formatNextCheck = (diffMs, blinkOn) => {
-          if (diffMs <= 0) return 'wird jetzt ausgeführt';
+        const update = () => {
+          const diffMs = runAtMs - Date.now();
+          if (diffMs <= 0) {
+            showText('wird jetzt ausgeführt');
+            return;
+          }
 
           const totalMinutes = Math.ceil(diffMs / 60000);
           const hours = Math.floor(totalMinutes / 60);
           const minutes = totalMinutes % 60;
-
-          const hh = String(hours).padStart(2, '0');
-          const mm = String(minutes).padStart(2, '0');
-          const separator = blinkOn ? ':' : ' ';
-          return 'in ' + hh + separator + mm;
-        };
-
-        const update = () => {
-          const blinkOn = Math.floor(Date.now() / 1000) % 2 === 0;
-          valueNode.textContent = formatNextCheck(runAtMs - Date.now(), blinkOn);
+          const blinkOn = Math.floor(Date.now() / BLINK_INTERVAL_MS) % 2 === 0;
+          showTimer(hours, minutes, blinkOn);
         };
 
         update();
-        window.setInterval(update, 500);
+        window.setInterval(update, BLINK_INTERVAL_MS);
       })();
     </script>
   <% } %>

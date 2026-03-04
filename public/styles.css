@@ -594,6 +594,30 @@ a:hover{
   font-variant-numeric: tabular-nums;
 }
 
+.status-timer{
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.status-timer__live{
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.status-timer__prefix{
+  margin-right: 0.35ch;
+}
+
+.status-timer__sep{
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
+}
+
+.status-timer__sep--off{
+  opacity: 0;
+}
+
 @media (min-width: 480px){
   .card--index{
     padding: 24px 20px;
