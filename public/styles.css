@@ -139,6 +139,10 @@ a:hover{
 .subcard{
   margin-top: 14px;
   padding: 14px;
+  background: #fff;
+  border: 1px solid #eaecf0;
+  border-radius: 12px;
+  box-shadow: none;
 }
 
 .subcard__title{
