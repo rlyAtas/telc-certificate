@@ -1,0 +1,34 @@
+<%
+  const headingText = typeof heading === 'string' && heading.trim() ? heading : 'Ihr Fortschritt';
+  const introText = typeof intro === 'string' ? intro : '';
+  const nextTitleText = typeof nextTitle === 'string' ? nextTitle : '';
+  const nextTextValue = typeof nextText === 'string' ? nextText : '';
+  const stepsList = Array.isArray(steps) ? steps : [];
+%>
+<p class="current-status__title"><%= headingText %></p>
+
+<% if (introText) { %>
+  <p class="current-status__intro"><%= introText %></p>
+<% } %>
+
+<ol class="flow__list">
+  <% stepsList.forEach((item) => {
+    const step = item && typeof item === 'object' ? item : {};
+    const state = typeof step.state === 'string' && step.state ? step.state : 'todo';
+    const title = typeof step.title === 'string' ? step.title : '';
+    const text = typeof step.text === 'string' ? step.text : '';
+  %>
+    <li class="flow__item flow__item--<%= state %>">
+      <span class="flow__marker" aria-hidden="true"></span>
+      <div>
+        <p class="flow__title"><%= title %></p>
+        <p class="flow__text"><%= text %></p>
+      </div>
+    </li>
+  <% }) %>
+</ol>
+
+<% if (nextTitleText && nextTextValue) { %>
+  <p class="status-next__title"><%= nextTitleText %></p>
+  <p class="status-next__text"><%= nextTextValue %></p>
+<% } %>

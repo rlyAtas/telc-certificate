@@ -170,8 +170,7 @@ a:hover{
   padding: 22px 16px;
 }
 
-.page-title-section,
-.home-hero{
+.page-title-section{
   margin-bottom: 14px;
   padding: 12px;
   border-radius: 12px;
@@ -181,6 +180,14 @@ a:hover{
 
 .page-title-section .page-title{
   margin: 0;
+}
+
+.home-hero{
+  margin-bottom: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #bfdbfe;
+  background: linear-gradient(180deg, #f8fbff 0%, #f2f7ff 100%);
 }
 
 .home-subtitle{
@@ -198,8 +205,12 @@ a:hover{
   background: #fff;
 }
 
-.home-steps__title{
+.current-status__title{
   margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.home-steps .current-status__title{
   color: #667085;
   font-size: 12px;
   font-weight: 700;
@@ -207,7 +218,7 @@ a:hover{
   text-transform: uppercase;
 }
 
-.home-steps__intro{
+.current-status__intro{
   margin: 0 0 10px;
   color: #475467;
   font-size: 14px;
@@ -353,10 +364,6 @@ a:hover{
   margin-bottom: 14px;
 }
 
-.subscribe-next{
-  margin-top: 0;
-}
-
 .subscribe-note{
   margin: 8px 0 0;
   padding: 10px 12px;
@@ -366,10 +373,6 @@ a:hover{
   color: #9a3412;
   font-size: 13px;
   line-height: 1.35;
-}
-
-.subscribe-process{
-  margin-top: 12px;
 }
 
 /* ---- Страница ошибки/подсказки ---- */
@@ -382,14 +385,6 @@ a:hover{
   margin-bottom: 14px;
 }
 
-.hint-next{
-  margin-top: 0;
-}
-
-.hint-support{
-  margin-top: 12px;
-}
-
 /* ---- Страница подтверждения ---- */
 
 .card--confirm{
@@ -398,10 +393,6 @@ a:hover{
 
 .confirm-banner{
   margin-bottom: 14px;
-}
-
-.confirm-next{
-  margin-top: 0;
 }
 
 .confirm-cta,
@@ -437,10 +428,6 @@ a:hover{
 
 .confirm-url{
   word-break: break-all;
-}
-
-.confirm-progress{
-  margin-top: 12px;
 }
 
 /* ---- Страница статуса ---- */
@@ -532,12 +519,7 @@ a:hover{
 }
 
 .status-details{
-  margin-top: 0;
   padding: 14px 14px 10px;
-}
-
-.status-flow{
-  margin-top: 0;
 }
 
 .status-next__title{
@@ -634,6 +616,7 @@ a:hover{
     padding: 24px 20px;
   }
 
+  .page-title-section,
   .home-hero,
   .home-steps,
   .home-form{

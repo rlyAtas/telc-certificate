@@ -21,38 +21,32 @@
       </section>
 
       <section class="home-steps" aria-label="Fortschritt">
-        <p class="home-steps__title">Aktueller Stand</p>
-        <p class="home-steps__intro">Sie befinden sich bei Schritt 1 von 4.</p>
-        <ol class="flow__list">
-          <li class="flow__item flow__item--active">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">1. Anfrage senden</p>
-              <p class="flow__text">Jetzt erforderlich: Formular mit Ihren Daten ausfüllen und absenden.</p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--todo">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">2. E-Mail bestätigen</p>
-              <p class="flow__text">Nach dem Absenden erhalten Sie einen Bestätigungslink per E-Mail.</p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--todo">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">3. Automatische Prüfung läuft</p>
-              <p class="flow__text">Nach Bestätigung startet die Suche nach dem Zertifikat automatisch alle 4 Stunden.</p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--todo">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">4. Ergebnis abrufen</p>
-              <p class="flow__text">Über Ihren Status-Link sehen Sie das Ergebnis und ggf. den Link zum Zertifikat.</p>
-            </div>
-          </li>
-        </ol>
+        <%- include('partials/current-status', {
+          heading: 'Aktueller Stand',
+          intro: 'Sie befinden sich bei Schritt 1 von 4.',
+          steps: [
+            {
+              state: 'active',
+              title: '1. Anfrage senden',
+              text: 'Jetzt erforderlich: Formular mit Ihren Daten ausfüllen und absenden.',
+            },
+            {
+              state: 'todo',
+              title: '2. E-Mail bestätigen',
+              text: 'Nach dem Absenden erhalten Sie einen Bestätigungslink per E-Mail.',
+            },
+            {
+              state: 'todo',
+              title: '3. Automatische Prüfung läuft',
+              text: 'Nach Bestätigung startet die Suche nach dem Zertifikat automatisch alle 4 Stunden.',
+            },
+            {
+              state: 'todo',
+              title: '4. Ergebnis abrufen',
+              text: 'Über Ihren Status-Link sehen Sie das Ergebnis und ggf. den Link zum Zertifikat.',
+            },
+          ],
+        }) %>
       </section>
 
       <form class="home-form" method="post" action="/subscribe" novalidate>

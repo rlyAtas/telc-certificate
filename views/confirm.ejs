@@ -21,7 +21,7 @@
         </p>
       </section>
 
-      <section class="card subcard confirm-next">
+      <section class="card subcard">
         <p class="subcard__title">Nächster Schritt</p>
         <p class="subcard__text">
           Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.
@@ -37,38 +37,32 @@
         </p>
       </section>
 
-      <section class="card subcard confirm-progress" aria-label="Fortschritt">
-        <p class="subcard__title">Ihr Fortschritt</p>
-        <ol class="flow__list">
-          <li class="flow__item flow__item--done">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">1. Anfrage senden</p>
-              <p class="flow__text">Erledigt: Ihre Anfrage wurde erstellt.</p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--done">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">2. E-Mail bestätigen</p>
-              <p class="flow__text">Erledigt: Ihre E-Mail-Adresse ist bestätigt.</p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--active">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">3. Automatische Prüfung läuft</p>
-              <p class="flow__text">Aktiv: Das System prüft alle 4 Stunden automatisch.</p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--todo">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">4. Ergebnis abrufen</p>
-              <p class="flow__text">Sobald ein Treffer vorliegt, wird der Zertifikat-Link im Status angezeigt.</p>
-            </div>
-          </li>
-        </ol>
+      <section class="card subcard" aria-label="Fortschritt">
+        <%- include('partials/current-status', {
+          heading: 'Ihr Fortschritt',
+          steps: [
+            {
+              state: 'done',
+              title: '1. Anfrage senden',
+              text: 'Erledigt: Ihre Anfrage wurde erstellt.',
+            },
+            {
+              state: 'done',
+              title: '2. E-Mail bestätigen',
+              text: 'Erledigt: Ihre E-Mail-Adresse ist bestätigt.',
+            },
+            {
+              state: 'active',
+              title: '3. Automatische Prüfung läuft',
+              text: 'Aktiv: Das System prüft alle 4 Stunden automatisch.',
+            },
+            {
+              state: 'todo',
+              title: '4. Ergebnis abrufen',
+              text: 'Sobald ein Treffer vorliegt, wird der Zertifikat-Link im Status angezeigt.',
+            },
+          ],
+        }) %>
       </section>
     </div>
   </div>

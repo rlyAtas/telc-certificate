@@ -132,41 +132,34 @@
         <% } %>
       </section>
 
-      <section class="card subcard status-flow" aria-label="Fortschritt">
-        <p class="subcard__title">Ihr Fortschritt</p>
-        <ol class="flow__list">
-          <li class="flow__item flow__item--<%= progressView.step1 %>">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">1. Anfrage senden</p>
-              <p class="flow__text">Erledigt: Ihre Anfrage wurde erstellt.</p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--<%= progressView.step2 %>">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">2. E-Mail bestätigen</p>
-              <p class="flow__text">Erledigt: Ihre E-Mail-Adresse wurde bestätigt.</p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--<%= progressView.step3 %>">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">3. Automatische Prüfung läuft</p>
-              <p class="flow__text"><%= progressView.step3Text %></p>
-            </div>
-          </li>
-          <li class="flow__item flow__item--<%= progressView.step4 %>">
-            <span class="flow__marker" aria-hidden="true"></span>
-            <div>
-              <p class="flow__title">4. <%= progressView.step4Title %></p>
-              <p class="flow__text"><%= progressView.step4Text %></p>
-            </div>
-          </li>
-        </ol>
-
-        <p class="status-next__title">Was passiert als Nächstes?</p>
-        <p class="status-next__text"><%= progressView.nextText %></p>
+      <section class="card subcard" aria-label="Fortschritt">
+        <%- include('partials/current-status', {
+          heading: 'Ihr Fortschritt',
+          steps: [
+            {
+              state: progressView.step1,
+              title: '1. Anfrage senden',
+              text: 'Erledigt: Ihre Anfrage wurde erstellt.',
+            },
+            {
+              state: progressView.step2,
+              title: '2. E-Mail bestätigen',
+              text: 'Erledigt: Ihre E-Mail-Adresse wurde bestätigt.',
+            },
+            {
+              state: progressView.step3,
+              title: '3. Automatische Prüfung läuft',
+              text: progressView.step3Text,
+            },
+            {
+              state: progressView.step4,
+              title: '4. ' + progressView.step4Title,
+              text: progressView.step4Text,
+            },
+          ],
+          nextTitle: 'Was passiert als Nächstes?',
+          nextText: progressView.nextText,
+        }) %>
       </section>
 
       <div class="card subcard status-details">
