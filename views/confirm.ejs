@@ -39,27 +39,22 @@
 
       <section class="card subcard" aria-label="Fortschritt">
         <%- include('partials/current-status', {
-          heading: 'Ihr Fortschritt',
           steps: [
             {
+              number: 1,
               state: 'done',
-              title: '1. Anfrage senden',
-              text: 'Erledigt: Ihre Anfrage wurde erstellt.',
             },
             {
+              number: 2,
               state: 'done',
-              title: '2. E-Mail bestätigen',
-              text: 'Erledigt: Ihre E-Mail-Adresse ist bestätigt.',
             },
             {
+              number: 3,
               state: 'active',
-              title: '3. Automatische Prüfung läuft',
-              text: 'Aktiv: Das System prüft alle 4 Stunden automatisch.',
             },
             {
+              number: 4,
               state: 'todo',
-              title: '4. Ergebnis abrufen',
-              text: 'Sobald ein Treffer vorliegt, wird der Zertifikat-Link im Status angezeigt.',
             },
           ],
         }) %>

@@ -1,34 +1,48 @@
 <%
-  const headingText = typeof heading === 'string' && heading.trim() ? heading : 'Ihr Fortschritt';
-  const introText = typeof intro === 'string' ? intro : '';
-  const nextTitleText = typeof nextTitle === 'string' ? nextTitle : '';
-  const nextTextValue = typeof nextText === 'string' ? nextText : '';
   const stepsList = Array.isArray(steps) ? steps : [];
-%>
-<p class="current-status__title"><%= headingText %></p>
 
-<% if (introText) { %>
-  <p class="current-status__intro"><%= introText %></p>
-<% } %>
+  const stepTitleByNumber = {
+    1: {
+      todo: 'Anfrage senden',
+      active: 'Anfrage senden',
+      done: 'Anfrage gesendet',
+    },
+    2: {
+      todo: 'E-Mail-Adresse bestätigen',
+      active: 'E-Mail-Adresse bestätigen',
+      done: 'E-Mail-Adresse bestätigt',
+    },
+    3: {
+      todo: 'Automatische Prüfung',
+      active: 'Automatische Prüfung läuft',
+      done: 'Automatische Prüfung abgeschlossen',
+    },
+    4: {
+      todo: 'Ergebnis abrufen',
+      active: 'Ergebnis abrufen',
+      done: 'Ergebnis erhalten',
+    },
+  };
+%>
+<p class="current-status__title">Aktueller Stand</p>
 
 <ol class="flow__list">
   <% stepsList.forEach((item) => {
     const step = item && typeof item === 'object' ? item : {};
-    const state = typeof step.state === 'string' && step.state ? step.state : 'todo';
-    const title = typeof step.title === 'string' ? step.title : '';
-    const text = typeof step.text === 'string' ? step.text : '';
+    const rawState = typeof step.state === 'string' ? step.state : 'todo';
+    const state = rawState === 'done' || rawState === 'active' ? rawState : 'todo';
+    const stepNumber = typeof step.number === 'number' ? step.number : null;
+    const autoTitle =
+      stepNumber && stepTitleByNumber[stepNumber]
+        ? `${stepNumber}. ${stepTitleByNumber[stepNumber][state]}`
+        : '';
+    const title = typeof step.title === 'string' && step.title.trim() ? step.title : autoTitle;
   %>
     <li class="flow__item flow__item--<%= state %>">
       <span class="flow__marker" aria-hidden="true"></span>
       <div>
         <p class="flow__title"><%= title %></p>
-        <p class="flow__text"><%= text %></p>
       </div>
     </li>
   <% }) %>
 </ol>
-
-<% if (nextTitleText && nextTextValue) { %>
-  <p class="status-next__title"><%= nextTitleText %></p>
-  <p class="status-next__text"><%= nextTextValue %></p>
-<% } %>

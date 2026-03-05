@@ -73,40 +73,24 @@
             step2: 'done',
             step3: 'active',
             step4: 'todo',
-            step3Text: 'Aktiv: Das System prüft den Prüfzeitraum automatisch weiter.',
-            step4Title: 'Ergebnis abrufen',
-            step4Text: 'Sobald ein Zertifikat gefunden wird, erscheint hier der direkte Link.',
-            nextText: 'Wir prüfen automatisch alle 4 Stunden weiter. Sie erhalten zusätzlich eine E-Mail, sobald ein Zertifikat gefunden wurde.',
           },
           CERTIFICATE_FOUND: {
             step1: 'done',
             step2: 'done',
             step3: 'done',
             step4: 'done',
-            step3Text: 'Abgeschlossen: Die automatische Prüfung ist beendet.',
-            step4Title: 'Zertifikat gefunden',
-            step4Text: 'Der direkte Zertifikat-Link ist verfügbar.',
-            nextText: 'Die Prüfung ist abgeschlossen. Öffnen Sie Ihr Zertifikat über die Schaltfläche oben.',
           },
           CHECKING_EXPIRED: {
             step1: 'done',
             step2: 'done',
             step3: 'done',
             step4: 'done',
-            step3Text: 'Abgeschlossen: Die automatische Prüfung ist beendet.',
-            step4Title: 'Prüfung abgeschlossen',
-            step4Text: 'Im Prüfzeitraum wurde kein Zertifikat gefunden.',
-            nextText: 'Die automatische Suche ist beendet. Falls nötig, können Sie eine neue Anfrage starten.',
           },
           CERTIFICATE_FAILED: {
             step1: 'done',
             step2: 'done',
             step3: 'done',
             step4: 'done',
-            step3Text: 'Abgeschlossen: Die automatische Prüfung ist beendet.',
-            step4Title: 'Prüfung abgeschlossen',
-            step4Text: 'Im Prüfzeitraum wurde kein Zertifikat gefunden.',
-            nextText: 'Die automatische Suche ist beendet. Falls nötig, können Sie eine neue Anfrage starten.',
           },
         };
 
@@ -115,10 +99,6 @@
           step2: 'done',
           step3: 'active',
           step4: 'todo',
-          step3Text: 'Aktiv: Das System prüft den Prüfzeitraum automatisch weiter.',
-          step4Title: 'Ergebnis abrufen',
-          step4Text: 'Sobald ein Zertifikat gefunden wird, erscheint hier der direkte Link.',
-          nextText: 'Die Anfrage wird aktuell verarbeitet. Bitte prüfen Sie den Status erneut.',
         };
       %>
 
@@ -134,31 +114,24 @@
 
       <section class="card subcard" aria-label="Fortschritt">
         <%- include('partials/current-status', {
-          heading: 'Ihr Fortschritt',
           steps: [
             {
+              number: 1,
               state: progressView.step1,
-              title: '1. Anfrage senden',
-              text: 'Erledigt: Ihre Anfrage wurde erstellt.',
             },
             {
+              number: 2,
               state: progressView.step2,
-              title: '2. E-Mail bestätigen',
-              text: 'Erledigt: Ihre E-Mail-Adresse wurde bestätigt.',
             },
             {
+              number: 3,
               state: progressView.step3,
-              title: '3. Automatische Prüfung läuft',
-              text: progressView.step3Text,
             },
             {
+              number: 4,
               state: progressView.step4,
-              title: '4. ' + progressView.step4Title,
-              text: progressView.step4Text,
             },
           ],
-          nextTitle: 'Was passiert als Nächstes?',
-          nextText: progressView.nextText,
         }) %>
       </section>
 
