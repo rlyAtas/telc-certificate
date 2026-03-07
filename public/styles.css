@@ -43,7 +43,7 @@ h1{
   letter-spacing: -0.02em;
 }
 
-.page-title{
+.page-header__title{
   margin: 0 0 14px;
 }
 
@@ -167,25 +167,17 @@ a:hover{
   margin-top: 14px;
 }
 
-.page-title-section{
+.page-header{
   padding: 12px;
-  border-radius: var(--radius-md);
   border: 1px solid #bfdbfe;
   background: linear-gradient(180deg, #f8fbff 0%, #f2f7ff 100%);
 }
 
-.page-title-section .page-title{
+.page-header .page-header__title{
   margin: 0;
 }
 
 /* ---- Информация на странице ---- */
-
-.page-intro{
-  padding: 12px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-soft);
-  background: var(--card);
-}
 
 .page-intro__title{
   display: inline-flex;
@@ -422,8 +414,7 @@ a:hover{
 @media (min-width: 480px){
   .page-card{ padding: 24px 20px; }
 
-  .page-title-section,
-  .page-intro{
+  .page-header{
     padding: 14px;
   }
 
