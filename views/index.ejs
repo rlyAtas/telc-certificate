@@ -29,34 +29,34 @@
         ],
       }) %>
 
-      <form class="home-form section-card" method="post" action="/subscribe" novalidate>
+      <form class="section-card home-form" method="post" action="/subscribe" novalidate>
         <p class="home-form__title">Anfrage starten</p>
 
-        <label>Teilnehmernummer <span class="req">*</span></label>
-        <input name="userNumber" value="<%= values.userNumber || '' %>" />
+        <label class="home-form__label">Teilnehmernummer <span class="home-form__required">*</span></label>
+        <input class="home-form__input" name="userNumber" value="<%= values.userNumber || '' %>" />
         <% if (errors.userNumber) { %>
-          <div class="err"><%= errors.userNumber %></div>
+          <div class="home-form__error"><%= errors.userNumber %></div>
         <% } %>
 
-        <label>Geburtsdatum <span class="req">*</span></label>
-        <input type="date" name="birthDate" value="<%= values.birthDate || '' %>" inputmode="numeric"/>
+        <label class="home-form__label">Geburtsdatum <span class="home-form__required">*</span></label>
+        <input class="home-form__input" type="date" name="birthDate" value="<%= values.birthDate || '' %>" inputmode="numeric"/>
         <% if (errors.birthDate) { %>
-          <div class="err"><%= errors.birthDate %></div>
+          <div class="home-form__error"><%= errors.birthDate %></div>
         <% } %>
 
-        <label>Prüfungsdatum <span class="req">*</span></label>
-        <input type="date" name="examDate" value="<%= values.examDate || '' %>" inputmode="numeric"/>
+        <label class="home-form__label">Prüfungsdatum <span class="home-form__required">*</span></label>
+        <input class="home-form__input" type="date" name="examDate" value="<%= values.examDate || '' %>" inputmode="numeric"/>
         <% if (errors.examDate) { %>
-          <div class="err"><%= errors.examDate %></div>
+          <div class="home-form__error"><%= errors.examDate %></div>
         <% } %>
 
-        <label>E-Mail-Adresse <span class="req">*</span></label>
-        <input type="email" name="email" value="<%= values.email || '' %>" />
+        <label class="home-form__label">E-Mail-Adresse <span class="home-form__required">*</span></label>
+        <input class="home-form__input" type="email" name="email" value="<%= values.email || '' %>" />
         <% if (errors.email) { %>
-          <div class="err"><%= errors.email %></div>
+          <div class="home-form__error"><%= errors.email %></div>
         <% } %>
 
-        <button type="submit">Prüfung starten</button>
+        <button class="home-form__submit" type="submit">Prüfung starten</button>
       </form>
 
     </div>

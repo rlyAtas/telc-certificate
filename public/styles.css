@@ -47,79 +47,10 @@ h1{
   margin: 0 0 14px;
 }
 
-label{
-  display:block;
-  margin-top: 12px;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-input{
-  width: 100%;
-  padding: 12px;
-  margin-top: 6px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 16px; /* важно: не будет авто-зума iOS */
-  outline: none;
-  color: #111;
-}
-
-input:focus{
-  border-color:#84c5ff;
-  box-shadow: 0 0 0 4px rgba(132,197,255,.25);
-}
-
-input[type="date"] {
-  width: 100%;
-  min-height: 48px;
-  padding: 12px;
-  background-color: #fff;
-  -webkit-appearance: none;
-  appearance: none;
-  line-height: 1.2;
-  text-align: left;
-  color: #111;
-}
-
-input[type="date"]::-webkit-date-and-time-value {
-  text-align: left;
-  color: #111;
-  opacity: 1;
-}
-
-.err{
-  color: #b00020;
-  font-size: 13px;
-  margin-top: 6px;
-}
-
-button{
-  width: 100%;
-  margin-top: 16px;
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(0,0,0,.12);
-  background: #111;
-  color: #fff;
-  font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:active{
-  transform: translateY(1px);
-}
-
 @media (min-width: 480px){
   .wrap{ padding: 32px 16px 40px; }
   .card{ padding: 22px 20px; }
   h1{ font-size: 28px; }
-}
-
-.req {
-  color: #b00020;
-  margin-left: 2px;
 }
 
 /* ---- Добавлено для страницы ошибки/подсказки ---- */
@@ -281,9 +212,70 @@ a:hover{
   letter-spacing: -0.01em;
 }
 
-.home-form button{
+.home-form__label{
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.home-form__input{
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  outline: none;
+  color: var(--text-body);
+}
+
+.home-form__input:focus{
+  border-color: #84c5ff;
+  box-shadow: 0 0 0 4px rgba(132,197,255,.25);
+}
+
+.home-form__input[type="date"]{
+  min-height: 48px;
+  background-color: #fff;
+  -webkit-appearance: none;
+  appearance: none;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.home-form__input[type="date"]::-webkit-date-and-time-value{
+  text-align: left;
+  opacity: 1;
+}
+
+.home-form__error{
+  color: #b00020;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.home-form__required{
+  color: #b00020;
+  margin-left: 2px;
+}
+
+.home-form__submit{
+  width: 100%;
   margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0,0,0,.12);
   background: linear-gradient(180deg, #111827 0%, #101828 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.home-form__submit:active{
+  transform: translateY(1px);
 }
 
 /* ---- Страница отправки заявки ---- */
