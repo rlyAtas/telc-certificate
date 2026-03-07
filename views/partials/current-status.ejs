@@ -24,10 +24,10 @@
     },
   };
 %>
-<section class="section-card progress-card" aria-label="Fortschritt">
-  <p class="subcard__title">Aktueller Stand</p>
+<section class="section-card progress" aria-label="Fortschritt">
+  <p class="progress__title">Aktueller Stand</p>
 
-  <ol class="flow__list">
+  <ol class="progress__list">
     <% stepsList.forEach((item, index) => {
       const rawState = typeof item === 'string' ? item : 'todo';
       const state = rawState === 'done' || rawState === 'active' ? rawState : 'todo';
@@ -38,10 +38,10 @@
           : '';
       const title = autoTitle;
     %>
-      <li class="flow__item flow__item--<%= state %>">
-        <span class="flow__marker" aria-hidden="true"></span>
+      <li class="progress__item progress__item--<%= state %>">
+        <span class="progress__item-marker" aria-hidden="true"></span>
         <div>
-          <p class="flow__title"><%= title %></p>
+          <p class="progress__item-title"><%= title %></p>
         </div>
       </li>
     <% }) %>

@@ -212,24 +212,29 @@ a:hover{
 
 /* ---- Прогресс по этапам ---- */
 
-.flow__list{
+.progress__title{
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.progress__list{
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.flow__item{
+.progress__item{
   display: grid;
   grid-template-columns: 20px 1fr;
   gap: 10px;
   align-items: start;
 }
 
-.flow__item + .flow__item{
+.progress__item + .progress__item{
   margin-top: 10px;
 }
 
-.flow__marker{
+.progress__item-marker{
   width: 14px;
   height: 14px;
   margin-top: 3px;
@@ -238,39 +243,39 @@ a:hover{
   background: #fff;
 }
 
-.flow__title{
+.progress__item-title{
   margin: 0;
   color: var(--text-body);
   font-size: 16px;
   line-height: 1.2;
 }
 
-.flow__item--done .flow__marker{
+.progress__item--done .progress__item-marker{
   border-color: #d0d5dd;
   background: #e4e7ec;
   box-shadow: none;
 }
 
-.flow__item--done .flow__title{
+.progress__item--done .progress__item-title{
   color: #98a2b3;
 }
 
-.flow__item--active .flow__marker{
+.progress__item--active .progress__item-marker{
   border-color: #2563eb;
   background: #3b82f6;
   box-shadow: 0 0 0 3px #dbeafe;
 }
 
-.flow__item--active .flow__title{
+.progress__item--active .progress__item-title{
   color: var(--text-body);
 }
 
-.flow__item--todo .flow__marker{
+.progress__item--todo .progress__item-marker{
   border-color: #d0d5dd;
   background: #fff;
 }
 
-.flow__item--todo .flow__title{
+.progress__item--todo .progress__item-title{
   color: #98a2b3;
 }
 
