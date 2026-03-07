@@ -4,9 +4,12 @@
   const text = typeof introText === 'string' ? introText : '';
 %>
 <section class="page-intro">
-  <span class="status-chip status-chip--active">
-    <%= icon %> <%= label %>
-  </span>
+  <p class="page-intro__title">
+    <span aria-hidden="true"><%= icon %></span>
+    <% if (label) { %>
+      <span><%= label %></span>
+    <% } %>
+  </p>
   <% if (text) { %>
     <p class="page-intro__message"><%= text %></p>
   <% } %>
