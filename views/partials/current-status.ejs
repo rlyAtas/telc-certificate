@@ -24,25 +24,26 @@
     },
   };
 %>
-<p class="current-status__title">Aktueller Stand</p>
+<section class="card subcard progress-card" aria-label="Fortschritt">
+  <p class="subcard__title">Aktueller Stand</p>
 
-<ol class="flow__list">
-  <% stepsList.forEach((item) => {
-    const step = item && typeof item === 'object' ? item : {};
-    const rawState = typeof step.state === 'string' ? step.state : 'todo';
-    const state = rawState === 'done' || rawState === 'active' ? rawState : 'todo';
-    const stepNumber = typeof step.number === 'number' ? step.number : null;
-    const autoTitle =
-      stepNumber && stepTitleByNumber[stepNumber]
-        ? `${stepNumber}. ${stepTitleByNumber[stepNumber][state]}`
-        : '';
-    const title = typeof step.title === 'string' && step.title.trim() ? step.title : autoTitle;
-  %>
-    <li class="flow__item flow__item--<%= state %>">
-      <span class="flow__marker" aria-hidden="true"></span>
-      <div>
-        <p class="flow__title"><%= title %></p>
-      </div>
-    </li>
-  <% }) %>
-</ol>
+  <ol class="flow__list">
+    <% stepsList.forEach((item, index) => {
+      const rawState = typeof item === 'string' ? item : 'todo';
+      const state = rawState === 'done' || rawState === 'active' ? rawState : 'todo';
+      const stepNumber = index + 1;
+      const autoTitle =
+        stepNumber && stepTitleByNumber[stepNumber]
+          ? `${stepNumber}. ${stepTitleByNumber[stepNumber][state]}`
+          : '';
+      const title = autoTitle;
+    %>
+      <li class="flow__item flow__item--<%= state %>">
+        <span class="flow__marker" aria-hidden="true"></span>
+        <div>
+          <p class="flow__title"><%= title %></p>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+</section>

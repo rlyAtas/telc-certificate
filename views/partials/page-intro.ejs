@@ -1,0 +1,13 @@
+<%
+  const icon = typeof introIcon === 'string' && introIcon.trim() ? introIcon : 'ℹ️';
+  const label = typeof introLabel === 'string' ? introLabel : '';
+  const text = typeof introText === 'string' ? introText : '';
+%>
+<section class="page-intro">
+  <span class="status-chip status-chip--active">
+    <%= icon %> <%= label %>
+  </span>
+  <% if (text) { %>
+    <p class="page-intro__message"><%= text %></p>
+  <% } %>
+</section>

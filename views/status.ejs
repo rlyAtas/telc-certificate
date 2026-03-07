@@ -12,28 +12,25 @@
       <section class="page-title-section">
         <h1 class="page-title">Überprüfung des telc Zertifikats</h1>
       </section>
+      
       <%
         const statusMap = {
           ACTIVE: {
-            tone: 'active',
             badge: 'Aktiv',
             icon: '🕒',
             message: 'Die Überprüfung des Zertifikats läuft.',
           },
           CERTIFICATE_FOUND: {
-            tone: 'success',
             badge: 'Gefunden',
             icon: '✅',
             message: 'Das Zertifikat wurde gefunden.',
           },
           CHECKING_EXPIRED: {
-            tone: 'warning',
             badge: 'Abgeschlossen',
             icon: 'ℹ️',
             message: 'Die Überprüfung ist abgeschlossen. Im Prüfzeitraum wurde kein Zertifikat gefunden.',
           },
           CERTIFICATE_FAILED: {
-            tone: 'error',
             badge: 'Nicht gefunden',
             icon: '❌',
             message: 'Das Zertifikat konnte innerhalb des Prüfzeitraums nicht gefunden werden.',
@@ -41,7 +38,6 @@
         };
 
         const statusView = statusMap[status] ?? {
-          tone: 'neutral',
           badge: 'Unbekannt',
           icon: 'ℹ️',
           message: 'Der aktuelle Status konnte nicht eindeutig bestimmt werden.',
@@ -102,38 +98,20 @@
         };
       %>
 
-      <section class="status-banner status-banner--<%= statusView.tone %>">
-        <span class="status-chip status-chip--<%= statusView.tone %>">
-          <%= statusView.icon %> <%= statusView.badge %>
-        </span>
-        <p class="status-banner__message"><%= statusView.message %></p>
-        <% if (certificateUrl) { %>
-          <a class="status-cta" href="<%= certificateUrl %>">Zertifikat öffnen</a>
-        <% } %>
-      </section>
+      <%- include('partials/page-intro', {
+        introIcon: statusView.icon,
+        introLabel: statusView.badge,
+        introText: statusView.message,
+      }) %>
 
-      <section class="card subcard" aria-label="Fortschritt">
-        <%- include('partials/current-status', {
-          steps: [
-            {
-              number: 1,
-              state: progressView.step1,
-            },
-            {
-              number: 2,
-              state: progressView.step2,
-            },
-            {
-              number: 3,
-              state: progressView.step3,
-            },
-            {
-              number: 4,
-              state: progressView.step4,
-            },
-          ],
-        }) %>
-      </section>
+      <%- include('partials/current-status', {
+        steps: [
+          progressView.step1,
+          progressView.step2,
+          progressView.step3,
+          progressView.step4,
+        ],
+      }) %>
 
       <div class="card subcard status-details">
         <section class="status-details__section">

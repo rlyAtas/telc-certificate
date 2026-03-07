@@ -13,13 +13,11 @@
         <h1 class="page-title">Überprüfung des telc Zertifikats</h1>
       </section>
 
-      <section class="status-banner status-banner--success confirm-banner">
-        <span class="status-chip status-chip--success">✅ E-Mail bestätigt</span>
-        <p class="status-banner__message">
-          Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt.
-          Die automatische Überprüfung des Zertifikats ist gestartet.
-        </p>
-      </section>
+      <%- include('partials/page-intro', {
+        introIcon: '✅',
+        introLabel: 'E-Mail bestätigt',
+        introText: 'Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt. Die automatische Überprüfung des Zertifikats ist gestartet.',
+      }) %>
 
       <section class="card subcard">
         <p class="subcard__title">Nächster Schritt</p>
@@ -37,28 +35,14 @@
         </p>
       </section>
 
-      <section class="card subcard" aria-label="Fortschritt">
-        <%- include('partials/current-status', {
-          steps: [
-            {
-              number: 1,
-              state: 'done',
-            },
-            {
-              number: 2,
-              state: 'done',
-            },
-            {
-              number: 3,
-              state: 'active',
-            },
-            {
-              number: 4,
-              state: 'todo',
-            },
-          ],
-        }) %>
-      </section>
+      <%- include('partials/current-status', {
+        steps: [
+          'done',
+          'done',
+          'active',
+          'todo',
+        ],
+      }) %>
     </div>
   </div>
 </body>

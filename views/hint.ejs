@@ -13,10 +13,11 @@
         <h1 class="page-title">Überprüfung des telc Zertifikats</h1>
       </section>
 
-      <section class="status-banner status-banner--warning hint-banner">
-        <span class="status-chip status-chip--warning">⚠️ Hinweis</span>
-        <p class="status-banner__message"><%= message %></p>
-      </section>
+      <%- include('partials/page-intro', {
+        introIcon: '⚠️',
+        introLabel: 'Hinweis',
+        introText: message,
+      }) %>
 
       <section class="card subcard">
         <p class="subcard__title">Was können Sie jetzt tun?</p>

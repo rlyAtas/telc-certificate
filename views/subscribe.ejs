@@ -9,17 +9,16 @@
 <body>
   <div class="wrap">
     <div class="card card--subscribe">
+
       <section class="page-title-section">
         <h1 class="page-title">Überprüfung des telc Zertifikats</h1>
       </section>
 
-      <section class="status-banner status-banner--active subscribe-banner">
-        <span class="status-chip status-chip--active">📨 E-Mail gesendet</span>
-        <p class="status-banner__message">
-          Ihre Anfrage wurde erfolgreich gespeichert.
-          Jetzt warten wir auf Ihre E-Mail-Bestätigung.
-        </p>
-      </section>
+      <%- include('partials/page-intro', {
+        introIcon: '📨',
+        introLabel: 'E-Mail gesendet',
+        introText: 'Ihre Anfrage wurde erfolgreich gespeichert. Jetzt warten wir auf Ihre E-Mail-Bestätigung.',
+      }) %>
 
       <section class="card subcard">
         <p class="subcard__title">Nächster Schritt</p>
@@ -32,28 +31,14 @@
         </p>
       </section>
 
-      <section class="card subcard" aria-label="Fortschritt">
-        <%- include('partials/current-status', {
-          steps: [
-            {
-              number: 1,
-              state: 'done',
-            },
-            {
-              number: 2,
-              state: 'active',
-            },
-            {
-              number: 3,
-              state: 'todo',
-            },
-            {
-              number: 4,
-              state: 'todo',
-            },
-          ],
-        }) %>
-      </section>
+      <%- include('partials/current-status', {
+        steps: [
+          'done',
+          'active',
+          'todo',
+          'todo',
+        ],
+      }) %>
     </div>
   </div>
 </body>

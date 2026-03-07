@@ -9,39 +9,25 @@
 <body>
   <div class="wrap">
     <div class="card card--index">
+
       <section class="page-title-section">
         <h1 class="page-title">Überprüfung des telc Zertifikats</h1>
       </section>
 
-      <section class="home-hero">
-        <span class="status-chip status-chip--active">🔎 Zertifikatsprüfung</span>
-        <p class="home-subtitle">
-          Starten Sie Ihre Anfrage in wenigen Schritten. Sie sehen jederzeit klar, was bereits erledigt ist und was als Nächstes passiert.
-        </p>
-      </section>
+      <%- include('partials/page-intro', {
+        introIcon: '🔎',
+        introLabel: 'Zertifikatsprüfung',
+        introText: 'Dieser Service sucht automatisch nach Ihrem telc-Zertifikat: Er prüft mögliche Prüftermine bis zu 35 Tage lang und informiert Sie sofort, sobald das Zertifikat gefunden wurde.',
+      }) %>
 
-      <section class="home-steps" aria-label="Fortschritt">
-        <%- include('partials/current-status', {
-          steps: [
-            {
-              number: 1,
-              state: 'active',
-            },
-            {
-              number: 2,
-              state: 'todo',
-            },
-            {
-              number: 3,
-              state: 'todo',
-            },
-            {
-              number: 4,
-              state: 'todo',
-            },
-          ],
-        }) %>
-      </section>
+      <%- include('partials/current-status', {
+        steps: [
+          'active',
+          'todo',
+          'todo',
+          'todo',
+        ],
+      }) %>
 
       <form class="home-form" method="post" action="/subscribe" novalidate>
         <p class="home-form__title">Anfrage starten</p>
@@ -73,9 +59,6 @@
         <button type="submit">Prüfung starten</button>
       </form>
 
-      <p class="home-note">
-        Nach dem Absenden ist Ihr nächster Schritt die E-Mail-Bestätigung. Erst danach startet die automatische Prüfung.
-      </p>
     </div>
   </div>
 </body>
