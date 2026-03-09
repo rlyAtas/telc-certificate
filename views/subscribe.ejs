@@ -15,21 +15,10 @@
       </section>
 
       <%- include('partials/page-intro', {
-        introIcon: '📨',
-        introLabel: 'E-Mail gesendet',
-        introText: 'Ihre Anfrage wurde erfolgreich gespeichert. Jetzt warten wir auf Ihre E-Mail-Bestätigung.',
+        introIcon: '✉️',
+        introLabel: 'Fast geschafft',
+        introText: 'Der nächste Schritt ist die E-Mail-Bestätigung. Öffnen Sie den Link in der Nachricht, damit wir mit der Prüfung beginnen können. Bitte sehen Sie auch im Spam-Ordner nach.',
       }) %>
-
-      <section class="section-card">
-        <p class="subcard__title">Nächster Schritt</p>
-        <p class="subcard__text">
-          Öffnen Sie die E-Mail und bestätigen Sie Ihre Adresse über den Link.
-          Erst danach startet die automatische Zertifikatsprüfung.
-        </p>
-        <p class="subscribe-note">
-          <strong>Hinweis:</strong> Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht im Posteingang erscheint.
-        </p>
-      </section>
 
       <%- include('partials/current-status', {
         steps: [
