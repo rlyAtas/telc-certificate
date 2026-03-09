@@ -20,7 +20,10 @@
       }) %>
 
       <section class="section-card">
-        <p class="subcard__title">Was können Sie jetzt tun?</p>
+        <%- include('partials/section-heading', {
+          headingIcon: '🛠️',
+          headingText: 'Was können Sie jetzt tun?',
+        }) %>
         <p class="subcard__text">
           Prüfen Sie bitte den verwendeten Link und versuchen Sie es erneut.
         </p>
@@ -28,7 +31,10 @@
       </section>
 
       <section class="section-card">
-        <p class="subcard__title">Hilfe / Kontakt</p>
+        <%- include('partials/section-heading', {
+          headingIcon: '💬',
+          headingText: 'Hilfe / Kontakt',
+        }) %>
         <% if (supportEmail) { %>
           <p class="subcard__text">
             Wenn das Problem weiterhin besteht, schreiben Sie bitte an:

@@ -30,7 +30,10 @@
       }) %>
 
       <form class="section-card home-form" method="post" action="/subscribe" novalidate>
-        <p class="home-form__title">Anfrage starten</p>
+        <%- include('partials/section-heading', {
+          headingIcon: '📝',
+          headingText: 'Anfrage starten',
+        }) %>
 
         <label class="home-form__label">Teilnehmernummer <span class="home-form__required">*</span></label>
         <input class="home-form__input" name="userNumber" value="<%= values.userNumber || '' %>" />

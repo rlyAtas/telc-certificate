@@ -20,7 +20,10 @@
       }) %>
 
       <section class="section-card">
-        <p class="subcard__title">Nächster Schritt</p>
+        <%- include('partials/section-heading', {
+          headingIcon: '➡️',
+          headingText: 'Nächster Schritt',
+        }) %>
         <p class="subcard__text">
           Sobald ein Zertifikat gefunden wird, senden wir Ihnen eine weitere E-Mail.
           Den aktuellen Stand sehen Sie jederzeit über Ihren persönlichen Status-Link.

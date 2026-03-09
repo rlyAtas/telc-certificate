@@ -69,6 +69,8 @@ a:hover{
   text-decoration-thickness: 2px;
 }
 
+/* ---- Секция ---- */
+
 .section-card{
   padding: 14px;
   background: var(--card);
@@ -77,9 +79,20 @@ a:hover{
   box-shadow: none;
 }
 
-.subcard__title{
-  margin: 0 0 8px;
-  font-weight: 600;
+.section-heading{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  margin: 0 0 10px;
+  border-radius: 999px;
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
 }
 
 .subcard__text{
@@ -106,50 +119,14 @@ a:hover{
 
 /* ---- Информация на странице ---- */
 
-.page-intro__title{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  margin: 0;
-  border-radius: 999px;
-  border: 1px solid #bfdbfe;
-  background: #eff6ff;
-  color: #1d4ed8;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: 0.02em;
-}
-
 .page-intro__message{
-  margin: 10px 0 0;
+  margin: 0;
   color: var(--text-body);
   font-size: 16px;
   line-height: 1.35;
 }
 
 /* ---- Прогресс по этапам ---- */
-
-/* .progress__title{
-  margin: 0 0 8px;
-  font-weight: 600;
-} */
-.progress__title{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  margin: 0 0 12px;
-  border-radius: 999px;
-  border: 1px solid #bfdbfe;
-  background: #eff6ff;
-  color: #1d4ed8;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: 0.02em;
-}
 
 .progress__list{
   list-style: none;
@@ -215,14 +192,6 @@ a:hover{
 
 /* ---- Форма отправки заявки на главной странице ---- */
 
-.home-form__title{
-  margin: 0 0 8px;
-  color: var(--text-strong);
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
 .home-form__label{
   display: block;
   margin-top: 12px;
@@ -237,7 +206,7 @@ a:hover{
   margin-top: 6px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  font-size: 16px;
+  font-size: 14px;
   outline: none;
   color: var(--text-body);
 }
@@ -263,7 +232,7 @@ a:hover{
 
 .home-form__error{
   color: #b00020;
-  font-size: 13px;
+  font-size: 12px;
   margin-top: 6px;
 }
 

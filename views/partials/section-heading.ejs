@@ -1,0 +1,8 @@
+<%
+  const icon = typeof headingIcon === 'string' && headingIcon.trim() ? headingIcon : 'ℹ️';
+  const text = typeof headingText === 'string' ? headingText : '';
+%>
+<p class="section-heading">
+  <span aria-hidden="true"><%= icon %></span>
+  <span><%= text %></span>
+</p>

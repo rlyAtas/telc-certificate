@@ -4,12 +4,10 @@
   const text = typeof introText === 'string' ? introText : '';
 %>
 <section class="section-card page-intro">
-  <p class="page-intro__title">
-    <span aria-hidden="true"><%= icon %></span>
-    <% if (label) { %>
-      <span><%= label %></span>
-    <% } %>
-  </p>
+  <%- include('section-heading', {
+    headingIcon: icon,
+    headingText: label,
+  }) %>
   <% if (text) { %>
     <p class="page-intro__message"><%= text %></p>
   <% } %>
