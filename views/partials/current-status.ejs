@@ -25,7 +25,11 @@
   };
 %>
 <section class="section-card progress" aria-label="Fortschritt">
-  <p class="progress__title">Aktueller Stand</p>
+  <!-- <p class="progress__title">Aktueller Stand</p> -->
+  <p class="progress__title">
+    <span aria-hidden="true">🟢</span>
+    <span>Aktueller Stand</span>
+  </p>
 
   <ol class="progress__list">
     <% stepsList.forEach((item, index) => {

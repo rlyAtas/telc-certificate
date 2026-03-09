@@ -131,9 +131,24 @@ a:hover{
 
 /* ---- Прогресс по этапам ---- */
 
-.progress__title{
+/* .progress__title{
   margin: 0 0 8px;
   font-weight: 600;
+} */
+.progress__title{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  margin: 0 0 12px;
+  border-radius: 999px;
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
 }
 
 .progress__list{
@@ -274,21 +289,9 @@ a:hover{
   transform: translateY(1px);
 }
 
-/* ---- Страница отправки заявки ---- */
+/* ----  ---- */
 
-.subscribe-note{
-  margin: 8px 0 0;
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid #fed7aa;
-  background: #fff7ed;
-  color: #9a3412;
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.confirm-cta,
-.status-cta{
+.confirm-cta{
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -297,30 +300,14 @@ a:hover{
   padding: 12px 14px;
   border-radius: var(--radius-md);
   border: 1px solid rgba(0,0,0,.12);
-  background: linear-gradient(180deg, #111827 0%, #101828 100%);
+  background: #1d4ed8;
   color: #fff;
   font-size: 16px;
   font-weight: 700;
   text-decoration: none;
 }
 
-.confirm-cta:hover,
-.status-cta:hover{
-  text-decoration: none;
-}
-
-.confirm-url-label{
-  margin: 10px 0 6px;
-  color: #667085;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.confirm-url{
-  word-break: break-all;
-}
+/* ----  ---- */
 
 .status-details{
   padding: 14px 14px 10px;

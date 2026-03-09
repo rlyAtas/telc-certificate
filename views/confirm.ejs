@@ -22,17 +22,11 @@
       <section class="section-card">
         <p class="subcard__title">Nächster Schritt</p>
         <p class="subcard__text">
-          Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.
           Sobald ein Zertifikat gefunden wird, senden wir Ihnen eine weitere E-Mail.
           Den aktuellen Stand sehen Sie jederzeit über Ihren persönlichen Status-Link.
         </p>
 
         <a class="confirm-cta" href="<%= urlStatus %>">Status jetzt öffnen</a>
-
-        <p class="confirm-url-label">Direkter Status-Link</p>
-        <p class="subcard__email confirm-url">
-          <a href="<%= urlStatus %>"><%= urlStatus %></a>
-        </p>
       </section>
 
       <%- include('partials/current-status', {
