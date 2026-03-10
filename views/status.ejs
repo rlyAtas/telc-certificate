@@ -30,11 +30,6 @@
             icon: 'ℹ️',
             message: 'Die Überprüfung ist abgeschlossen. Im Prüfzeitraum wurde kein Zertifikat gefunden.',
           },
-          CERTIFICATE_FAILED: {
-            badge: 'Nicht gefunden',
-            icon: '❌',
-            message: 'Das Zertifikat konnte innerhalb des Prüfzeitraums nicht gefunden werden.',
-          },
         };
 
         const statusView = statusMap[status] ?? {
@@ -57,12 +52,6 @@
             step4: 'done',
           },
           CHECKING_EXPIRED: {
-            step1: 'done',
-            step2: 'done',
-            step3: 'done',
-            step4: 'done',
-          },
-          CERTIFICATE_FAILED: {
             step1: 'done',
             step2: 'done',
             step3: 'done',

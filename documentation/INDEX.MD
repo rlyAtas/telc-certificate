@@ -115,7 +115,6 @@ npm run dev
 - `ACTIVE` — заявка подтверждена и проверяется;
 - `CHECKING_EXPIRED` — срок проверки истёк;
 - `CERTIFICATE_FOUND` — сертификат найден;
-- `CERTIFICATE_FAILED` — есть в enum/шаблоне, но в текущей логике не выставляется.
 
 ### 7.2 Фактический переход состояний
 `EMAIL_UNCONFIRMED -> ACTIVE -> (CERTIFICATE_FOUND | CHECKING_EXPIRED)`
@@ -155,7 +154,7 @@ npm run dev
 
 ### 11.2 Риски и технический долг
 1. Не проверяется срок жизни `confirmToken` в `confirmByToken`, хотя поле `confirmTokenExpiresAt` есть.
-2. Статусы `EMAIL_EXPIRED` и `CERTIFICATE_FAILED` описаны в схеме/шаблонах, но не используются в логике.
+2. Статус `EMAIL_EXPIRED` описан в схеме/шаблонах, но не используется в логике.
 3. В `src/email/send.ts` используется non-null assertion (`process.env.RESEND_API_KEY!`), что опасно при пустом env.
 4. В части модулей используются `console.log/error` вместо централизованного `logger`.
 5. Нет автотестов (ни unit, ни интеграционных), поэтому регрессии возможны даже при небольших изменениях.
