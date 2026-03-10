@@ -17,37 +17,10 @@
         introIcon: '⚠️',
         introLabel: 'Hinweis',
         introParagraphs: [message],
+        introUrl: '/',
+        introUrlText: 'Zur Startseite',
       }) %>
 
-      <section class="section-card">
-        <%- include('partials/section-heading', {
-          headingIcon: '🛠️',
-          headingText: 'Was können Sie jetzt tun?',
-        }) %>
-        <p class="subcard__text">
-          Prüfen Sie bitte den verwendeten Link und versuchen Sie es erneut.
-        </p>
-        <a class="confirm-cta" href="/">Zur Startseite</a>
-      </section>
-
-      <section class="section-card">
-        <%- include('partials/section-heading', {
-          headingIcon: '💬',
-          headingText: 'Hilfe / Kontakt',
-        }) %>
-        <% if (supportEmail) { %>
-          <p class="subcard__text">
-            Wenn das Problem weiterhin besteht, schreiben Sie bitte an:
-          </p>
-          <p class="subcard__email">
-            <a href="mailto:<%= supportEmail %>"><%= supportEmail %></a>
-          </p>
-        <% } else { %>
-          <p class="subcard__text">
-            Wenn das Problem weiterhin besteht, kontaktieren Sie bitte den Support.
-          </p>
-        <% } %>
-      </section>
     </div>
   </div>
 </body>
