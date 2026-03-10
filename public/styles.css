@@ -144,7 +144,6 @@ a:hover{
   text-decoration: none;
 }
 
-
 /* ---- Прогресс по этапам ---- */
 
 .progress__list{
@@ -278,97 +277,8 @@ a:hover{
   transform: translateY(1px);
 }
 
-/* ----  ---- */
-
-.status-details{
-  padding: 14px 14px 10px;
-}
-
-.status-details__section + .status-details__section{
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-soft);
-}
-
-.status-details__section-title{
-  margin: 0 0 8px;
-  color: #667085;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.status-details__hint{
-  margin: 0 0 8px;
-  color: var(--text-body);
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.status-kv{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2px;
-  padding: 8px 0;
-}
-
-.status-kv + .status-kv{
-  border-top: 1px dashed var(--border-soft);
-}
-
-.status-kv__label{
-  color: #667085;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.status-kv__value{
-  color: var(--text-strong);
-  font-size: 17px;
-  font-weight: 600;
-}
-
-.status-kv__value--mono{
-  font-variant-numeric: tabular-nums;
-}
-
-.status-timer{
-  display: inline-flex;
-  align-items: baseline;
-}
-
-.status-timer__live{
-  display: inline-flex;
-  align-items: baseline;
-}
-
-.status-timer__prefix{
-  margin-right: 0.35ch;
-}
-
-.status-timer__sep{
-  display: inline-block;
-  width: 1ch;
-  text-align: center;
-}
-
-.status-timer__sep--off{
-  opacity: 0;
-}
-
 @media (min-width: 480px){
   .page-header{
     padding: 14px;
-  }
-
-  .status-kv{
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
-    align-items: baseline;
-  }
-
-  .status-kv__value{
-    text-align: right;
   }
 }

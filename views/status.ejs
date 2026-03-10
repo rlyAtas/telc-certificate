@@ -43,26 +43,6 @@
           message: 'Der aktuelle Status konnte nicht eindeutig bestimmt werden.',
         };
 
-        const dateFormatter = new Intl.DateTimeFormat('de-DE', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        });
-
-        const formatDate = (value) => dateFormatter.format(new Date(value));
-        const shouldShowNextCheck = status === 'ACTIVE';
-        const nextRunAtIso = nextRunAt ? new Date(nextRunAt).toISOString() : '';
-        const initialNextCheckValue = 'wird geplant';
-
-        const lastCheckValueMap = {
-          ACTIVE: 'Zertifikat nicht gefunden',
-          CERTIFICATE_FOUND: 'Zertifikat gefunden',
-          CHECKING_EXPIRED: 'Die Prüfung ist abgeschlossen',
-          CERTIFICATE_FAILED: 'Die Prüfung ist abgeschlossen',
-        };
-
-        const lastCheckValue = lastCheckValueMap[status] ?? 'Status wird verarbeitet';
-
         const progressMap = {
           ACTIVE: {
             step1: 'done',
@@ -96,13 +76,14 @@
           step3: 'active',
           step4: 'todo',
         };
-      %>
 
-      <%- include('partials/page-intro', {
-        introIcon: statusView.icon,
-        introLabel: statusView.badge,
-        introParagraphs: [statusView.message],
-      }) %>
+        const safeUserNumber = typeof userNumber === 'string' && userNumber.trim()
+          ? userNumber.trim()
+          : '-';
+        const safeExamDate = typeof examDateText === 'string' && examDateText.trim()
+          ? examDateText.trim()
+          : '-';
+      %>
 
       <%- include('partials/current-status', {
         steps: [
@@ -113,128 +94,19 @@
         ],
       }) %>
 
-      <div class="section-card status-details">
-        <%- include('partials/section-heading', {
-          headingIcon: '📋',
-          headingText: 'Details zur Anfrage',
-        }) %>
+      <%- include('partials/page-intro', {
+        introIcon: statusView.icon,
+        introLabel: statusView.badge,
+        introParagraphs: [
+          statusView.message,
+          `Teilnehmernummer: ${safeUserNumber}`,
+          `Prüfungsdatum: ${safeExamDate}`,
+        ],
+        introUrl: certificateUrl || '',
+        introUrlText: certificateUrl ? 'Zertifikat öffnen' : '',
+      }) %>
 
-        <section class="status-details__section">
-          <p class="status-details__section-title">Anfrage</p>
-
-          <div class="status-kv">
-            <span class="status-kv__label">Prüfungsdatum</span>
-            <span class="status-kv__value"><%= formatDate(examDate) %></span>
-          </div>
-
-          <% if (finishedAt) { %>
-            <div class="status-kv">
-              <span class="status-kv__label">Abgeschlossen am</span>
-              <span class="status-kv__value"><%= formatDate(finishedAt) %></span>
-            </div>
-          <% } %>
-        </section>
-
-        <section class="status-details__section status-details__section--checks">
-          <p class="status-details__section-title">Überprüfung</p>
-
-          <% if (shouldShowNextCheck) { %>
-            <p class="status-details__hint">Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.</p>
-          <% } %>
-
-          <div class="status-kv">
-            <span class="status-kv__label">Letzte Überprüfung</span>
-            <span class="status-kv__value"><%= lastCheckValue %></span>
-          </div>
-
-          <% if (shouldShowNextCheck) { %>
-            <div class="status-kv">
-              <span class="status-kv__label">Nächste Überprüfung</span>
-              <span
-                id="next-check-relative"
-                class="status-kv__value status-kv__value--mono status-timer"
-                data-next-run-at="<%= nextRunAtIso %>"
-              >
-                <span class="status-timer__live" data-role="live">
-                  <span class="status-timer__prefix" data-role="prefix">in</span>
-                  <span data-role="hh">--</span>
-                  <span class="status-timer__sep" data-role="sep">:</span>
-                  <span data-role="mm">--</span>
-                </span>
-                <span class="status-timer__text" data-role="text" hidden><%= initialNextCheckValue %></span>
-              </span>
-            </div>
-          <% } %>
-        </section>
-      </div>
     </div>
   </div>
-  <% if (shouldShowNextCheck) { %>
-    <script>
-      const BLINK_INTERVAL_MS = 500;
-
-      (() => {
-        const valueNode = document.getElementById('next-check-relative');
-        if (!valueNode) return;
-        const liveNode = valueNode.querySelector('[data-role="live"]');
-        const textNode = valueNode.querySelector('[data-role="text"]');
-        const prefixNode = valueNode.querySelector('[data-role="prefix"]');
-        const hhNode = valueNode.querySelector('[data-role="hh"]');
-        const sepNode = valueNode.querySelector('[data-role="sep"]');
-        const mmNode = valueNode.querySelector('[data-role="mm"]');
-
-        const iso = valueNode.dataset.nextRunAt || '';
-        const showText = (message) => {
-          if (!liveNode || !textNode) {
-            valueNode.textContent = message;
-            return;
-          }
-          liveNode.hidden = true;
-          textNode.hidden = false;
-          textNode.textContent = message;
-        };
-
-        const showTimer = (hours, minutes, blinkOn) => {
-          if (!liveNode || !textNode || !prefixNode || !hhNode || !sepNode || !mmNode) {
-            return;
-          }
-          liveNode.hidden = false;
-          textNode.hidden = true;
-          prefixNode.textContent = 'in';
-          hhNode.textContent = String(hours).padStart(2, '0');
-          mmNode.textContent = String(minutes).padStart(2, '0');
-          sepNode.classList.toggle('status-timer__sep--off', !blinkOn);
-        };
-
-        if (!iso) {
-          showText('wird geplant');
-          return;
-        }
-
-        const runAtMs = Date.parse(iso);
-        if (Number.isNaN(runAtMs)) {
-          showText('wird geplant');
-          return;
-        }
-
-        const update = () => {
-          const diffMs = runAtMs - Date.now();
-          if (diffMs <= 0) {
-            showText('wird jetzt ausgeführt');
-            return;
-          }
-
-          const totalMinutes = Math.ceil(diffMs / 60000);
-          const hours = Math.floor(totalMinutes / 60);
-          const minutes = totalMinutes % 60;
-          const blinkOn = Math.floor(Date.now() / BLINK_INTERVAL_MS) % 2 === 0;
-          showTimer(hours, minutes, blinkOn);
-        };
-
-        update();
-        window.setInterval(update, BLINK_INTERVAL_MS);
-      })();
-    </script>
-  <% } %>
 </body>
 </html>
