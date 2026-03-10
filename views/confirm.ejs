@@ -13,25 +13,6 @@
         <h1 class="page-header__title">Überprüfung des telc Zertifikats</h1>
       </section>
 
-      <%- include('partials/page-intro', {
-        introIcon: '✅',
-        introLabel: 'E-Mail bestätigt',
-        introText: 'Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt. Die automatische Überprüfung des Zertifikats ist gestartet.',
-      }) %>
-
-      <section class="section-card">
-        <%- include('partials/section-heading', {
-          headingIcon: '➡️',
-          headingText: 'Nächster Schritt',
-        }) %>
-        <p class="subcard__text">
-          Sobald ein Zertifikat gefunden wird, senden wir Ihnen eine weitere E-Mail.
-          Den aktuellen Stand sehen Sie jederzeit über Ihren persönlichen Status-Link.
-        </p>
-
-        <a class="confirm-cta" href="<%= urlStatus %>">Status jetzt öffnen</a>
-      </section>
-
       <%- include('partials/current-status', {
         steps: [
           'done',
@@ -39,6 +20,17 @@
           'active',
           'todo',
         ],
+      }) %>
+
+      <%- include('partials/page-intro', {
+        introIcon: '✅',
+        introLabel: 'E-Mail bestätigt',
+        introParagraphs: [
+          'Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt. Die automatische Überprüfung des Zertifikats ist gestartet.',
+          'Sobald ein Zertifikat gefunden wird, senden wir Ihnen eine weitere E-Mail. Den aktuellen Stand sehen Sie jederzeit über Ihren persönlichen Status-Link.',
+        ],
+        introUrl: urlStatus,
+        introUrlText: 'Status jetzt öffnen',
       }) %>
     </div>
   </div>

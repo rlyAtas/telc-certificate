@@ -126,6 +126,25 @@ a:hover{
   line-height: 1.35;
 }
 
+.page-intro__message + .page-intro__message { margin-top: 8px; }
+
+.page-intro__url{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0,0,0,.12);
+  background: #1d4ed8;
+  color: #fff;
+  font-size: 14px;
+  /* font-weight: 700; */
+  text-decoration: none;
+}
+
+
 /* ---- Прогресс по этапам ---- */
 
 .progress__list{
@@ -257,24 +276,6 @@ a:hover{
 
 .home-form__submit:active{
   transform: translateY(1px);
-}
-
-/* ----  ---- */
-
-.confirm-cta{
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 6px;
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(0,0,0,.12);
-  background: #1d4ed8;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  text-decoration: none;
 }
 
 /* ----  ---- */

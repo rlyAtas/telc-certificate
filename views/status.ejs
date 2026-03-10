@@ -101,7 +101,7 @@
       <%- include('partials/page-intro', {
         introIcon: statusView.icon,
         introLabel: statusView.badge,
-        introText: statusView.message,
+        introParagraphs: [statusView.message],
       }) %>
 
       <%- include('partials/current-status', {

@@ -1,14 +1,19 @@
 <%
   const icon = typeof introIcon === 'string' && introIcon.trim() ? introIcon : 'ℹ️';
   const label = typeof introLabel === 'string' ? introLabel : '';
-  const text = typeof introText === 'string' ? introText : '';
+  const paragraphs =  Array.isArray(introParagraphs) ? introParagraphs.filter((p) => typeof p === 'string' && p.trim()) : [];
+  const url = typeof introUrl === 'string' ? introUrl : '';
+  const urlText = typeof introUrlText === 'string' ? introUrlText : '';
 %>
 <section class="section-card page-intro">
   <%- include('section-heading', {
     headingIcon: icon,
     headingText: label,
   }) %>
-  <% if (text) { %>
-    <p class="page-intro__message"><%= text %></p>
+  <% paragraphs.forEach((p) => { %>
+    <p class="page-intro__message"><%= p %></p>
+  <% }) %>
+  <% if (url && urlText) {%>
+    <a class="page-intro__url" href="<%= url %>"><%= urlText %></a>
   <% } %>
 </section>
