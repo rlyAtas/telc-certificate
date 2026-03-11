@@ -95,13 +95,24 @@
         infoUrlText: certificateUrl ? 'Zertifikat öffnen' : '',
       }) %>
 
-      <%- include('partials/support-card', {
-        supportDonateUrl: 'https://buymeacoffee.com/results.telc',
+      <%- include('partials/info-card', {
+        infoIcon: '☕',
+        infoLabel: 'Service unterstützen',
+        infoParagraphs: [
+          'Wenn der Service Ihnen geholfen hat, können Sie seine Weiterentwicklung mit einer kleinen Spende unterstützen.',
+        ],
+        infoUrl: 'https://buymeacoffee.com/results.telc',
+        infoUrlText: 'Jetzt unterstützen',
       }) %>
 
-      <%- include('partials/telegram-card', {
-        telegramUrl: 'https://t.me/rlyAtas',
-        telegramHandle: '@rlyAtas',
+      <%- include('partials/info-card', {
+        infoIcon: '💬',
+        infoLabel: 'Kontakt',
+        infoParagraphs: [
+          'Fragen oder Feedback? Schreiben Sie mir direkt bei Telegram.',
+        ],
+        infoUrl: 'https://t.me/rlyAtas',
+        infoUrlText: '@rlyAtas',
       }) %>
 
     </div>
