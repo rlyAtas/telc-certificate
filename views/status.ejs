@@ -83,16 +83,16 @@
         ],
       }) %>
 
-      <%- include('partials/page-intro', {
-        introIcon: statusView.icon,
-        introLabel: statusView.badge,
-        introParagraphs: [
+      <%- include('partials/info-card', {
+        infoIcon: statusView.icon,
+        infoLabel: statusView.badge,
+        infoParagraphs: [
           statusView.message,
           `Teilnehmernummer: ${safeUserNumber}`,
           `Prüfungsdatum: ${safeExamDate}`,
         ],
-        introUrl: certificateUrl || '',
-        introUrlText: certificateUrl ? 'Zertifikat öffnen' : '',
+        infoUrl: certificateUrl || '',
+        infoUrlText: certificateUrl ? 'Zertifikat öffnen' : '',
       }) %>
 
     </div>

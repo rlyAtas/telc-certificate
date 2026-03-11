@@ -8,9 +8,7 @@ const TELC_CERTIFICATE_BASE_URL = 'https://results.telc.net/certificate';
  * GET /status/:publicToken
  */
 routerStatus.get('/:publicToken', async (req, res) => {
-  console.log(123);
   const publicToken = String(req.params.publicToken ?? '');
-  console.log(publicToken);
   if (!publicToken) {
     return res.status(400).render('hint', {
       message: 'Der Status-Link ist ungültig.',
@@ -20,14 +18,13 @@ routerStatus.get('/:publicToken', async (req, res) => {
 
   try {
     const record = await CertificateCheckService.getByPublicToken(publicToken);
-
     if (!record) {
       return res.status(404).render('hint', {
         message: 'Der Status-Link ist ungültig oder abgelaufen.',
         supportEmail: process.env.SUPPORT_EMAIL,
       });
     }
-    console.log(record);
+
     const certificateUrl = buildCertificateUrl(record.status, record.certificatePayloadJson);
 
     return res.render('status', {

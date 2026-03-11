@@ -109,16 +109,16 @@ a:hover{
 
 /* ---- Информация на странице ---- */
 
-.page-intro__message{
+.info-card__message{
   margin: 0;
   color: var(--text-body);
   font-size: 16px;
   line-height: 1.35;
 }
 
-.page-intro__message + .page-intro__message { margin-top: 8px; }
+.info-card__message + .info-card__message { margin-top: 8px; }
 
-.page-intro__url{
+.info-card__url{
   display: inline-flex;
   justify-content: center;
   align-items: center;

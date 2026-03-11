@@ -22,15 +22,15 @@
         ],
       }) %>
 
-      <%- include('partials/page-intro', {
-        introIcon: '✅',
-        introLabel: 'E-Mail bestätigt',
-        introParagraphs: [
+      <%- include('partials/info-card', {
+        infoIcon: '✅',
+        infoLabel: 'E-Mail bestätigt',
+        infoParagraphs: [
           'Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt. Die automatische Überprüfung des Zertifikats ist gestartet.',
           'Sobald ein Zertifikat gefunden wird, senden wir Ihnen eine weitere E-Mail. Den aktuellen Stand sehen Sie jederzeit über Ihren persönlichen Status-Link.',
         ],
-        introUrl: urlStatus,
-        introUrlText: 'Status jetzt öffnen',
+        infoUrl: urlStatus,
+        infoUrlText: 'Status jetzt öffnen',
       }) %>
     </div>
   </div>

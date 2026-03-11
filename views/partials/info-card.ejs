@@ -1,0 +1,19 @@
+<%
+  const icon = typeof infoIcon === 'string' && infoIcon.trim() ? infoIcon : 'ℹ️';
+  const label = typeof infoLabel === 'string' ? infoLabel : '';
+  const paragraphs =  Array.isArray(infoParagraphs) ? infoParagraphs.filter((p) => typeof p === 'string' && p.trim()) : [];
+  const url = typeof infoUrl === 'string' ? infoUrl : '';
+  const urlText = typeof infoUrlText === 'string' ? infoUrlText : '';
+%>
+<section class="section-card info-card">
+  <%- include('section-heading', {
+    headingIcon: icon,
+    headingText: label,
+  }) %>
+  <% paragraphs.forEach((p) => { %>
+    <p class="info-card__message"><%= p %></p>
+  <% }) %>
+  <% if (url && urlText) {%>
+    <a class="info-card__url" href="<%= url %>"><%= urlText %></a>
+  <% } %>
+</section>
