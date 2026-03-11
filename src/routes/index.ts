@@ -22,4 +22,3 @@ routerIndex.get('/', (_req, res) => {
     values,
   });
 });
-
