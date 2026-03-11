@@ -134,6 +134,54 @@ a:hover{
   text-decoration: none;
 }
 
+/* ---- Контакты ---- */
+
+.contact-card{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+.contact-card__name{
+  margin: 0;
+  color: var(--text-body);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.contact-card__links{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-card__icon-link{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: #fff;
+  color: #1d4ed8;
+  font-size: 18px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.contact-card__icon-link:hover{
+  background: #eff6ff;
+  text-decoration: none;
+}
+
+.contact-card__icon-image{
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
 /* ---- Прогресс по этапам ---- */
 
 .progress__list{
