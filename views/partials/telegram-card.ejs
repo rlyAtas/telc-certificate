@@ -1,0 +1,27 @@
+<%
+  const url = typeof telegramUrl === 'string' && telegramUrl.trim()
+    ? telegramUrl
+    : 'https://t.me/rlyAtas';
+  const handle = typeof telegramHandle === 'string' && telegramHandle.trim()
+    ? telegramHandle
+    : '@rlyAtas';
+%>
+<section class="section-card telegram-card">
+  <%- include('section-heading', {
+    headingIcon: '💬',
+    headingText: 'Kontakt',
+  }) %>
+
+  <p class="telegram-card__message">
+    Fragen oder Feedback? Schreiben Sie mir direkt bei Telegram.
+  </p>
+
+  <a
+    class="telegram-card__button"
+    href="<%= url %>"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <%= handle %>
+  </a>
+</section>

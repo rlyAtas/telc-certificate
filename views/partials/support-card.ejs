@@ -2,7 +2,6 @@
   const donateUrl = typeof supportDonateUrl === 'string' && supportDonateUrl.trim()
     ? supportDonateUrl
     : 'https://buymeacoffee.com/results.telc';
-  const telegramUrl = typeof supportTelegramUrl === 'string' ? supportTelegramUrl.trim() : '';
 %>
 <section class="section-card support-card">
   <%- include('section-heading', {
@@ -22,18 +21,4 @@
   >
     Jetzt unterstützen
   </a>
-
-  <% if (telegramUrl) { %>
-    <p class="support-card__contact">
-      Fragen oder Feedback?
-      <a
-        class="support-card__contact-link"
-        href="<%= telegramUrl %>"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Kontakt per Telegram
-      </a>
-    </p>
-  <% } %>
 </section>
