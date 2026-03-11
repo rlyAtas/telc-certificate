@@ -95,16 +95,6 @@ a:hover{
   letter-spacing: 0.02em;
 }
 
-.subcard__text{
-  margin: 0 0 10px;
-  color: var(--muted);
-}
-
-.subcard__email{
-  margin: 0;
-  font-size: 16px;
-}
-
 /* ---- Главная страница ---- */
 
 .page-header{
