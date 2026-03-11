@@ -134,6 +134,45 @@ a:hover{
   text-decoration: none;
 }
 
+/* ---- Поддержка сервиса ---- */
+
+.support-card__message{
+  margin: 0;
+  color: var(--text-body);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.support-card__button{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0,0,0,.12);
+  background: #111827;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.support-card__contact{
+  margin: 10px 0 0;
+  color: var(--text-body);
+  font-size: 14px;
+}
+
+.support-card__contact-link{
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.support-card__contact-link:hover{
+  text-decoration: underline;
+}
+
 /* ---- Прогресс по этапам ---- */
 
 .progress__list{
