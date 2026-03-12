@@ -107,6 +107,46 @@ a:hover{
   margin: 0;
 }
 
+.language-picker{
+  padding: 10px 12px;
+}
+
+.language-picker__list{
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.language-picker__link{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(48px, 100%);
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  text-decoration: none;
+  line-height: 1;
+  justify-self: center;
+}
+
+.language-picker__icon{
+  font-size: 28px;
+}
+
+.language-picker__link:hover{
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  text-decoration: none;
+}
+
+.language-picker__link--active{
+  border-color: #2563eb;
+  background: #eff6ff;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+
 /* ---- Информация на странице ---- */
 
 .info-card__message{

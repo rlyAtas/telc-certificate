@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="de">
+<html lang="<%= messages.meta.htmlLang %>" dir="<%= messages.meta.dir %>">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>telc – Zertifikatsprüfung</title>
+  <title><%= messages.common.pageTitle %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -11,16 +11,45 @@
     <div class="card">
 
       <section class="section-card page-header">
-        <h1 class="page-header__title">Überprüfung des telc Zertifikats</h1>
+        <h1 class="page-header__title"><%= messages.common.pageHeaderTitle %></h1>
+      </section>
+
+      <section class="section-card language-picker">
+        <%
+          const languageIcons = {
+            de: '🇩🇪',
+            en: '🇬🇧',
+            fr: '🇫🇷',
+            es: '🇪🇸',
+            ru: '🇷🇺',
+            uk: '🇺🇦',
+            ar: '🇸🇦',
+          };
+        %>
+        <nav class="language-picker__list" aria-label="<%= messages.language.label %>">
+          <% supportedLanguages.forEach((code) => { %>
+            <a
+              class="language-picker__link <%= language === code ? 'language-picker__link--active' : '' %>"
+              href="/?lang=<%= code %>"
+              lang="<%= code %>"
+              hreflang="<%= code %>"
+              title="<%= messages.language.options[code] %>"
+              aria-label="<%= messages.language.options[code] %>"
+            >
+              <span class="language-picker__icon"><%= languageIcons[code] %></span>
+            </a>
+          <% }) %>
+        </nav>
       </section>
 
       <%- include('partials/info-card', {
         infoIcon: '🔎',
-        infoLabel: 'Zertifikatsprüfung',
-        infoParagraphs: ['Dieser Service sucht automatisch nach Ihrem telc-Zertifikat: Er prüft mögliche Prüftermine bis zu 35 Tage lang und informiert Sie sofort, sobald das Zertifikat gefunden wurde.'],
+        infoLabel: messages.index.introLabel,
+        infoParagraphs: [messages.index.introParagraph],
       }) %>
 
       <%- include('partials/progress', {
+        progressTexts: messages.progress,
         steps: [
           'active',
           'todo',
@@ -32,34 +61,36 @@
       <form class="section-card home-form" method="post" action="/subscribe" novalidate>
         <%- include('partials/section-heading', {
           headingIcon: '📝',
-          headingText: 'Anfrage starten',
+          headingText: messages.index.formHeading,
         }) %>
 
-        <label class="home-form__label">Teilnehmernummer <span class="home-form__required">*</span></label>
+        <label class="home-form__label"><%= messages.index.userNumberLabel %> <span class="home-form__required">*</span></label>
         <input class="home-form__input" name="userNumber" value="<%= values.userNumber || '' %>" />
         <% if (errors.userNumber) { %>
           <div class="home-form__error"><%= errors.userNumber %></div>
         <% } %>
 
-        <label class="home-form__label">Geburtsdatum <span class="home-form__required">*</span></label>
+        <label class="home-form__label"><%= messages.index.birthDateLabel %> <span class="home-form__required">*</span></label>
         <input class="home-form__input" type="date" name="birthDate" value="<%= values.birthDate || '' %>" inputmode="numeric"/>
         <% if (errors.birthDate) { %>
           <div class="home-form__error"><%= errors.birthDate %></div>
         <% } %>
 
-        <label class="home-form__label">Prüfungsdatum <span class="home-form__required">*</span></label>
+        <label class="home-form__label"><%= messages.index.examDateLabel %> <span class="home-form__required">*</span></label>
         <input class="home-form__input" type="date" name="examDate" value="<%= values.examDate || '' %>" inputmode="numeric"/>
         <% if (errors.examDate) { %>
           <div class="home-form__error"><%= errors.examDate %></div>
         <% } %>
 
-        <label class="home-form__label">E-Mail-Adresse <span class="home-form__required">*</span></label>
+        <label class="home-form__label"><%= messages.index.emailLabel %> <span class="home-form__required">*</span></label>
         <input class="home-form__input" type="email" name="email" value="<%= values.email || '' %>" />
         <% if (errors.email) { %>
           <div class="home-form__error"><%= errors.email %></div>
         <% } %>
 
-        <button class="home-form__submit" type="submit">Prüfung starten</button>
+        <input type="hidden" name="language" value="<%= language %>">
+
+        <button class="home-form__submit" type="submit"><%= messages.index.submitButton %></button>
       </form>
 
       <%- include('partials/contact-card') %>
