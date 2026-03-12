@@ -18,6 +18,16 @@ enum CheckStatus {
   CERTIFICATE_FOUND
 }
 
+enum UiLanguage {
+  de
+  en
+  fr
+  es
+  ru
+  uk
+  ar
+}
+
 model CertificateCheck {
   id         Int      @id @default(autoincrement())
 
@@ -30,6 +40,7 @@ model CertificateCheck {
   userNumber String
   examDate   DateTime
   birthDate  DateTime
+  language   UiLanguage @default(de)
 
   status     CheckStatus
 
