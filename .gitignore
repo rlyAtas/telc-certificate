@@ -5,3 +5,4 @@ dist
 prisma/*.db
 .temp
 src/generated
+proba.ts
