@@ -78,6 +78,7 @@ export type UiMessagesContent = {
     confirmInvalidOrExpired: string;
     confirmProcessError: string;
     subscribeProcessError: string;
+    pageNotFound: string;
     subscribeValidation: {
       userNumberRequired: string;
       birthDateRequired: string;

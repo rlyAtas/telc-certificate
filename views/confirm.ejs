@@ -1,19 +1,20 @@
 <!doctype html>
-<html lang="de">
+<html lang="<%= messages.meta.htmlLang %>" dir="<%= messages.meta.dir %>">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>telc – Zertifikatsprüfung</title>
+  <title><%= messages.common.pageTitle %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <section class="section-card page-header">
-        <h1 class="page-header__title">Überprüfung des telc Zertifikats</h1>
+        <h1 class="page-header__title"><%= messages.common.pageHeaderTitle %></h1>
       </section>
 
       <%- include('partials/progress', {
+        progressTexts: messages.progress,
         steps: [
           'done',
           'done',
@@ -24,13 +25,10 @@
 
       <%- include('partials/info-card', {
         infoIcon: '✅',
-        infoLabel: 'E-Mail bestätigt',
-        infoParagraphs: [
-          'Vielen Dank! Ihre E-Mail-Adresse wurde erfolgreich bestätigt. Die automatische Überprüfung des Zertifikats ist gestartet.',
-          'Sobald ein Zertifikat gefunden wird, senden wir Ihnen eine weitere E-Mail. Den aktuellen Stand sehen Sie jederzeit über Ihren persönlichen Status-Link.',
-        ],
+        infoLabel: messages.confirm.introLabel,
+        infoParagraphs: messages.confirm.introParagraphs,
         infoUrl: urlStatus,
-        infoUrlText: 'Status jetzt öffnen',
+        infoUrlText: messages.confirm.statusButton,
       }) %>
 
       <%- include('partials/contact-card') %>

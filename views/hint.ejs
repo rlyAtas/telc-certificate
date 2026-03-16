@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="de">
+<html lang="<%= messages.meta.htmlLang %>" dir="<%= messages.meta.dir %>">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>telc – Zertifikatsprüfung</title>
+  <title><%= messages.common.pageTitle %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -15,10 +15,10 @@
 
       <%- include('partials/info-card', {
         infoIcon: '⚠️',
-        infoLabel: 'Hinweis',
+        infoLabel: messages.hint.label,
         infoParagraphs: [message],
-        infoUrl: '/',
-        infoUrlText: 'Zur Startseite',
+        infoUrl: homeUrl || '/',
+        infoUrlText: messages.hint.backToHome,
       }) %>
 
       <%- include('partials/contact-card') %>

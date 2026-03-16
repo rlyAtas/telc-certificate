@@ -1,41 +1,41 @@
 <!doctype html>
-<html lang="de">
+<html lang="<%= messages.meta.htmlLang %>" dir="<%= messages.meta.dir %>">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>telc – Status der Anfrage</title>
+  <title><%= messages.common.pageTitle %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <section class="section-card page-header">
-        <h1 class="page-header__title">Überprüfung des telc Zertifikats</h1>
+        <h1 class="page-header__title"><%= messages.common.pageHeaderTitle %></h1>
       </section>
       
       <%
         const statusMap = {
           ACTIVE: {
-            badge: 'Aktiv',
+            badge: messages.status.badges.active,
             icon: '🕒',
-            message: 'Die Überprüfung des Zertifikats läuft.',
+            message: messages.status.messages.active,
           },
           CERTIFICATE_FOUND: {
-            badge: 'Gefunden',
+            badge: messages.status.badges.found,
             icon: '✅',
-            message: 'Das Zertifikat wurde gefunden.',
+            message: messages.status.messages.found,
           },
           CHECKING_EXPIRED: {
-            badge: 'Abgeschlossen',
+            badge: messages.status.badges.completed,
             icon: 'ℹ️',
-            message: 'Die Überprüfung ist abgeschlossen. Im Prüfzeitraum wurde kein Zertifikat gefunden.',
+            message: messages.status.messages.completed,
           },
         };
 
         const statusView = statusMap[status] ?? {
-          badge: 'Unbekannt',
+          badge: messages.status.badges.unknown,
           icon: 'ℹ️',
-          message: 'Der aktuelle Status konnte nicht eindeutig bestimmt werden.',
+          message: messages.status.messages.unknown,
         };
 
         const progressMap = {
@@ -75,6 +75,7 @@
       %>
 
       <%- include('partials/progress', {
+        progressTexts: messages.progress,
         steps: [
           progressView.step1,
           progressView.step2,
@@ -88,21 +89,21 @@
         infoLabel: statusView.badge,
         infoParagraphs: [
           statusView.message,
-          `Teilnehmernummer: ${safeUserNumber}`,
-          `Prüfungsdatum: ${safeExamDate}`,
+          `${messages.status.participantNumberLabel}: ${safeUserNumber}`,
+          `${messages.status.examDateLabel}: ${safeExamDate}`,
         ],
         infoUrl: certificateUrl || '',
-        infoUrlText: certificateUrl ? 'Zertifikat öffnen' : '',
+        infoUrlText: certificateUrl ? messages.status.certificateButton : '',
       }) %>
 
       <%- include('partials/info-card', {
         infoIcon: '☕',
-        infoLabel: 'Service unterstützen',
+        infoLabel: messages.status.supportLabel,
         infoParagraphs: [
-          'Unterstützen Sie das Projekt - spendieren Sie mir einen Kaffee.',
+          messages.status.supportMessage,
         ],
         infoUrl: 'https://buymeacoffee.com/results.telc',
-        infoUrlText: 'Spendieren',
+        infoUrlText: messages.status.supportButton,
       }) %>
 
       <%- include('partials/contact-card') %>

@@ -93,6 +93,7 @@ const ru: UiMessagesContent = {
       confirmInvalidOrExpired: 'Ссылка подтверждения недействительна или устарела.',
       confirmProcessError: 'При подтверждении заявки произошла ошибка.',
       subscribeProcessError: 'Возникла проблема с вашей заявкой. Попробуйте позже.',
+      pageNotFound: 'Запрошенная страница не найдена.',
       subscribeValidation: {
         userNumberRequired: 'Введите номер участника.',
         birthDateRequired: 'Введите дату рождения.',

@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { CertificateCheckService } from '../services/certificateCheckService.js';
+import { getMessages } from '../i18n/messages.js';
+import { type UiLanguage, resolveLanguage } from '../i18n/languages.js';
 
 export const routerStatus = Router();
 const TELC_CERTIFICATE_BASE_URL = 'https://results.telc.net/certificate';
@@ -8,37 +10,37 @@ const TELC_CERTIFICATE_BASE_URL = 'https://results.telc.net/certificate';
  * GET /status/:publicToken
  */
 routerStatus.get('/:publicToken', async (req, res) => {
-  const publicToken = String(req.params.publicToken ?? '');
-  if (!publicToken) {
-    return res.status(400).render('hint', {
-      message: 'Der Status-Link ist ungültig.',
-      supportEmail: process.env.SUPPORT_EMAIL,
-    });
-  }
-
+  const fallbackMessages = getMessages('de');
+  
   try {
+    const publicToken = String(req.params.publicToken);
+
     const record = await CertificateCheckService.getByPublicToken(publicToken);
     if (!record) {
       return res.status(404).render('hint', {
-        message: 'Der Status-Link ist ungültig oder abgelaufen.',
-        supportEmail: process.env.SUPPORT_EMAIL,
+        message: fallbackMessages.routes.statusInvalidOrExpired,
+        messages: fallbackMessages,
       });
     }
 
+    const language: UiLanguage = record.language;
+    const messages = getMessages(language);
     const certificateUrl = buildCertificateUrl(record.status, record.certificatePayloadJson);
 
     return res.render('status', {
       status: record.status,
       certificateUrl,
+      language,
+      messages,
       userNumber: record.userNumber,
-      examDateText: formatDateGerman(record.examDate),
+      examDateText: formatDateByLanguage(record.examDate, language),
     });
   } catch (error) {
     console.error('[routes/status] error:', error);
 
     return res.status(500).render('hint', {
-      message: 'Beim Laden des Status ist ein Fehler aufgetreten.',
-      supportEmail: process.env.SUPPORT_EMAIL,
+      message: fallbackMessages.routes.statusLoadError,
+      messages: fallbackMessages,
     });
   }
 });
@@ -101,10 +103,10 @@ function isObject(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * Форматирует дату в немецком формате DD.MM.YYYY без влияния локального часового пояса сервера.
+ * Форматирует дату по языку интерфейса без влияния локального часового пояса сервера.
  */
-function formatDateGerman(value: Date): string {
-  return new Intl.DateTimeFormat('de-DE', {
+function formatDateByLanguage(value: Date, language: UiLanguage): string {
+  return new Intl.DateTimeFormat(language, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',

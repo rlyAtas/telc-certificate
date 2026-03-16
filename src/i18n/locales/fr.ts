@@ -93,6 +93,7 @@ const fr: UiMessagesContent = {
       confirmInvalidOrExpired: 'Le lien de confirmation est invalide ou expiré.',
       confirmProcessError: 'Une erreur est survenue lors de la confirmation de votre demande.',
       subscribeProcessError: 'Un problème est survenu avec votre demande. Veuillez réessayer plus tard.',
+      pageNotFound: 'La page demandée est introuvable.',
       subscribeValidation: {
         userNumberRequired: 'Veuillez saisir le numéro de participant.',
         birthDateRequired: 'Veuillez saisir votre date de naissance.',

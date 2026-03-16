@@ -36,13 +36,15 @@ routerSubscribe.post('/', async (req, res) => {
 
     return res.render('subscribe', {
       messages,
+      language,
     });
 
   } catch (error: unknown) {
     logger.error(`[routes/subscribe] ${error instanceof Error ? error.stack || error.message : String(error)}`);
     return res.status(500).render('hint', {
-      message:
-        'Es gab ein Problem mit Ihrer Anfrage. Bitte versuchen Sie es später erneut.',
+      message: messages.routes.subscribeProcessError,
+      messages,
+      homeUrl: `/?lang=${encodeURIComponent(language)}`,
     });
   }
 });

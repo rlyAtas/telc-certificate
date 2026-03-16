@@ -93,6 +93,7 @@ const ar: UiMessagesContent = {
       confirmInvalidOrExpired: 'رابط التأكيد غير صالح أو منتهي الصلاحية.',
       confirmProcessError: 'حدث خطأ أثناء تأكيد طلبك.',
       subscribeProcessError: 'حدثت مشكلة في طلبك. يرجى المحاولة لاحقًا.',
+      pageNotFound: 'الصفحة المطلوبة غير موجودة.',
       subscribeValidation: {
         userNumberRequired: 'يرجى إدخال رقم المشارك.',
         birthDateRequired: 'يرجى إدخال تاريخ الميلاد.',

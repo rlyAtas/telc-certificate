@@ -94,6 +94,7 @@ const de: UiMessagesContent = {
       confirmProcessError: 'Beim Bestätigen Ihrer Anfrage ist ein Fehler aufgetreten.',
       subscribeProcessError:
         'Es gab ein Problem mit Ihrer Anfrage. Bitte versuchen Sie es später erneut.',
+      pageNotFound: 'Die angeforderte Seite wurde nicht gefunden.',
       subscribeValidation: {
         userNumberRequired: 'Bitte geben Sie die Teilnehmernummer ein.',
         birthDateRequired: 'Bitte geben Sie Ihr Geburtsdatum ein.',
