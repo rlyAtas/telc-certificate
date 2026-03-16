@@ -1,11 +1,21 @@
-<section class="section-card contact-card" aria-label="Kontakt">
-  <p class="contact-card__name">© Stanislav Shevchenko</p>
+<%
+  const localizedContact = typeof contact === 'object' ? contact : null;
+
+  const contactAriaLabel = localizedContact?.ariaLabel ?? '';
+  const authorLine = localizedContact?.authorLine ?? '';
+  const emailTitle = localizedContact?.emailTitle ?? '';
+  const emailAriaLabel = localizedContact?.emailAriaLabel ?? '';
+  const telegramTitle = localizedContact?.telegramTitle ?? '';
+  const telegramAriaLabel = localizedContact?.telegramAriaLabel ?? '';
+%>
+<section class="section-card contact-card" aria-label="<%= contactAriaLabel %>">
+  <p class="contact-card__name"><%= authorLine %></p>
   <div class="contact-card__links">
     <a
       class="contact-card__icon-link"
       href="mailto:stas.s.shevchenko@gmail.com"
-      title="E-Mail"
-      aria-label="E-Mail"
+      title="<%= emailTitle %>"
+      aria-label="<%= emailAriaLabel %>"
     >
       <img class="contact-card__icon-image" src="/icons/email.svg" alt="" aria-hidden="true" />
     </a>
@@ -14,8 +24,8 @@
       href="https://t.me/rlyAtas"
       target="_blank"
       rel="noopener noreferrer"
-      title="Telegram"
-      aria-label="Telegram"
+      title="<%= telegramTitle %>"
+      aria-label="<%= telegramAriaLabel %>"
     >
       <img class="contact-card__icon-image" src="/icons/telegram.svg" alt="" aria-hidden="true" />
     </a>

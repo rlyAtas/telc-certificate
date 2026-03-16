@@ -30,7 +30,9 @@
         ],
       }) %>
 
-      <%- include('partials/contact-card') %>
+      <%- include('partials/contact-card', {
+        contact: messages.contact,
+      }) %>
     </div>
   </div>
 </body>

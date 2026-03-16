@@ -1,33 +1,25 @@
 <%
   const stepsList = Array.isArray(steps) ? steps : [];
+  const localizedProgress = typeof progressTexts === 'object' ? progressTexts : null;
+  const emptyStepText = {
+    todo: '',
+    active: '',
+    done: '',
+  };
 
   const stepTitleByNumber = {
-    1: {
-      todo: 'Anfrage senden',
-      active: 'Anfrage senden',
-      done: 'Anfrage gesendet',
-    },
-    2: {
-      todo: 'E-Mail-Adresse bestätigen',
-      active: 'E-Mail-Adresse bestätigen',
-      done: 'E-Mail-Adresse bestätigt',
-    },
-    3: {
-      todo: 'Automatische Prüfung',
-      active: 'Automatische Prüfung läuft',
-      done: 'Automatische Prüfung abgeschlossen',
-    },
-    4: {
-      todo: 'Ergebnis abrufen',
-      active: 'Ergebnis abrufen',
-      done: 'Ergebnis erhalten',
-    },
+    1: localizedProgress?.step1 ?? emptyStepText,
+    2: localizedProgress?.step2 ?? emptyStepText,
+    3: localizedProgress?.step3 ?? emptyStepText,
+    4: localizedProgress?.step4 ?? emptyStepText,
   };
+
+  const progressHeading = localizedProgress?.heading ?? '';
 %>
-<section class="section-card progress" aria-label="Fortschritt">
+<section class="section-card progress" aria-label="<%= progressHeading %>">
   <%- include('section-heading', {
     headingIcon: '📍',
-    headingText: 'Aktueller Stand',
+    headingText: progressHeading,
   }) %>
 
   <ol class="progress__list">

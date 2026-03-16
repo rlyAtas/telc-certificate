@@ -106,7 +106,9 @@
         infoUrlText: messages.status.supportButton,
       }) %>
 
-      <%- include('partials/contact-card') %>
+      <%- include('partials/contact-card', {
+        contact: messages.contact,
+      }) %>
 
     </div>
   </div>

@@ -93,7 +93,9 @@
         <button class="home-form__submit" type="submit"><%= messages.index.submitButton %></button>
       </form>
 
-      <%- include('partials/contact-card') %>
+      <%- include('partials/contact-card', {
+        contact: messages.contact,
+      }) %>
 
     </div>
   </div>
