@@ -51,11 +51,6 @@ export function resolveLanguage(input: unknown, fallback: UiLanguage = 'de'): Ui
     return normalized;
   }
 
-  const shortCode = normalized.split(/[-_]/)[0];
-  if (isUiLanguage(shortCode)) {
-    return shortCode;
-  }
-
   return fallback;
 }
 
