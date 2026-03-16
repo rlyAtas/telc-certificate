@@ -32,6 +32,7 @@ routerSubscribe.post('/', async (req, res) => {
     await sendConfirmLinkEmail({
       to: created.email,
       confirmUrl,
+      language: created.language,
     });
 
     return res.render('subscribe', {

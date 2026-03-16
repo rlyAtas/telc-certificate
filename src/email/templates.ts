@@ -1,37 +1,58 @@
-export function confirmEmailHtml(params: { confirmUrl: string }) {
+import { getMessages } from '../i18n/messages.js';
+import type { UiLanguage } from '../i18n/languages.js';
+
+/**
+ * Шаблон письма с подтверждением e-mail.
+ */
+export function confirmEmailHtml(params: { confirmUrl: string; language: UiLanguage }) {
+  const messages = getMessages(params.language);
+  const emailMessages = messages.emails.confirm;
+
   return `
     <div style="font-family: system-ui, sans-serif; line-height: 1.4">
-      <h2>Bestätigung erforderlich</h2>
-      <p>Bitte bestätigen Sie Ihre E-Mail-Adresse, damit wir mit der Überprüfung beginnen können.</p>
-      <p><a href="${params.confirmUrl}">E-Mail bestätigen</a></p>
+      <h2>${emailMessages.title}</h2>
+      <p>${emailMessages.paragraph}</p>
+      <p><a href="${params.confirmUrl}">${emailMessages.cta}</a></p>
       <p style="color:#667085;font-size:14px">
-        Wenn Sie diese Anfrage nicht gestellt haben, ignorieren Sie bitte diese E-Mail.
+        ${emailMessages.footer}
       </p>
     </div>
   `;
 }
 
-export function confirmedStatusEmailHtml(params: { statusUrl: string }) {
+/**
+ * Шаблон письма после успешного подтверждения e-mail.
+ */
+export function confirmedStatusEmailHtml(params: { statusUrl: string; language: UiLanguage }) {
+  const messages = getMessages(params.language);
+  const emailMessages = messages.emails.confirmedStatus;
+
   return `
     <div style="font-family: system-ui, sans-serif; line-height: 1.4">
-      <h2>E-Mail erfolgreich bestätigt</h2>
-      <p>Ihre Anfrage wurde aktiviert. Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.</p>
-      <p><a href="${params.statusUrl}">Status Ihrer Anfrage öffnen</a></p>
+      <h2>${emailMessages.title}</h2>
+      <p>${emailMessages.paragraph}</p>
+      <p><a href="${params.statusUrl}">${emailMessages.cta}</a></p>
       <p style="color:#667085;font-size:14px">
-        Sie können den Status jederzeit über den Link oben prüfen.
+        ${emailMessages.footer}
       </p>
     </div>
   `;
 }
 
-export function certificateFoundStatusEmailHtml(params: { statusUrl: string }) {
+/**
+ * Шаблон письма при найденном сертификате.
+ */
+export function certificateFoundStatusEmailHtml(params: { statusUrl: string; language: UiLanguage }) {
+  const messages = getMessages(params.language);
+  const emailMessages = messages.emails.certificateFound;
+
   return `
     <div style="font-family: system-ui, sans-serif; line-height: 1.4">
-      <h2>Zertifikat gefunden</h2>
-      <p>Gute Nachricht: Ihr Zertifikat wurde gefunden.</p>
-      <p><a href="${params.statusUrl}">Status Ihrer Anfrage öffnen</a></p>
+      <h2>${emailMessages.title}</h2>
+      <p>${emailMessages.paragraph}</p>
+      <p><a href="${params.statusUrl}">${emailMessages.cta}</a></p>
       <p style="color:#667085;font-size:14px">
-        Auf der Statusseite können Sie direkt zum Zertifikat wechseln.
+        ${emailMessages.footer}
       </p>
     </div>
   `;

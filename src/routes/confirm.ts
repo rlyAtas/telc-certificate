@@ -31,6 +31,7 @@ routerConfirm.get('/:token', async (req, res) => {
       await sendConfirmedStatusEmail({
         to: record.email,
         statusUrl: urlStatus,
+        language,
       });
     }
 

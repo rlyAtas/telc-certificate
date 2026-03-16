@@ -1,5 +1,7 @@
 import { Resend } from 'resend';
 import { logger } from '../services/logger.js';
+import { getMessages } from '../i18n/messages.js';
+import type { UiLanguage } from '../i18n/languages.js';
 import {
   certificateFoundStatusEmailHtml,
   confirmEmailHtml,
@@ -41,11 +43,17 @@ async function sendEmail(params: {
 export async function sendConfirmLinkEmail(params: {
   to: string;
   confirmUrl: string;
+  language: UiLanguage;
 }) {
+  const messages = getMessages(params.language);
+
   await sendEmail({
     to: params.to,
-    subject: 'telc – Bitte E-Mail bestätigen',
-    html: confirmEmailHtml({ confirmUrl: params.confirmUrl }),
+    subject: messages.emails.confirm.subject,
+    html: confirmEmailHtml({
+      confirmUrl: params.confirmUrl,
+      language: params.language,
+    }),
     context: 'sendConfirmLinkEmail',
   });
 }
@@ -57,11 +65,17 @@ export async function sendConfirmLinkEmail(params: {
 export async function sendConfirmedStatusEmail(params: {
   to: string;
   statusUrl: string;
+  language: UiLanguage;
 }) {
+  const messages = getMessages(params.language);
+
   await sendEmail({
     to: params.to,
-    subject: 'telc – E-Mail bestätigt, Status-Link',
-    html: confirmedStatusEmailHtml({ statusUrl: params.statusUrl }),
+    subject: messages.emails.confirmedStatus.subject,
+    html: confirmedStatusEmailHtml({
+      statusUrl: params.statusUrl,
+      language: params.language,
+    }),
     context: 'sendConfirmedStatusEmail',
   });
 }
@@ -73,11 +87,17 @@ export async function sendConfirmedStatusEmail(params: {
 export async function sendCertificateFoundStatusEmail(params: {
   to: string;
   statusUrl: string;
+  language: UiLanguage;
 }) {
+  const messages = getMessages(params.language);
+
   await sendEmail({
     to: params.to,
-    subject: 'telc – Zertifikat gefunden',
-    html: certificateFoundStatusEmailHtml({ statusUrl: params.statusUrl }),
+    subject: messages.emails.certificateFound.subject,
+    html: certificateFoundStatusEmailHtml({
+      statusUrl: params.statusUrl,
+      language: params.language,
+    }),
     context: 'sendCertificateFoundStatusEmail',
   });
 }

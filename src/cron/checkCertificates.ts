@@ -1,5 +1,6 @@
 import { prisma } from '../db.js';
 import { sendCertificateFoundStatusEmail } from '../email/send.js';
+import type { UiLanguage } from '../i18n/languages.js';
 import { logger } from '../services/logger.js';
 import { telcCheck } from '../utils/telcCheck.js';
 
@@ -70,6 +71,7 @@ export async function checkCertificates(): Promise<void> {
     await notifyCertificateFound({
       email: record.email,
       publicToken: record.publicToken,
+      language: record.language,
     });
 
     return;
@@ -133,6 +135,7 @@ function toUtcDateOnly(date: Date): Date {
 type NotifyCertificateFoundParams = {
   email: string;
   publicToken: string;
+  language: UiLanguage;
 };
 
 /**
@@ -152,5 +155,6 @@ async function notifyCertificateFound(params: NotifyCertificateFoundParams): Pro
   await sendCertificateFoundStatusEmail({
     to: params.email,
     statusUrl,
+    language: params.language,
   });
 }
