@@ -25,28 +25,34 @@ src/
   app.ts                         # настройка express-приложения
   server.ts                      # запуск HTTP, cron, ngrok, graceful shutdown
   db.ts                          # prisma client
+  i18n/
+    languages.ts                 # поддерживаемые языки и направление текста
+    messages.ts                  # входная точка локализации
+    types.ts                     # типы словаря переводов
+    locales/
+      *.ts                       # переводы по языкам (de/en/fr/es/ru/uk/ar)
   routes/
     index.ts                     # GET /
     subscribe.ts                 # POST /subscribe
     confirm.ts                   # GET /confirm/:token
     status.ts                    # GET /status/:publicToken
+    adminDbDownload.ts           # GET /admin/db/download (закрытый эндпоинт)
     404.ts                       # fallback
   services/
     certificateCheckService.ts   # работа с сущностью CertificateCheck
+    dbBackupService.ts           # создание и удаление snapshot SQLite
     logger.ts                    # pino logger
   cron/
     checkCertificates.ts         # планировщик обработки записей
-    telcCheck.ts                 # вызов внешнего API telc
   email/
-    send.ts                      # отправка письма подтверждения
-    templates.ts                 # HTML-шаблон письма
+    send.ts                      # отправка e-mail уведомлений
+    templates.ts                 # HTML-шаблоны писем
   validators/
     subscribeValidator.ts        # базовая валидация формы
   utils/
     normalizeSubscribe.ts        # нормализация входных данных
     addDays.ts                   # утилита дат
-  types/
-    subscribe.ts                 # типы домена подписки
+    telcCheck.ts                 # вызов внешнего API telc
 prisma/
   schema.prisma                  # модель БД
   migrations/                    # SQL-миграции
@@ -67,9 +73,9 @@ npm install
 - `PORT` — порт приложения (например, `3000`);
 - `PUBLIC_BASE_URL` — базовый URL приложения (для ссылок в e-mail);
 - `DATABASE_URL` — строка подключения SQLite (например, `file:./prisma/dev.db`);
-- `SUPPORT_EMAIL` — контакт для страницы ошибок;
 - `RESEND_API_KEY` — ключ Resend;
 - `SMTP_FROM` — отправитель письма;
+- `ADMIN_EXPORT_TOKEN` — токен для закрытого эндпоинта выгрузки БД (`/admin/db/download`);
 - `LOG_LEVEL` — уровень логирования (`debug|info|warn|error`).
 
 ### 4.3 Применение миграций
@@ -100,14 +106,19 @@ npm run dev
 - `GET /status/:publicToken` — просмотр текущего статуса;
 - `*` — fallback-страница с подсказкой.
 
+## 6.1 Служебные маршруты
+- `GET /admin/db/download` — скачивание snapshot SQLite (заголовок `X-Admin-Token` обязателен, токен берётся из `ADMIN_EXPORT_TOKEN`).
+
 ## 7. Модель данных и статусы
 Ключевая сущность: `CertificateCheck`.
 
 Важные поля:
 - идентификаторы: `id`, `publicToken`, `confirmToken`;
 - пользовательские данные: `email`, `emailLower`, `userNumber`, `birthDate`, `examDate`;
+- язык интерфейса: `language`;
 - состояние: `status`, `createdAt`, `confirmedAt`, `finishedAt`;
-- планирование фоновой проверки: `nextRunAt`, `cursorOffset`, `activeUntil`.
+- результат поиска сертификата: `certificatePayloadJson`;
+- планирование фоновой проверки: `lastCheckedAt`, `nextRunAt`, `cursorOffset`, `activeUntil`.
 
 ### 7.1 Статусы в схеме
 - `EMAIL_UNCONFIRMED` — заявка создана, e-mail не подтверждён;
@@ -126,18 +137,21 @@ npm run dev
 - cron запускается каждые `5` секунд;
 - за один тик обрабатывается только одна заявка;
 - выбирается запись `ACTIVE`, у которой `nextRunAt <= now`;
-- проверяется лимит окна: максимум `28` дней относительно `examDate`;
+- проверяется окно поиска: `35` дней относительно `examDate`;
 - при полном проходе окна поиск откладывается на `4` часа;
 - при сетевой ошибке внешнего API повтор через `10` секунд;
-- при успехе статус меняется на `CERTIFICATE_FOUND`, заявка завершается.
+- при успехе статус меняется на `CERTIFICATE_FOUND`, сохраняется payload сертификата и отправляется e-mail;
+- при завершении окна поиска и достижении `activeUntil` статус меняется на `CHECKING_EXPIRED`.
 
 ## 9. Интеграции
 ### 9.1 Resend (e-mail)
 - используется в `src/email/send.ts`;
-- отправляется письмо со ссылкой `${PUBLIC_BASE_URL}/confirm/:token`.
+- отправляется письмо подтверждения со ссылкой `${PUBLIC_BASE_URL}/confirm/:token`;
+- после подтверждения e-mail отправляется письмо со ссылкой на статус;
+- при найденном сертификате отправляется письмо со ссылкой на страницу статуса.
 
 ### 9.2 telc results API
-- используется в `src/cron/telcCheck.ts`;
+- используется в `src/utils/telcCheck.ts`;
 - приложение считает сертификат найденным, если ответ содержит `examId` и `attendeeId`.
 
 ## 10. Логирование и наблюдаемость

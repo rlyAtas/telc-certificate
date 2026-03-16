@@ -48,16 +48,21 @@ cp .env.example .env
 PORT=3000
 PUBLIC_BASE_URL=http://localhost:3000
 DATABASE_URL=file:./prisma/dev.db
-SUPPORT_EMAIL=support@example.com
 
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
-SMTP_FROM=telc Zertifikatsprufung <something@resend.dev>
+SMTP_FROM=telc Zertifikatsprüfung <something@resend.dev>
+
+ADMIN_EXPORT_TOKEN=replace-with-long-random-token
 
 LOG_LEVEL=debug
 ```
 
 Дополнительно для `development`:
 - `NGROK_AUTHTOKEN` — токен ngrok (используется библиотекой `@ngrok/ngrok`).
+
+Дополнительно для эксплуатации:
+- `ADMIN_EXPORT_TOKEN` используется закрытым эндпоинтом `GET /admin/db/download`;
+- запрос к эндпоинту должен содержать заголовок `X-Admin-Token` с тем же значением.
 
 Рекомендации:
 - для локального теста без внешнего домена можно оставить `PUBLIC_BASE_URL=http://localhost:3000`;
