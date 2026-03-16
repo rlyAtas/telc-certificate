@@ -99,7 +99,6 @@ const ar: UiMessagesContent = {
         birthDateRequired: 'يرجى إدخال تاريخ الميلاد.',
         examDateRequired: 'يرجى إدخال تاريخ الامتحان.',
         emailRequired: 'يرجى إدخال البريد الإلكتروني.',
-        languageRequired: 'يرجى اختيار اللغة.',
       },
     },
     emails: {

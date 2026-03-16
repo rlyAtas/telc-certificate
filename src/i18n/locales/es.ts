@@ -99,7 +99,6 @@ const es: UiMessagesContent = {
         birthDateRequired: 'Por favor, introduzca su fecha de nacimiento.',
         examDateRequired: 'Por favor, introduzca la fecha del examen.',
         emailRequired: 'Por favor, introduzca su correo electrónico.',
-        languageRequired: 'Por favor, seleccione un idioma.',
       },
     },
     emails: {

@@ -99,7 +99,6 @@ const ru: UiMessagesContent = {
         birthDateRequired: 'Введите дату рождения.',
         examDateRequired: 'Введите дату экзамена.',
         emailRequired: 'Введите e-mail.',
-        languageRequired: 'Выберите язык.',
       },
     },
     emails: {

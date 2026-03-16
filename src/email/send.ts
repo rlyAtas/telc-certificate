@@ -11,16 +11,10 @@ import {
 const resend = new Resend(process.env.RESEND_API_KEY!);
 const fallbackFromEmail = 'telc Zertifikatsprüfung <something@resend.dev>';
 
-function formatEmailError(error: unknown): string {
-  if (error instanceof Error) return error.stack || error.message;
-  return String(error);
-}
-
 async function sendEmail(params: {
   to: string;
   subject: string;
   html: string;
-  context: string;
 }) {
   const from = process.env.SMTP_FROM || fallbackFromEmail;
 
@@ -36,7 +30,7 @@ async function sendEmail(params: {
       logger.error(`[email/send/sendEmail] ${JSON.stringify(error)}`);
     }
   } catch (error) {
-    logger.error(`[email/send/sendEmail}] ${JSON.stringify(error)}`);
+    logger.error(`[email/send/sendEmail] ${JSON.stringify(error)}`);
   }
 }
 
@@ -54,7 +48,6 @@ export async function sendConfirmLinkEmail(params: {
       confirmUrl: params.confirmUrl,
       language: params.language,
     }),
-    context: 'sendConfirmLinkEmail',
   });
 }
 
@@ -76,7 +69,6 @@ export async function sendConfirmedStatusEmail(params: {
       statusUrl: params.statusUrl,
       language: params.language,
     }),
-    context: 'sendConfirmedStatusEmail',
   });
 }
 
@@ -98,6 +90,5 @@ export async function sendCertificateFoundStatusEmail(params: {
       statusUrl: params.statusUrl,
       language: params.language,
     }),
-    context: 'sendCertificateFoundStatusEmail',
   });
 }

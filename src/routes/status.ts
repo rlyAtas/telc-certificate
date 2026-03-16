@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { CertificateCheckService } from '../services/certificateCheckService.js';
 import { getMessages } from '../i18n/messages.js';
-import { type UiLanguage, resolveLanguage } from '../i18n/languages.js';
+import { type UiLanguage } from '../i18n/languages.js';
 
 export const routerStatus = Router();
 const TELC_CERTIFICATE_BASE_URL = 'https://results.telc.net/certificate';

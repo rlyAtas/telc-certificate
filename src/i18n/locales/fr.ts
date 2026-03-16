@@ -99,7 +99,6 @@ const fr: UiMessagesContent = {
         birthDateRequired: 'Veuillez saisir votre date de naissance.',
         examDateRequired: "Veuillez saisir la date de l'examen.",
         emailRequired: 'Veuillez saisir votre adresse e-mail.',
-        languageRequired: 'Veuillez choisir une langue.',
       },
     },
     emails: {

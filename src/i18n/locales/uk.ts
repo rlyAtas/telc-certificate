@@ -99,7 +99,6 @@ const uk: UiMessagesContent = {
         birthDateRequired: 'Вкажіть дату народження.',
         examDateRequired: 'Вкажіть дату іспиту.',
         emailRequired: 'Вкажіть e-mail.',
-        languageRequired: 'Оберіть мову.',
       },
     },
     emails: {

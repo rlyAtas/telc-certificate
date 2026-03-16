@@ -84,7 +84,6 @@ export type UiMessagesContent = {
       birthDateRequired: string;
       examDateRequired: string;
       emailRequired: string;
-      languageRequired: string;
     };
   };
   emails: {
