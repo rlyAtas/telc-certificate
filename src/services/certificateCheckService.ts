@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { prisma } from '../db.js';
-import type { SubscribeData } from '../types/subscribe.js';
+import type { NormalizedSubscribeData } from '../utils/normalizeSubscribe.js';
 import type { CertificateCheck } from '../generated/prisma/client.js';
 import { addDays } from '../utils/addDays.js';
 import { logger } from './logger.js';
@@ -9,7 +9,7 @@ const ACTIVE_DAYS = 35;
 const EXPIRE_TOREN_HOURS = ACTIVE_DAYS * 24;
 
 export class CertificateCheckService {
-  static async create(input: SubscribeData) {
+  static async create(input: NormalizedSubscribeData) {
     try {
       const confirmToken = crypto.randomUUID();
       const publicToken = crypto.randomBytes(5).toString('hex');
@@ -25,6 +25,7 @@ export class CertificateCheckService {
           userNumber: input.userNumber,
           birthDate: input.birthDate,
           examDate: input.examDate,
+          language: input.language,
 
           status: 'EMAIL_UNCONFIRMED',
 

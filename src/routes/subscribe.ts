@@ -4,16 +4,23 @@ import { normalizeSubscribe } from '../utils/normalizeSubscribe.js';
 import { CertificateCheckService } from '../services/certificateCheckService.js';
 import { sendConfirmLinkEmail } from '../email/send.js';
 import { logger } from '../services/logger.js';
+import { getMessages } from '../i18n/messages.js';
+import { resolveLanguage, SUPPORTED_LANGUAGES } from '../i18n/languages.js';
 
 export const routerSubscribe = Router();
 
 routerSubscribe.post('/', async (req, res) => {
-  const { values, errors } = validateSubscribe(req.body);
+  const language = resolveLanguage(req.body.language);
+  const messages = getMessages(language);
+  const { values, errors } = validateSubscribe(req.body, messages.routes.subscribeValidation);
 
   if (Object.keys(errors).length > 0) {
     return res.status(400).render('index', {
       errors,
       values,
+      language,
+      messages,
+      supportedLanguages: SUPPORTED_LANGUAGES,
     });
   }
 
@@ -27,14 +34,15 @@ routerSubscribe.post('/', async (req, res) => {
       confirmUrl,
     });
 
-    return res.render('subscribe');
+    return res.render('subscribe', {
+      messages,
+    });
 
   } catch (error: unknown) {
     logger.error(`[routes/subscribe] ${error instanceof Error ? error.stack || error.message : String(error)}`);
     return res.status(500).render('hint', {
       message:
         'Es gab ein Problem mit Ihrer Anfrage. Bitte versuchen Sie es später erneut.',
-        supportEmail: process.env.SUPPORT_EMAIL || 'stas.s.shevchenko@gmail.com',
     });
   }
 });
