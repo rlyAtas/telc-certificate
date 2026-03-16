@@ -1,21 +1,19 @@
 import crypto from 'crypto';
+import { CHECK_ACTIVE_DAYS, CONFIRM_TOKEN_EXPIRE_MS, PUBLIC_TOKEN_BYTES } from '../config.js';
 import { prisma } from '../db.js';
 import type { NormalizedSubscribeData } from '../utils/normalizeSubscribe.js';
 import type { CertificateCheck } from '../generated/prisma/client.js';
 import { addDays } from '../utils/addDays.js';
 import { logger } from './logger.js';
 
-const ACTIVE_DAYS = 35;
-const EXPIRE_TOREN_HOURS = ACTIVE_DAYS * 24;
-
 export class CertificateCheckService {
   static async create(input: NormalizedSubscribeData) {
     try {
       const confirmToken = crypto.randomUUID();
-      const publicToken = crypto.randomBytes(5).toString('hex');
+      const publicToken = crypto.randomBytes(PUBLIC_TOKEN_BYTES).toString('hex');
 
       const now = new Date();
-      const confirmTokenExpiresAt = new Date(now.getTime() + EXPIRE_TOREN_HOURS * 60 * 60 * 1000);
+      const confirmTokenExpiresAt = new Date(now.getTime() + CONFIRM_TOKEN_EXPIRE_MS);
 
       return prisma.certificateCheck.create({
         data: {
@@ -64,7 +62,7 @@ export class CertificateCheckService {
       }
 
       const now = new Date();
-      const activeUntil = addDays(record.examDate, ACTIVE_DAYS);
+      const activeUntil = addDays(record.examDate, CHECK_ACTIVE_DAYS);
 
       const updatedRecord = await prisma.certificateCheck.update({
         where: { id: record.id },

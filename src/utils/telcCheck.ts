@@ -1,3 +1,4 @@
+import { TELC_REQUEST_TIMEOUT_MS } from '../config.js';
 import { logger } from '../services/logger.js';
 import type { Prisma } from '../generated/prisma/client.js';
 
@@ -47,7 +48,7 @@ export async function telcCheck(params: TelcCheckParams): Promise<TelcSuccessRes
       headers: {
         accept: 'application/json',
       },
-      signal: AbortSignal.timeout(5_000),
+      signal: AbortSignal.timeout(TELC_REQUEST_TIMEOUT_MS),
     });
 
     const data: unknown = await res.json();

@@ -40,3 +40,9 @@ export const CHECK_TICK_CRON_EXPRESSION = `*/${CHECK_TICK_SECONDS} * * * * *`;
 
 /** Интервал между разрешенной выгрузкой базы данных */
 export const ADMIN_DB_DOWNLOAD_RATE_LIMIT_MS = 5 * 60 * 1000;
+
+/** Порт HTTP-сервера (fallback при пустом `PORT`). */
+export const APP_PORT = Number(process.env.PORT ?? 3000);
+
+/** Срок жизни токена подтверждения e-mail (в миллисекундах). */
+export const CONFIRM_TOKEN_EXPIRE_MS = CHECK_ACTIVE_DAYS * 24 * 60 * 60 * 1000;

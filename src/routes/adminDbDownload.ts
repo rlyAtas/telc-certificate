@@ -1,5 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
 import { Router } from 'express';
+import { ADMIN_DB_DOWNLOAD_RATE_LIMIT_MS } from '../config.js';
 import {
   createDatabaseSnapshot,
   removeDatabaseSnapshot,
@@ -8,7 +9,6 @@ import { logger } from '../services/logger.js';
 
 export const routerAdminDbDownload = Router();
 
-const RATE_LIMIT_MS = 5 * 60 * 1000;
 let nextAllowedDownloadAt = 0;
 
 /**
@@ -33,7 +33,7 @@ routerAdminDbDownload.get('/download', async (req, res) => {
     logger.warn('[routes/adminDbDownload] Too many requests');
     return res.status(429).json({ error: 'Too many requests' });
   }
-  nextAllowedDownloadAt = nowMs + RATE_LIMIT_MS;
+  nextAllowedDownloadAt = nowMs + ADMIN_DB_DOWNLOAD_RATE_LIMIT_MS;
 
   try {
     const { snapshotPath, downloadName } = await createDatabaseSnapshot();

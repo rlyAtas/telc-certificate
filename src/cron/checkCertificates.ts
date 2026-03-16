@@ -1,12 +1,14 @@
 import { prisma } from '../db.js';
+import {
+  CHECK_ACTIVE_DAYS,
+  CHECK_RETRY_DELAY_MS,
+  CHECK_TICK_MS,
+  FULL_SCAN_INTERVAL_MS,
+} from '../config.js';
 import { sendCertificateFoundStatusEmail } from '../email/send.js';
 import type { UiLanguage } from '../i18n/languages.js';
 import { logger } from '../services/logger.js';
 import { telcCheck } from '../utils/telcCheck.js';
-
-const ACTIVE_DAYS = 35;
-const NEXT_TICK_MS = 5_000; // 5 seconds
-const AFTER_FULL_SCAN_MS = 4 * 60 * 60 * 1000; // 4 hours
 
 export async function checkCertificates(): Promise<void> {
   const now = new Date();
@@ -30,7 +32,7 @@ export async function checkCertificates(): Promise<void> {
       data: {
         cursorOffset: 0,
         lastCheckedAt: now,
-        nextRunAt: new Date(now.getTime() + AFTER_FULL_SCAN_MS),
+        nextRunAt: new Date(now.getTime() + FULL_SCAN_INTERVAL_MS),
       },
     });
     return;
@@ -44,12 +46,12 @@ export async function checkCertificates(): Promise<void> {
     evalDate: checkDate,
   });
 
-  // если сертификат не найден из-за технических проблем (например, telc недоступен) -> выполним повторную проверку чуть позже (nextRunAt + 10s)
+  // если сертификат не найден из-за технических проблем (например, telc недоступен) -> выполним повторную проверку чуть позже
   if (telc === null) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
-        nextRunAt: new Date(now.getTime() + 2 * NEXT_TICK_MS),
+        nextRunAt: new Date(now.getTime() + CHECK_RETRY_DELAY_MS),
       },
     });
     return;
@@ -78,7 +80,7 @@ export async function checkCertificates(): Promise<void> {
   }
 
   // если проверили все дни и дата последней проверки (activeUntil) превышена, то CHECKING_EXPIRED
-  if (record.cursorOffset >= ACTIVE_DAYS && isAfterDayUTC(now, record.activeUntil)) {
+  if (record.cursorOffset >= CHECK_ACTIVE_DAYS && isAfterDayUTC(now, record.activeUntil)) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
@@ -93,13 +95,13 @@ export async function checkCertificates(): Promise<void> {
   }
 
   // если проверили все дни и дата последней проверки (activeUntil) еще не превышена, то назначаем новую проверку через четыре часа
-  if (record.cursorOffset >= ACTIVE_DAYS && !isAfterDayUTC(now, record.activeUntil)) {
+  if (record.cursorOffset >= CHECK_ACTIVE_DAYS && !isAfterDayUTC(now, record.activeUntil)) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
         cursorOffset: 0,
         lastCheckedAt: now,
-        nextRunAt: new Date(now.getTime() + AFTER_FULL_SCAN_MS),
+        nextRunAt: new Date(now.getTime() + FULL_SCAN_INTERVAL_MS),
       },
     });
     return;
@@ -110,7 +112,7 @@ export async function checkCertificates(): Promise<void> {
     where: { id: record.id },
     data: {
       cursorOffset: record.cursorOffset + 1,
-      nextRunAt: new Date(now.getTime() + NEXT_TICK_MS),
+      nextRunAt: new Date(now.getTime() + CHECK_TICK_MS),
     },
   });
 }

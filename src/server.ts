@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { app } from './app.js';
 import http from 'http';
+import { APP_PORT, CHECK_TICK_CRON_EXPRESSION } from './config.js';
 import { prisma } from './db.js';
 import cron from 'node-cron';
 import { checkCertificates } from './cron/checkCertificates.js';
@@ -9,7 +10,7 @@ import ngrok from '@ngrok/ngrok';
 
 let server: http.Server | undefined;
 
-const appPort = Number(process.env.PORT ?? 3000);
+const appPort = APP_PORT;
 const appEnv = process.env.NODE_ENV ?? 'development';
 
 let ngrokUrl: string | undefined;
@@ -39,7 +40,7 @@ async function main() {
     logger.info(`[server] Ngrok URL: ${ngrokUrl}`);
   }
 
-  cronTask = cron.schedule('*/5 * * * * *', async () => {
+  cronTask = cron.schedule(CHECK_TICK_CRON_EXPRESSION, async () => {
     if (cronRunning) return;
     cronRunning = true;
     try {
