@@ -9,7 +9,7 @@ const de: UiMessagesContent = {
     index: {
       introLabel: 'Zertifikatsprüfung',
       introParagraph:
-        'Dieser Service sucht automatisch nach Ihrem telc-Zertifikat: Er prüft mögliche Prüftermine bis zu 35 Tage lang und informiert Sie sofort, sobald das Zertifikat gefunden wurde.',
+        'Dieser Service übernimmt die automatische Suche nach Ihrem telc-Zertifikat. Wir prüfen mögliche Prüftermine regelmäßig und informieren Sie sofort, sobald ein Zertifikat gefunden wird.',
       formHeading: 'Anfrage starten',
       userNumberLabel: 'Teilnehmernummer',
       birthDateLabel: 'Geburtsdatum',
@@ -114,7 +114,7 @@ const de: UiMessagesContent = {
       confirmedStatus: {
         subject: 'telc – E-Mail bestätigt, Status-Link',
         title: 'E-Mail erfolgreich bestätigt',
-        paragraph: 'Ihre Anfrage wurde aktiviert. Die Suche nach dem Zertifikat erfolgt alle 4 Stunden.',
+        paragraph: 'Ihre Anfrage ist aktiviert. Die Suche nach dem Zertifikat läuft automatisch im Hintergrund. Sobald ein Ergebnis vorliegt, erhalten Sie eine weitere E-Mail.',
         cta: 'Status Ihrer Anfrage öffnen',
         footer: 'Sie können den Status jederzeit über den Link oben prüfen.',
       },

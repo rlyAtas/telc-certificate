@@ -9,7 +9,7 @@ const en: UiMessagesContent = {
     index: {
       introLabel: 'Certificate Check',
       introParagraph:
-        'This service automatically searches for your telc certificate: it checks possible exam check dates for up to 35 days and notifies you immediately when the certificate is found.',
+        'This service automatically searches for your telc certificate. We regularly check possible exam check dates and notify you as soon as a certificate is found.',
       formHeading: 'Start Request',
       userNumberLabel: 'Participant number',
       birthDateLabel: 'Date of birth',
@@ -112,7 +112,7 @@ const en: UiMessagesContent = {
       confirmedStatus: {
         subject: 'telc – Email confirmed, status link',
         title: 'Email successfully confirmed',
-        paragraph: 'Your request has been activated. The certificate search runs every 4 hours.',
+        paragraph: 'Your request is active. The certificate search runs automatically in the background. As soon as a result is available, you will receive another email.',
         cta: 'Open your request status',
         footer: 'You can check the status at any time using the link above.',
       },
