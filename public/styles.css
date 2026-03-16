@@ -360,3 +360,43 @@ a:hover{
     padding: 14px;
   }
 }
+
+/* ---- RTL (arabisch) ---- */
+
+[dir='rtl'] body{
+  direction: rtl;
+}
+
+[dir='rtl'] .home-form__label,
+[dir='rtl'] .home-form__input,
+[dir='rtl'] .home-form__error,
+[dir='rtl'] .info-card__message,
+[dir='rtl'] .progress__item-title,
+[dir='rtl'] .contact-card__name{
+  text-align: right;
+}
+
+[dir='rtl'] .home-form__input[type="date"]{
+  text-align: right;
+}
+
+[dir='rtl'] .home-form__input[type="date"]::-webkit-date-and-time-value{
+  text-align: right;
+}
+
+[dir='rtl'] .progress__item{
+  grid-template-columns: 1fr 20px;
+}
+
+[dir='rtl'] .progress__item > div{
+  grid-column: 1;
+}
+
+[dir='rtl'] .progress__item-marker{
+  grid-column: 2;
+  justify-self: end;
+}
+
+[dir='rtl'] .contact-card__links{
+  direction: ltr;
+}
