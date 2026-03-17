@@ -27,22 +27,20 @@ export type TelcSuccessResponse = {
  * пример ответа при не найденном сертификате: 404 Not Found или { "code": 404, "message": "certificate not found" }
  */
 export async function telcCheck(params: TelcCheckParams): Promise<TelcSuccessResponse | false | null> {
-  logger.debug(`[cron/telcCheck/telcCheck] params=${JSON.stringify(params)}`);
-
-  const type = params.type ?? 'paper';
-
-  // telc ожидает YYYY-MM-DD
-  const birthdate = toYmd(params.birthDate);
-  const pruefung = toYmd(params.evalDate);
-
-  // в будущем воможно делать два запроса, на бумажный и цифровой сертификат
-  const url =
-    `https://results.telc.net/api/results/loopkup/${encodeURIComponent(params.userNumber)}` +
-    `/pruefung/${encodeURIComponent(pruefung)}` +
-    `/birthdate/${encodeURIComponent(birthdate)}` +
-    `?type=${encodeURIComponent(type)}`;
-
   try {
+    const type = params.type ?? 'paper';
+
+    // telc ожидает YYYY-MM-DD
+    const birthdate = toYmd(params.birthDate);
+    const pruefung = toYmd(params.evalDate);
+
+    // в будущем воможно делать два запроса, на бумажный и цифровой сертификат
+    const url =
+      `https://results.telc.net/api/results/loopkup/${encodeURIComponent(params.userNumber)}` +
+      `/pruefung/${encodeURIComponent(pruefung)}` +
+      `/birthdate/${encodeURIComponent(birthdate)}` +
+      `?type=${encodeURIComponent(type)}`;
+
     const res = await fetch(url, {
       method: 'GET',
       headers: {
@@ -58,7 +56,7 @@ export async function telcCheck(params: TelcCheckParams): Promise<TelcSuccessRes
     return false;
   } catch (error) {
     // сеть / таймаут / JSON parse error
-    logger.error(`[cron/telcCheck/telcCheck] ${error}`);
+    logger.error(`[utils/telcCheck/telcCheck] Request failed, error=${String(error)}`);
     return null;
   }
 }
