@@ -37,7 +37,7 @@ async function main() {
     if (!url) throw new Error('Ngrok failed to provide a URL');
 
     ngrokUrl = url;
-    logger.info(`[server] Ngrok URL: ${ngrokUrl}`);
+    logger.info(`[server/main] Ngrok started on url ${ngrokUrl}`);
   }
 
   cronTask = cron.schedule(CHECK_TICK_CRON_EXPRESSION, async () => {
@@ -46,7 +46,7 @@ async function main() {
     try {
       await checkCertificates();
     } catch (error) {
-      logger.error(`[cron] error: ${error}`);
+      logger.error(`[server/cronTick] Check certificates failed, error=${String(error)}`);
     } finally {
       cronRunning = false;
     }
@@ -64,26 +64,26 @@ async function shutdown(signal: string) {
   try {
     cronTask?.stop();
   } catch (error) {
-    logger.error(`[server] cron stop failed: ${error}`);
+    logger.error(`[server] Cron stop failed, error=${String(error)}`);
   }
 
   if (ngrokInstance) {
     try {
       await ngrokInstance.kill();
     } catch (error) {
-      logger.error(`[server] ngrok shutdown failed: ${error}`);
+      logger.error(`[server] Ngrok kill failed, error=${String(error)}`);
     }
   }
 
   try {
     await prisma.$disconnect();
   } catch (error) {
-    logger.error(`[server] prisma disconnect failed: ${error}`);
+    logger.error(`[server] Prisma disconnect failed, error=${String(error)}`);
   }
 
   server?.close((error) => {
   if (error) {
-    logger.error(`[server] error while closing server: ${error}`);
+    logger.error(`[server] Server close failed, error=${String(error)}`);
 
     process.exit(1);
   }
@@ -95,6 +95,6 @@ process.on('SIGINT', () => void shutdown('SIGINT'));
 process.on('SIGTERM', () => void shutdown('SIGTERM'));
 
 main().catch((error) => {
-  logger.error(`[server] error in main(): ${error}`);
+  logger.error(`[server] startup failed, error=${String(error)}`);
   process.exit(1);
 });
