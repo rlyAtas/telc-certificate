@@ -145,18 +145,24 @@ type NotifyCertificateFoundParams = {
  * Ошибки доставки только логируются и не влияют на процесс проверки.
  */
 async function notifyCertificateFound(params: NotifyCertificateFoundParams): Promise<void> {
-  const publicBaseUrl = process.env.PUBLIC_BASE_URL;
 
-  if (!publicBaseUrl) {
-    logger.warn('[cron/checkCertificates/notifyCertificateFound] PUBLIC_BASE_URL is missing, skip certificate found email');
-    return;
+  try {
+    const publicBaseUrl = process.env.PUBLIC_BASE_URL;
+
+    if (!publicBaseUrl) {
+      logger.warn('[cron/checkCertificates/notifyCertificateFound] Config missing, variable=PUBLIC_BASE_URL');
+      return;
+    }
+
+    const statusUrl = `${publicBaseUrl}/status/${params.publicToken}`;
+
+    await sendCertificateFoundStatusEmail({
+      to: params.email,
+      statusUrl,
+      language: params.language,
+    });
   }
-
-  const statusUrl = `${publicBaseUrl}/status/${params.publicToken}`;
-
-  await sendCertificateFoundStatusEmail({
-    to: params.email,
-    statusUrl,
-    language: params.language,
-  });
+  catch(error) {
+    logger.error(`[cron/checkCertificates/notifyCertificateFound] Request failed, error=${String(error)}`);
+  }
 }
