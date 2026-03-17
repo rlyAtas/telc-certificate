@@ -24,7 +24,9 @@ export class CertificateCheckService {
 
       return Boolean(record);
     } catch (error: unknown) {
-      logger.error(`[services/CertificateCheckService/hasOpenRequestByEmailLower] ${error}`);
+      logger.error(
+        `[services/certificateCheckService/hasOpenRequestByEmailLower] Query failed, error=${String(error)}`
+      );
       throw error;
     }
   }
@@ -55,7 +57,7 @@ export class CertificateCheckService {
         },
       });
     } catch (error: unknown) {
-      logger.error(`[services/CertificateCheckService/create] ${error}`);
+      logger.error(`[services/certificateCheckService/create] Create failed, error=${String(error)}`);
       throw error;
     }
   }
@@ -102,7 +104,7 @@ export class CertificateCheckService {
         justConfirmed: true,
       };
     } catch (error: unknown) {
-      logger.error(`[services/CertificateCheckService/confirmByToken] Error confirming token: ${error}`);
+      logger.error(`[services/certificateCheckService/confirmByToken] Confirm failed, error=${String(error)}`);
       throw error;
     }
   }
@@ -113,7 +115,9 @@ export class CertificateCheckService {
         where: { publicToken },
       });
     } catch (error: unknown) {
-      logger.error(`[services/CertificateCheckService/getByPublicToken] ${error}`);
+      logger.error(
+        `[services/certificateCheckService/getByPublicToken] Query failed, error=${String(error)}`
+      );
       throw error;
     }
   }
