@@ -14,62 +14,63 @@ export const routerSubscribe = Router();
 routerSubscribe.post('/', async (req, res) => {
   const language = resolveLanguage(req.body.language);
   const messages = getMessages(language);
-  const honeypot = req.body.website;
-  const elapsedMs = getElapsedFromFormStart(req.body.formStartedAt);
-
-  if (typeof honeypot !== 'string' || honeypot !== '') {
-    logger.warn(
-      `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
-    );
-
-    return res.render('subscribe', {
-      messages,
-      language,
-    });
-  }
-
-  if (elapsedMs < MIN_FORM_FILL_TIME_MS) {
-    logger.warn(
-      `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
-    );
-
-    return res.render('subscribe', {
-      messages,
-      language,
-    });
-  }
-
-  const requestIp = req.ip ?? 'unknown';
-  if (!isSubscribeAllowedByIp(requestIp)) {
-    logger.warn(
-      `[routes/subscribe] Rate limit triggered, ip=${requestIp},ua=${req.get('user-agent') ?? 'unknown'}`
-    );
-
-    return res.render('subscribe', {
-      messages,
-      language,
-    });
-  }
-
-  const { values, errors } = validateSubscribe(req.body, messages.routes.subscribeValidation);
-
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).render('index', {
-      errors,
-      values,
-      formStartedAt: req.body.formStartedAt,
-      language,
-      messages,
-      supportedLanguages: SUPPORTED_LANGUAGES,
-    });
-  }
 
   try {
+    const honeypot = req.body.website;
+    const elapsedMs = getElapsedFromFormStart(req.body.formStartedAt);
+
+    if (typeof honeypot !== 'string' || honeypot !== '') {
+      logger.warn(
+        `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
+      );
+
+      return res.render('subscribe', {
+        messages,
+        language,
+      });
+    }
+
+    if (elapsedMs < MIN_FORM_FILL_TIME_MS) {
+      logger.warn(
+        `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
+      );
+
+      return res.render('subscribe', {
+        messages,
+        language,
+      });
+    }
+
+    const requestIp = req.ip ?? 'unknown';
+    if (!isSubscribeAllowedByIp(requestIp)) {
+      logger.warn(
+        `[routes/subscribe] Rate limit triggered, ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}`
+      );
+
+      return res.render('subscribe', {
+        messages,
+        language,
+      });
+    }
+
+    const { values, errors } = validateSubscribe(req.body, messages.routes.subscribeValidation);
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).render('index', {
+        errors,
+        values,
+        formStartedAt: req.body.formStartedAt,
+        language,
+        messages,
+        supportedLanguages: SUPPORTED_LANGUAGES,
+      });
+    }
+
     const data = normalizeSubscribe(values);
     const hasOpenRequest = await CertificateCheckService.hasOpenRequestByEmailLower(data.emailLower);
     if (hasOpenRequest) {
       logger.info(
-        `[routes/subscribe] open_request_exists emailLower=${data.emailLower} ip=${req.ip ?? 'unknown'}`
+        `[routes/subscribe] Open request exists, emailLower=${data.emailLower} ip=${req.ip ?? 'unknown'}`
       );
 
       return res.render('hint', {
