@@ -92,6 +92,8 @@ const ru: UiMessagesContent = {
       confirmInvalidLink: 'Ссылка подтверждения недействительна.',
       confirmInvalidOrExpired: 'Ссылка подтверждения недействительна или устарела.',
       confirmProcessError: 'При подтверждении заявки произошла ошибка.',
+      subscribeAlreadyExistsByEmail:
+        'Для этого e-mail уже есть активная заявка. Проверьте почту (включая спам) и используйте последнюю полученную ссылку.',
       subscribeProcessError: 'Возникла проблема с вашей заявкой. Попробуйте позже.',
       pageNotFound: 'Запрошенная страница не найдена.',
       subscribeValidation: {

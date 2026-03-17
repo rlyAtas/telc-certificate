@@ -92,6 +92,8 @@ const ar: UiMessagesContent = {
       confirmInvalidLink: 'رابط التأكيد غير صالح.',
       confirmInvalidOrExpired: 'رابط التأكيد غير صالح أو منتهي الصلاحية.',
       confirmProcessError: 'حدث خطأ أثناء تأكيد طلبك.',
+      subscribeAlreadyExistsByEmail:
+        'يوجد بالفعل طلب نشط لهذا البريد الإلكتروني. يرجى التحقق من صندوق الوارد (بما في ذلك الرسائل غير المرغوب فيها) واستخدام آخر رابط تم استلامه.',
       subscribeProcessError: 'حدثت مشكلة في طلبك. يرجى المحاولة لاحقًا.',
       pageNotFound: 'الصفحة المطلوبة غير موجودة.',
       subscribeValidation: {

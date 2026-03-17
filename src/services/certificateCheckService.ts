@@ -7,6 +7,28 @@ import { addDays } from '../utils/addDays.js';
 import { logger } from './logger.js';
 
 export class CertificateCheckService {
+  /**
+   * Проверяет, есть ли по e-mail уже открытая заявка, которая ещё в работе.
+   */
+  static async hasOpenRequestByEmailLower(emailLower: string): Promise<boolean> {
+    try {
+      const record = await prisma.certificateCheck.findFirst({
+        where: {
+          emailLower,
+          status: {
+            in: ['EMAIL_UNCONFIRMED', 'ACTIVE'],
+          },
+        },
+        select: { id: true },
+      });
+
+      return Boolean(record);
+    } catch (error: unknown) {
+      logger.error(`[services/CertificateCheckService/hasOpenRequestByEmailLower] ${error}`);
+      throw error;
+    }
+  }
+
   static async create(input: NormalizedSubscribeData) {
     try {
       const confirmToken = crypto.randomUUID();

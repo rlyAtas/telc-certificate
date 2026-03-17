@@ -77,6 +77,7 @@ export type UiMessagesContent = {
     confirmInvalidLink: string;
     confirmInvalidOrExpired: string;
     confirmProcessError: string;
+    subscribeAlreadyExistsByEmail: string;
     subscribeProcessError: string;
     pageNotFound: string;
     subscribeValidation: {

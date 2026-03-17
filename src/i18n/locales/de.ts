@@ -92,6 +92,8 @@ const de: UiMessagesContent = {
       confirmInvalidLink: 'Der Bestätigungslink ist ungültig.',
       confirmInvalidOrExpired: 'Der Bestätigungslink ist ungültig oder abgelaufen.',
       confirmProcessError: 'Beim Bestätigen Ihrer Anfrage ist ein Fehler aufgetreten.',
+      subscribeAlreadyExistsByEmail:
+        'Für diese E-Mail-Adresse gibt es bereits eine laufende Anfrage. Bitte prüfen Sie Ihr Postfach (auch den Spam-Ordner) und verwenden Sie den zuletzt erhaltenen Link.',
       subscribeProcessError:
         'Es gab ein Problem mit Ihrer Anfrage. Bitte versuchen Sie es später erneut.',
       pageNotFound: 'Die angeforderte Seite wurde nicht gefunden.',

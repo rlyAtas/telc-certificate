@@ -92,6 +92,8 @@ const uk: UiMessagesContent = {
       confirmInvalidLink: 'Посилання підтвердження недійсне.',
       confirmInvalidOrExpired: 'Посилання підтвердження недійсне або прострочене.',
       confirmProcessError: 'Під час підтвердження заявки сталася помилка.',
+      subscribeAlreadyExistsByEmail:
+        'Для цієї e-mail-адреси вже є активна заявка. Перевірте пошту (включно зі спамом) і використайте останнє отримане посилання.',
       subscribeProcessError: 'Виникла проблема з вашою заявкою. Спробуйте пізніше.',
       pageNotFound: 'Запитану сторінку не знайдено.',
       subscribeValidation: {

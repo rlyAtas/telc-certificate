@@ -92,6 +92,8 @@ const fr: UiMessagesContent = {
       confirmInvalidLink: 'Le lien de confirmation est invalide.',
       confirmInvalidOrExpired: 'Le lien de confirmation est invalide ou expiré.',
       confirmProcessError: 'Une erreur est survenue lors de la confirmation de votre demande.',
+      subscribeAlreadyExistsByEmail:
+        'Une demande active existe déjà pour cette adresse e-mail. Veuillez vérifier votre boîte de réception (y compris les spams) et utiliser le dernier lien reçu.',
       subscribeProcessError: 'Un problème est survenu avec votre demande. Veuillez réessayer plus tard.',
       pageNotFound: 'La page demandée est introuvable.',
       subscribeValidation: {

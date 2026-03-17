@@ -53,6 +53,19 @@ routerSubscribe.post('/', async (req, res) => {
 
   try {
     const data = normalizeSubscribe(values);
+    const hasOpenRequest = await CertificateCheckService.hasOpenRequestByEmailLower(data.emailLower);
+    if (hasOpenRequest) {
+      logger.info(
+        `[routes/subscribe] open request already exists for emailLower=${data.emailLower}, ip=${req.ip}`
+      );
+
+      return res.render('hint', {
+        message: messages.routes.subscribeAlreadyExistsByEmail,
+        messages,
+        homeUrl: `/?lang=${encodeURIComponent(language)}`,
+      });
+    }
+
     const created = await CertificateCheckService.create(data);
     
     const confirmUrl = `${process.env.PUBLIC_BASE_URL}/confirm/${created.confirmToken}`;

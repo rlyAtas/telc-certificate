@@ -92,6 +92,8 @@ const es: UiMessagesContent = {
       confirmInvalidLink: 'El enlace de confirmación no es válido.',
       confirmInvalidOrExpired: 'El enlace de confirmación no es válido o ha caducado.',
       confirmProcessError: 'Ocurrió un error al confirmar su solicitud.',
+      subscribeAlreadyExistsByEmail:
+        'Ya existe una solicitud activa para esta dirección de correo. Revise su bandeja de entrada (incluida la carpeta de spam) y use el último enlace recibido.',
       subscribeProcessError: 'Hubo un problema con su solicitud. Inténtelo más tarde.',
       pageNotFound: 'La página solicitada no fue encontrada.',
       subscribeValidation: {
