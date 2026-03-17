@@ -35,6 +35,9 @@ export const FULL_SCAN_INTERVAL_MS = FULL_SCAN_INTERVAL_HOURS * 60 * 60 * 1000;
 /** Таймаут запроса к внешнему API telc (в миллисекундах). */
 export const TELC_REQUEST_TIMEOUT_MS = 5_000;
 
+/** Минимальное время заполнения формы (в миллисекундах). */
+export const MIN_FORM_FILL_TIME_MS = 3_000;
+
 /** Cron-выражение для запуска проверки. */
 export const CHECK_TICK_CRON_EXPRESSION = `*/${CHECK_TICK_SECONDS} * * * * *`;
 

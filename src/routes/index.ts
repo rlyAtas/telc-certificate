@@ -22,6 +22,7 @@ routerIndex.get('/', (req, res) => {
   res.render('index', {
     errors: {},
     values,
+    formStartedAt: String(Date.now()),
     language,
     messages,
     supportedLanguages: SUPPORTED_LANGUAGES,
