@@ -66,6 +66,14 @@ async function shutdown(signal: string) {
   shuttingDown = true;
 
   logger.info(`[server] received ${signal}, shutting down...`);
+  
+  try {
+    await sendTelegramAlert({
+      text: `[server] received ${signal} in ${appEnv} mode, shutting down...`,
+      disableNotification: false,
+    });
+  } 
+  catch {}
 
   try {
     cronTask?.stop();
