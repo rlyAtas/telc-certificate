@@ -13,11 +13,15 @@
         <h1 class="page-header__title"><%= messages.common.pageHeaderTitle %></h1>
       </section>
 
+      <%
+        const infoUrl = typeof homeUrl === 'string' && homeUrl.trim() ? homeUrl : '/';
+      %>
+
       <%- include('partials/info-card', {
         infoIcon: '⚠️',
         infoLabel: messages.hint.label,
         infoParagraphs: [message],
-        infoUrl: homeUrl || '/',
+        infoUrl,
         infoUrlText: messages.hint.backToHome,
       }) %>
 
