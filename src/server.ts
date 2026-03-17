@@ -7,6 +7,8 @@ import cron from 'node-cron';
 import { checkCertificates } from './cron/checkCertificates.js';
 import { logger } from './services/logger.js';
 import ngrok from '@ngrok/ngrok';
+import { sendTelegramAlert } from './services/alertService.js';
+
 
 let server: http.Server | undefined;
 
@@ -22,6 +24,10 @@ let cronRunning = false;
 async function main() {
   server = app.listen(appPort, () => {
     logger.info(`[server] Server started on port ${appPort} in ${appEnv} mode`);
+    sendTelegramAlert({
+      text: `[server] Server started on port ${appPort} in ${appEnv} mode`,
+      disableNotification: true,
+    });
   });
 
   if (appEnv === 'development') {
@@ -94,7 +100,16 @@ async function shutdown(signal: string) {
 process.on('SIGINT', () => void shutdown('SIGINT'));
 process.on('SIGTERM', () => void shutdown('SIGTERM'));
 
-main().catch((error) => {
-  logger.error(`[server] startup failed, error=${String(error)}`);
-  process.exit(1);
+main().catch(async (error) => {
+  try {
+    logger.error(`[server] startup failed, error=${String(error)}`);
+    await sendTelegramAlert({
+      text: `[server] startup failed in ${appEnv} mode, error=${String(error)}`,
+      disableNotification: false,
+    });
+  } 
+  catch {}
+  finally {
+    process.exit(1);
+  }
 });

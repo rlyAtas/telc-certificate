@@ -7,6 +7,7 @@ import {
   confirmEmailHtml,
   confirmedStatusEmailHtml,
 } from './templates.js';
+import { sendTelegramAlert } from '../services/alertService.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 const fallbackFromEmail = 'telc Zertifikatsprüfung <something@resend.dev>';
@@ -30,6 +31,10 @@ async function sendEmail(params: {
       logger.error(`[email/send/sendEmail] Email provider error, error=${String(error)}`);
     }
   } catch (error) {
+    await sendTelegramAlert({
+      text: `[email/send/sendEmail] Request failed, error=${String(error)}`,
+      disableNotification: false,
+    });
     logger.error(`[email/send/sendEmail] Request failed, error=${String(error)}`);
   }
 }

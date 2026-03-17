@@ -8,6 +8,7 @@ import { sendConfirmLinkEmail } from '../email/send.js';
 import { logger } from '../services/logger.js';
 import { getMessages } from '../i18n/messages.js';
 import { resolveLanguage, SUPPORTED_LANGUAGES } from '../i18n/languages.js';
+import { sendTelegramAlert } from '../services/alertService.js';
 
 export const routerSubscribe = Router();
 
@@ -24,6 +25,11 @@ routerSubscribe.post('/', async (req, res) => {
         `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
       );
 
+      await sendTelegramAlert({
+        text: `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`,
+        disableNotification: false,
+      });
+
       return res.render('subscribe', {
         messages,
         language,
@@ -34,6 +40,11 @@ routerSubscribe.post('/', async (req, res) => {
       logger.warn(
         `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
       );
+
+      await sendTelegramAlert({
+        text: `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`,
+        disableNotification: false,
+      });
 
       return res.render('subscribe', {
         messages,
@@ -46,6 +57,11 @@ routerSubscribe.post('/', async (req, res) => {
       logger.warn(
         `[routes/subscribe] Rate limit triggered, ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}`
       );
+
+      await sendTelegramAlert({
+        text: `[routes/subscribe] Rate limit triggered, ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}`,
+        disableNotification: false,
+      });
 
       return res.render('subscribe', {
         messages,
