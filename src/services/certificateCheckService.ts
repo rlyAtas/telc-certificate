@@ -102,7 +102,7 @@ export class CertificateCheckService {
         justConfirmed: true,
       };
     } catch (error: unknown) {
-      console.error('[services/CertificateCheckService/confirmByToken] Error confirming token:', error);
+      logger.error(`[services/CertificateCheckService/confirmByToken] Error confirming token: ${error}`);
       throw error;
     }
   }
@@ -113,7 +113,7 @@ export class CertificateCheckService {
         where: { publicToken },
       });
     } catch (error: unknown) {
-      console.error(`[services/CertificateCheckService/getByPublicToken] ${error}`);
+      logger.error(`[services/CertificateCheckService/getByPublicToken] ${error}`);
       throw error;
     }
   }

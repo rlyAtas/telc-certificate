@@ -3,6 +3,7 @@ import { CertificateCheckService } from '../services/certificateCheckService.js'
 import { sendConfirmedStatusEmail } from '../email/send.js';
 import { getMessages } from '../i18n/messages.js';
 import { resolveLanguage } from '../i18n/languages.js';
+import { logger } from '../services/logger.js';
 
 export const routerConfirm = Router();
 
@@ -15,7 +16,7 @@ routerConfirm.get('/:token', async (req, res) => {
     const confirmed = await CertificateCheckService.confirmByToken(token);
 
     if (!confirmed) {
-      console.warn(`[routes/confirm] No record found for token: ${token}`);
+      logger.warn(`[routes/confirm] No record found for token: ${token}`);
       return res.status(404).render('hint', {
         message: fallbackMessages.routes.confirmInvalidOrExpired,
         messages: fallbackMessages,
@@ -42,7 +43,7 @@ routerConfirm.get('/:token', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('[confirm] error:', err);
+    logger.error(`[routes/confirm] error: ${err}`);
 
     return res.status(500).render('hint', {
       message: fallbackMessages.routes.confirmProcessError,

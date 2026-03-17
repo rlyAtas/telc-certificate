@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { CertificateCheckService } from '../services/certificateCheckService.js';
 import { getMessages } from '../i18n/messages.js';
 import { type UiLanguage } from '../i18n/languages.js';
+import { logger } from '../services/logger.js';
 
 export const routerStatus = Router();
 const TELC_CERTIFICATE_BASE_URL = 'https://results.telc.net/certificate';
@@ -36,7 +37,7 @@ routerStatus.get('/:publicToken', async (req, res) => {
       examDateText: formatDateByLanguage(record.examDate, language),
     });
   } catch (error) {
-    console.error('[routes/status] error:', error);
+    logger.error(`[routes/status] error: ${error}`);
 
     return res.status(500).render('hint', {
       message: fallbackMessages.routes.statusLoadError,
