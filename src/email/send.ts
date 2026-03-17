@@ -27,10 +27,10 @@ async function sendEmail(params: {
     });
 
     if (error) {
-      logger.error(`[email/send/sendEmail] ${JSON.stringify(error)}`);
+      logger.error(`[email/send/sendEmail] Email provider error, error=${JSON.stringify(error)}`);
     }
   } catch (error) {
-    logger.error(`[email/send/sendEmail] ${JSON.stringify(error)}`);
+    logger.error(`[email/send/sendEmail] Request failed, error=${JSON.stringify(error)}`);
   }
 }
 
