@@ -38,6 +38,12 @@ export const TELC_REQUEST_TIMEOUT_MS = 5_000;
 /** Минимальное время заполнения формы (в миллисекундах). */
 export const MIN_FORM_FILL_TIME_MS = 3_000;
 
+/** Окно лимита для POST /subscribe по IP (в миллисекундах). */
+export const SUBSCRIBE_RATE_LIMIT_WINDOW_MS = 60_000;
+
+/** Максимум запросов на POST /subscribe в рамках окна на один IP. */
+export const SUBSCRIBE_RATE_LIMIT_MAX_REQUESTS = 3;
+
 /** Cron-выражение для запуска проверки. */
 export const CHECK_TICK_CRON_EXPRESSION = `*/${CHECK_TICK_SECONDS} * * * * *`;
 

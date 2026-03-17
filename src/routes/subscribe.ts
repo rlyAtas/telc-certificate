@@ -3,6 +3,7 @@ import { MIN_FORM_FILL_TIME_MS } from '../config.js';
 import { validateSubscribe } from '../validators/subscribeValidator.js';
 import { normalizeSubscribe } from '../utils/normalizeSubscribe.js';
 import { CertificateCheckService } from '../services/certificateCheckService.js';
+import { isSubscribeAllowedByIp } from '../services/subscribeRateLimitService.js';
 import { sendConfirmLinkEmail } from '../email/send.js';
 import { logger } from '../services/logger.js';
 import { getMessages } from '../i18n/messages.js';
@@ -30,6 +31,18 @@ routerSubscribe.post('/', async (req, res) => {
   if (elapsedMs < MIN_FORM_FILL_TIME_MS) {
     logger.warn(
       `[routes/subscribe] speed-check triggered: elapsedMs=${elapsedMs}, ip=${req.ip}, ua=${req.get('user-agent') ?? 'unknown'}`
+    );
+
+    return res.render('subscribe', {
+      messages,
+      language,
+    });
+  }
+
+  const requestIp = req.ip ?? 'unknown';
+  if (!isSubscribeAllowedByIp(requestIp)) {
+    logger.warn(
+      `[routes/subscribe] rate-limit triggered: ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}`
     );
 
     return res.render('subscribe', {
