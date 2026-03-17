@@ -18,26 +18,26 @@ let nextAllowedDownloadAt = 0;
 routerAdminDbDownload.get('/download', async (req, res) => {
   const adminToken = process.env.ADMIN_EXPORT_TOKEN;
   if (!adminToken) {
-    logger.error('[routes/adminDbDownload] ADMIN_EXPORT_TOKEN is missing');
+    logger.error('[routes/adminDbDownload] Config missing, variable=ADMIN_EXPORT_TOKEN');
     return res.status(503).json({ error: 'Service unavailable' });
   }
 
   const providedToken = req.header('X-Admin-Token') ?? '';
   if (!isAuthorizedToken(providedToken, adminToken)) {
-    logger.warn('[routes/adminDbDownload] Forbidden: invalid admin token');
+    logger.warn('[routes/adminDbDownload] Auth failed, reason=invalid token');
     return res.status(403).json({ error: 'Forbidden' });
   }
 
   const nowMs = Date.now();
   if (nowMs < nextAllowedDownloadAt) {
-    logger.warn('[routes/adminDbDownload] Too many requests');
+    logger.warn('[routes/adminDbDownload] Rate limit triggered');
     return res.status(429).json({ error: 'Too many requests' });
   }
   nextAllowedDownloadAt = nowMs + ADMIN_DB_DOWNLOAD_RATE_LIMIT_MS;
 
   try {
     const { snapshotPath, downloadName } = await createDatabaseSnapshot();
-    logger.info(`[routes/adminDbDownload] Snapshot created: ${downloadName}`);
+    logger.info(`[routes/adminDbDownload] Snapshot created, downloadName=${downloadName}`);
 
     let cleanedUp = false;
     const cleanup = async () => {
@@ -46,7 +46,7 @@ routerAdminDbDownload.get('/download', async (req, res) => {
       try {
         await removeDatabaseSnapshot(snapshotPath);
       } catch (error: unknown) {
-        logger.error(`[routes/adminDbDownload] Snapshot cleanup failed: ${String(error)}`);
+        logger.error(`[routes/adminDbDownload] Snapshot cleanup failed, error=${String(error)}`);
       }
     };
 
@@ -60,17 +60,17 @@ routerAdminDbDownload.get('/download', async (req, res) => {
     res.download(snapshotPath, downloadName, (error) => {
       void cleanup();
       if (error) {
-        logger.error(`[routes/adminDbDownload] Download failed: ${String(error)}`);
+        logger.error(`[routes/adminDbDownload] Download failed, error=${String(error)}`);
         if (!res.headersSent) {
           res.status(500).json({ error: 'Download failed' });
         }
         return;
       }
 
-      logger.info('[routes/adminDbDownload] Snapshot downloaded successfully');
+      logger.info('[routes/adminDbDownload] Download succeeded');
     });
   } catch (error: unknown) {
-    logger.error(`[routes/adminDbDownload] Snapshot creation failed: ${String(error)}`);
+    logger.error(`[routes/adminDbDownload] Snapshot create failed, error=${String(error)}`);
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
