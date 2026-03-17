@@ -37,7 +37,7 @@ routerStatus.get('/:publicToken', async (req, res) => {
       examDateText: formatDateByLanguage(record.examDate, language),
     });
   } catch (error) {
-    logger.error(`[routes/status] error: ${error}`);
+    logger.error(`[routes/status] Request failed, error=${String(error)}`);
 
     return res.status(500).render('hint', {
       message: fallbackMessages.routes.statusLoadError,
