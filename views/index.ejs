@@ -88,6 +88,18 @@
           <div class="home-form__error"><%= errors.email %></div>
         <% } %>
 
+        <div class="home-form__website" aria-hidden="true">
+          <label for="website">Website</label>
+          <input
+            id="website"
+            type="text"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+            value=""
+          />
+        </div>
+
         <input type="hidden" name="language" value="<%= language %>">
 
         <button class="home-form__submit" type="submit"><%= messages.index.submitButton %></button>

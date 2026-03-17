@@ -12,6 +12,19 @@ export const routerSubscribe = Router();
 routerSubscribe.post('/', async (req, res) => {
   const language = resolveLanguage(req.body.language);
   const messages = getMessages(language);
+  const honeypot = req.body.website;
+
+  if (typeof honeypot !== 'string' || honeypot !== '') {
+    logger.warn(
+      `[routes/subscribe] honeypot triggered: ip=${req.ip}, ua=${req.get('user-agent') ?? 'unknown'}`
+    );
+
+    return res.render('subscribe', {
+      messages,
+      language,
+    });
+  }
+
   const { values, errors } = validateSubscribe(req.body, messages.routes.subscribeValidation);
 
   if (Object.keys(errors).length > 0) {
