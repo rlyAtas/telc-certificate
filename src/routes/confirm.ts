@@ -16,7 +16,7 @@ routerConfirm.get('/:token', async (req, res) => {
     const confirmed = await CertificateCheckService.confirmByToken(token);
 
     if (!confirmed) {
-      logger.warn(`[routes/confirm] No record found for token: ${token}`);
+      logger.warn(`[routes/confirm] Record not found, token=${token}`);
       return res.status(404).render('hint', {
         message: fallbackMessages.routes.confirmInvalidOrExpired,
         messages: fallbackMessages,
@@ -42,8 +42,8 @@ routerConfirm.get('/:token', async (req, res) => {
       messages,
     });
 
-  } catch (err) {
-    logger.error(`[routes/confirm] error: ${err}`);
+  } catch (error) {
+    logger.error(`[routes/confirm] Request failed, error=${String(error)}`);
 
     return res.status(500).render('hint', {
       message: fallbackMessages.routes.confirmProcessError,
