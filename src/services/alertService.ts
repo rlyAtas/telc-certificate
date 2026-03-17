@@ -23,14 +23,14 @@ export async function sendTelegramAlert(params: SendTelegramAlertParams): Promis
 
   if (!botToken || !chatId) {
     logger.warn(
-      '[services/alertService/sendTelegramAlert] config_missing required=TELEGRAM_BOT_TOKEN,TELEGRAM_CHAT_ID'
+      '[services/alertService/sendTelegramAlert] Config missing, variable==TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID'
     );
     return false;
   }
 
   const text = params.text.trim();
   if (!text) {
-    logger.warn('[services/alertService/sendTelegramAlert] validation_failed reason=empty_text');
+    logger.warn('[services/alertService/sendTelegramAlert] Validation failed, reason=empty text');
     return false;
   }
 
@@ -51,14 +51,14 @@ export async function sendTelegramAlert(params: SendTelegramAlertParams): Promis
     const data = await safeParseTelegramResult(response);
     if (!response.ok || !data.ok) {
       logger.error(
-        `[services/alertService/sendTelegramAlert] request_failed status=${response.status} description=${data.description ?? 'unknown'} errorCode=${String(data.error_code ?? '')}`
+        `[services/alertService/sendTelegramAlert] Request failed, status=${response.status}, description=${data.description ?? 'unknown'}, errorCode=${String(data.error_code ?? '')}`
       );
       return false;
     }
 
     return true;
   } catch (error: unknown) {
-    logger.error(`[services/alertService/sendTelegramAlert] request_failed error=${String(error)}`);
+    logger.error(`[services/alertService/sendTelegramAlert] Request failed, error=${String(error)}`);
     return false;
   }
 }
