@@ -19,7 +19,7 @@ routerSubscribe.post('/', async (req, res) => {
 
   if (typeof honeypot !== 'string' || honeypot !== '') {
     logger.warn(
-      `[routes/subscribe] honeypot triggered: ip=${req.ip}, ua=${req.get('user-agent') ?? 'unknown'}`
+      `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
     );
 
     return res.render('subscribe', {
@@ -30,7 +30,7 @@ routerSubscribe.post('/', async (req, res) => {
 
   if (elapsedMs < MIN_FORM_FILL_TIME_MS) {
     logger.warn(
-      `[routes/subscribe] speed-check triggered: elapsedMs=${elapsedMs}, ip=${req.ip}, ua=${req.get('user-agent') ?? 'unknown'}`
+      `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
     );
 
     return res.render('subscribe', {
@@ -42,7 +42,7 @@ routerSubscribe.post('/', async (req, res) => {
   const requestIp = req.ip ?? 'unknown';
   if (!isSubscribeAllowedByIp(requestIp)) {
     logger.warn(
-      `[routes/subscribe] rate-limit triggered: ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}`
+      `[routes/subscribe] Rate limit triggered, ip=${requestIp},ua=${req.get('user-agent') ?? 'unknown'}`
     );
 
     return res.render('subscribe', {
@@ -69,7 +69,7 @@ routerSubscribe.post('/', async (req, res) => {
     const hasOpenRequest = await CertificateCheckService.hasOpenRequestByEmailLower(data.emailLower);
     if (hasOpenRequest) {
       logger.info(
-        `[routes/subscribe] open request already exists for emailLower=${data.emailLower}, ip=${req.ip}`
+        `[routes/subscribe] open_request_exists emailLower=${data.emailLower} ip=${req.ip ?? 'unknown'}`
       );
 
       return res.render('hint', {
@@ -94,7 +94,8 @@ routerSubscribe.post('/', async (req, res) => {
     });
 
   } catch (error: unknown) {
-    logger.error(`[routes/subscribe] ${error instanceof Error ? error.stack || error.message : String(error)}`);
+    logger.error(`[routes/subscribe] Request failed, error=${String(error)}`);
+
     return res.status(500).render('hint', {
       message: messages.routes.subscribeProcessError,
       messages,
