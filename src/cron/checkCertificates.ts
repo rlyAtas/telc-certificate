@@ -9,6 +9,7 @@ import { sendCertificateFoundStatusEmail } from '../email/send.js';
 import type { UiLanguage } from '../i18n/languages.js';
 import { logger } from '../services/logger.js';
 import { telcCheck } from '../utils/telcCheck.js';
+import { sendTelegramAlert } from '../services/alertService.js';
 
 export async function checkCertificates(): Promise<void> {
   const now = new Date();
@@ -75,6 +76,11 @@ export async function checkCertificates(): Promise<void> {
       publicToken: record.publicToken,
       language: record.language,
     });
+
+      await sendTelegramAlert({
+        text: `[cron/checkCertificates/notifyCertificateFound] Cretificate found for email=${record.email}`,
+        disableNotification: true,
+      });
 
     return;
   }

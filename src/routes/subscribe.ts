@@ -13,6 +13,12 @@ import { sendTelegramAlert } from '../services/alertService.js';
 export const routerSubscribe = Router();
 
 routerSubscribe.post('/', async (req, res) => {
+  
+  await sendTelegramAlert({
+    text: `[routes/subscribe] New request, userNumber=${req.body.userNumber}, birthDate=${req.body.birthDate}, examDate=${req.body.examDate}, email=${req.body.email}`,
+    disableNotification: true,
+  });
+
   const language = resolveLanguage(req.body.language);
   const messages = getMessages(language);
 

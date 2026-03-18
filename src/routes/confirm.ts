@@ -4,6 +4,7 @@ import { sendConfirmedStatusEmail } from '../email/send.js';
 import { getMessages } from '../i18n/messages.js';
 import { resolveLanguage } from '../i18n/languages.js';
 import { logger } from '../services/logger.js';
+import { sendTelegramAlert } from '../services/alertService.js';
 
 export const routerConfirm = Router();
 
@@ -33,6 +34,11 @@ routerConfirm.get('/:token', async (req, res) => {
         to: record.email,
         statusUrl: urlStatus,
         language,
+      });
+
+      await sendTelegramAlert({
+        text: `[routes/confirm] Confirm for email=${record.email}`,
+        disableNotification: true,
       });
     }
 
