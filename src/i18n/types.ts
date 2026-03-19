@@ -6,6 +6,34 @@ export type ProgressStateText = {
   done: string;
 };
 
+/**
+ * Вторичный блок поддержки проекта внутри письма.
+ * Используется только там, где допустим мягкий secondary CTA.
+ */
+export type EmailSupportContent = {
+  label: string;
+  message: string;
+  button: string;
+};
+
+/**
+ * Целевая структура контента пользовательского письма.
+ *
+ * На этапе миграции сохраняем совместимость со старыми полями
+ * `paragraph` и `footer`, чтобы поэтапно обновить локали и шаблоны
+ * без поломки текущей отправки писем.
+ */
+export type EmailMessageContent = {
+  subject: string;
+  title: string;
+  paragraphs?: string[];
+  cta: string;
+  note?: string;
+  support?: EmailSupportContent;
+  paragraph?: string;
+  footer?: string;
+};
+
 export type UiMessagesContent = {
   languageLabel: string;
   common: {
@@ -88,27 +116,9 @@ export type UiMessagesContent = {
     };
   };
   emails: {
-    confirm: {
-      subject: string;
-      title: string;
-      paragraph: string;
-      cta: string;
-      footer: string;
-    };
-    confirmedStatus: {
-      subject: string;
-      title: string;
-      paragraph: string;
-      cta: string;
-      footer: string;
-    };
-    certificateFound: {
-      subject: string;
-      title: string;
-      paragraph: string;
-      cta: string;
-      footer: string;
-    };
+    confirm: EmailMessageContent;
+    confirmedStatus: EmailMessageContent;
+    certificateFound: EmailMessageContent;
   };
 };
 
