@@ -50,16 +50,18 @@ function renderEmailHtml(params: EmailLayoutParams): string {
 
   const noteHtml = params.note
     ? `
-        <p style="margin:24px 0 0;color:#667085;font-size:14px;line-height:1.6;">
-          ${params.note}
-        </p>
+        <div style="margin-top:24px;padding-top:18px;border-top:1px solid #eaecf0;">
+          <p style="margin:0;color:#667085;font-size:14px;line-height:1.6;">
+            ${params.note}
+          </p>
+        </div>
       `
     : '';
 
   const supportHtml = params.support && params.supportUrl
     ? `
-        <div style="margin-top:24px;padding:18px;border:1px solid #e4e7ec;border-radius:16px;background:#f8fafc;">
-          <p style="margin:0 0 8px;color:#101828;font-size:15px;font-weight:700;line-height:1.5;">
+        <div style="margin-top:24px;padding:16px;border:1px solid #e4e7ec;border-radius:16px;background:#f8fafc;">
+          <p style="margin:0 0 8px;color:#98a2b3;font-size:12px;font-weight:700;line-height:1.4;letter-spacing:0.08em;text-transform:uppercase;">
             ${params.support.label}
           </p>
           <p style="margin:0 0 14px;color:#475467;font-size:14px;line-height:1.6;">
@@ -67,7 +69,7 @@ function renderEmailHtml(params: EmailLayoutParams): string {
           </p>
           <a
             href="${params.supportUrl}"
-            style="display:inline-block;padding:10px 16px;border-radius:999px;border:1px solid #d0d5dd;color:#344054;font-size:14px;font-weight:600;line-height:1;text-decoration:none;background:#ffffff;"
+            style="display:inline-block;padding:10px 16px;border-radius:999px;border:1px solid #d0d5dd;color:#344054;font-size:13px;font-weight:600;line-height:1;text-decoration:none;background:#ffffff;"
           >
             ${params.support.button}
           </a>
@@ -80,7 +82,7 @@ function renderEmailHtml(params: EmailLayoutParams): string {
       <div style="max-width:560px;margin:0 auto;">
         <div style="padding:32px 28px;border:1px solid #e4e7ec;border-radius:24px;background:#ffffff;box-shadow:0 12px 30px rgba(16,24,40,0.06);">
           <p style="margin:0 0 10px;color:#98a2b3;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">
-            telc certificate check
+            results.telc
           </p>
           <h1 style="margin:0 0 18px;color:#101828;font-size:28px;line-height:1.2;font-weight:800;">
             ${params.title}
