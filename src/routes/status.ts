@@ -3,6 +3,7 @@ import { CertificateCheckService } from '../services/certificateCheckService.js'
 import { getMessages } from '../i18n/messages.js';
 import { type UiLanguage } from '../i18n/languages.js';
 import { logger } from '../services/logger.js';
+import { DONATION_URL } from '../config.js';
 
 export const routerStatus = Router();
 const TELC_CERTIFICATE_BASE_URL = 'https://results.telc.net/certificate';
@@ -31,6 +32,7 @@ routerStatus.get('/:publicToken', async (req, res) => {
     return res.render('status', {
       status: record.status,
       certificateUrl,
+      donationUrl: DONATION_URL,
       language,
       messages,
       userNumber: record.userNumber,

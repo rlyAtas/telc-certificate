@@ -55,3 +55,6 @@ export const APP_PORT = Number(process.env.PORT ?? 3000);
 
 /** Срок жизни токена подтверждения e-mail (в миллисекундах). */
 export const CONFIRM_TOKEN_EXPIRE_MS = CHECK_ACTIVE_DAYS * 24 * 60 * 60 * 1000;
+
+/** Публичная ссылка для поддержки проекта. */
+export const DONATION_URL = 'https://buymeacoffee.com/results.telc';

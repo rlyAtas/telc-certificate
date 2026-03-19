@@ -1,6 +1,7 @@
 import { getMessages } from '../i18n/messages.js';
 import type { UiLanguage } from '../i18n/languages.js';
 import type { EmailMessageContent, EmailSupportContent } from '../i18n/types.js';
+import { DONATION_URL } from '../config.js';
 
 type EmailLayoutParams = {
   title: string;
@@ -130,6 +131,8 @@ export function confirmedStatusEmailHtml(params: { statusUrl: string; language: 
     ctaText: emailMessages.cta,
     ctaUrl: params.statusUrl,
     note: getEmailNote(emailMessages),
+    support: emailMessages.support,
+    supportUrl: DONATION_URL,
   });
 }
 
@@ -146,5 +149,7 @@ export function certificateFoundStatusEmailHtml(params: { statusUrl: string; lan
     ctaText: emailMessages.cta,
     ctaUrl: params.statusUrl,
     note: getEmailNote(emailMessages),
+    support: emailMessages.support,
+    supportUrl: DONATION_URL,
   });
 }
