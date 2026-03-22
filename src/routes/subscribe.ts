@@ -25,14 +25,17 @@ routerSubscribe.post('/', async (req, res) => {
   try {
     const honeypot = req.body.website;
     const elapsedMs = getElapsedFromFormStart(req.body.formStartedAt);
+    const requestDetails =
+      `userNumber=${req.body.userNumber}, birthDate=${req.body.birthDate}, ` +
+      `examDate=${req.body.examDate}, email=${req.body.email}`;
 
     if (typeof honeypot !== 'string' || honeypot !== '') {
       logger.warn(
-        `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
+        `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}, ${requestDetails}`
       );
 
       await sendTelegramAlert({
-        text: `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`,
+        text: `[routes/subscribe] Honeypot triggered, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}, ${requestDetails}`,
         disableNotification: false,
       });
 
@@ -44,11 +47,11 @@ routerSubscribe.post('/', async (req, res) => {
 
     if (elapsedMs < MIN_FORM_FILL_TIME_MS) {
       logger.warn(
-        `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`
+        `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}, ${requestDetails}`
       );
 
       await sendTelegramAlert({
-        text: `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}`,
+        text: `[routes/subscribe] Speed check triggered, elapsedMs=${elapsedMs}, ip=${req.ip ?? 'unknown'}, ua=${req.get('user-agent') ?? 'unknown'}, ${requestDetails}`,
         disableNotification: false,
       });
 
@@ -61,11 +64,11 @@ routerSubscribe.post('/', async (req, res) => {
     const requestIp = req.ip ?? 'unknown';
     if (!isSubscribeAllowedByIp(requestIp)) {
       logger.warn(
-        `[routes/subscribe] Rate limit triggered, ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}`
+        `[routes/subscribe] Rate limit triggered, ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}, ${requestDetails}`
       );
 
       await sendTelegramAlert({
-        text: `[routes/subscribe] Rate limit triggered, ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}`,
+        text: `[routes/subscribe] Rate limit triggered, ip=${requestIp}, ua=${req.get('user-agent') ?? 'unknown'}, ${requestDetails}`,
         disableNotification: false,
       });
 
