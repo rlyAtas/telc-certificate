@@ -11,8 +11,6 @@ import { logger } from '../services/logger.js';
 import { telcCheckPaper, telcCheckDigital } from '../utils/telcCheck.js';
 import { sendTelegramAlert } from '../services/alertService.js';
 
-const TELEGRAM_ALERT_TEXT_MAX_LENGTH = 4090;
-
 export async function checkCertificates(): Promise<void> {
   const now = new Date();
 
@@ -53,9 +51,8 @@ export async function checkCertificates(): Promise<void> {
       ? telcDigital
       : JSON.stringify(telcDigital);
     const alert = `[cron/checkCertificates] Digital certificate possible found, userNumber=${record.userNumber}, birthDate=${record.birthDate}, checkDate=${checkDate}, email=${record.email}, data=${digitalData}`;
-    const alertPayload = truncateText(alert, TELEGRAM_ALERT_TEXT_MAX_LENGTH);
     await sendTelegramAlert({
-      text: alertPayload,
+      text: alert,
       disableNotification: false,
     });
   }
@@ -158,14 +155,6 @@ function isAfterDayUTC(left: Date, right: Date): boolean {
 // перевод даты в UTC
 function toUtcDateOnly(date: Date): Date {
   return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-}
-
-function truncateText(value: string, maxLength: number): string {
-  if (value.length <= maxLength) {
-    return value;
-  }
-
-  return `${value.slice(0, maxLength)}...`;
 }
 
 type NotifyCertificateFoundParams = {

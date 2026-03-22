@@ -1,6 +1,7 @@
 import { logger } from './logger.js';
 
 const TELEGRAM_ALERT_TIMEOUT_MS = 5_000;
+const TELEGRAM_ALERT_TEXT_MAX_LENGTH = 4096;
 
 type SendTelegramAlertParams = {
   text: string;
@@ -28,7 +29,7 @@ export async function sendTelegramAlert(params: SendTelegramAlertParams): Promis
     return false;
   }
 
-  const text = params.text.trim();
+  const text = truncateTelegramText(params.text.trim(), TELEGRAM_ALERT_TEXT_MAX_LENGTH);
   if (!text) {
     logger.warn('[services/alertService/sendTelegramAlert] Validation failed, reason=empty text');
     return false;
@@ -86,4 +87,20 @@ function isTelegramSendMessageResult(value: unknown): value is TelegramSendMessa
 
   const record = value as Record<string, unknown>;
   return typeof record.ok === 'boolean';
+}
+
+/**
+ * Ограничивает длину сообщения под лимит Telegram Bot API.
+ * Если текст длиннее лимита, многоточие уже входит в итоговую длину.
+ */
+function truncateTelegramText(value: string, maxLength: number): string {
+  if (value.length <= maxLength) {
+    return value;
+  }
+
+  if (maxLength <= 3) {
+    return value.slice(0, maxLength);
+  }
+
+  return `${value.slice(0, maxLength - 3)}...`;
 }
