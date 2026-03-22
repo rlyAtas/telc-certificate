@@ -8,7 +8,7 @@ import {
 import { sendCertificateFoundStatusEmail } from '../email/send.js';
 import type { UiLanguage } from '../i18n/languages.js';
 import { logger } from '../services/logger.js';
-import { telcCheck } from '../utils/telcCheck.js';
+import { telcCheckPaper, telcCheckDigital } from '../utils/telcCheck.js';
 import { sendTelegramAlert } from '../services/alertService.js';
 
 export async function checkCertificates(): Promise<void> {
@@ -39,8 +39,23 @@ export async function checkCertificates(): Promise<void> {
     return;
   }
 
-  // запись существует, надо выполнять проверку наличия сертификата
-  const telc = await telcCheck({
+  // выполнить проверку наличия цифрового сертификата
+  const telcDigital = await telcCheckDigital({
+    userNumber: record.userNumber,
+    birthDate: record.birthDate,
+    examDate: record.examDate,
+    evalDate: checkDate,
+  })
+  // если что-то обноружено, то оповещение в телеграм
+  if (telcDigital) {
+    await sendTelegramAlert({
+      text: `[cron/checkCertificates] Digital certificate possible found, userNumber=${record.userNumber}, birthDate=${record.birthDate}, examDate=${record.examDate}, email=${record.email}, data=${JSON.stringify(telcDigital)}`,
+      disableNotification: false,
+    });
+  }
+
+  // выполнить проверку наличия бумажного сертификата
+  const telcPaper = await telcCheckPaper({
     userNumber: record.userNumber,
     birthDate: record.birthDate,
     examDate: record.examDate,
@@ -48,7 +63,7 @@ export async function checkCertificates(): Promise<void> {
   });
 
   // если сертификат не найден из-за технических проблем (например, telc недоступен) -> выполним повторную проверку чуть позже
-  if (telc === null) {
+  if (telcPaper === null) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
@@ -59,14 +74,14 @@ export async function checkCertificates(): Promise<void> {
   }
 
   // сертификат найден -> CERTIFICATE_FOUND + finishedAt + сохранение payload сертификата и оповещение пользователя
-  if (telc) {
+  if (telcPaper) {
     await prisma.certificateCheck.update({
       where: { id: record.id },
       data: {
         status: 'CERTIFICATE_FOUND',
         finishedAt: now,
         lastCheckedAt: now,
-        certificatePayloadJson: telc,
+        certificatePayloadJson: telcPaper,
         nextRunAt: null,
       },
     });

@@ -7,7 +7,6 @@ export type TelcCheckParams = {
   birthDate: Date;    // Geburtsdatum
   examDate: Date;     // Prüfungsdatum (в твоей терминологии)
   evalDate: Date;     // дата проверки/выдачи (pruefung в URL из твоего примера)
-  type?: 'paper' | 'digital';
 };
 
 export type TelcSuccessResponse = {
@@ -26,39 +25,66 @@ export type TelcSuccessResponse = {
  * пример ответа при найденном сертификате: {""examinationInstituteId": "69e...", "examId": "abc123...", "attendeeId": "def456", ... }
  * пример ответа при не найденном сертификате: 404 Not Found или { "code": 404, "message": "certificate not found" }
  */
-export async function telcCheck(params: TelcCheckParams): Promise<TelcSuccessResponse | false | null> {
+export async function telcCheckPaper(params: TelcCheckParams): Promise<TelcSuccessResponse | false | null> {
   try {
-    const type = params.type ?? 'paper';
-
-    // telc ожидает YYYY-MM-DD
-    const birthdate = toYmd(params.birthDate);
-    const pruefung = toYmd(params.evalDate);
-
-    // в будущем воможно делать два запроса, на бумажный и цифровой сертификат
-    const url =
-      `https://results.telc.net/api/results/loopkup/${encodeURIComponent(params.userNumber)}` +
-      `/pruefung/${encodeURIComponent(pruefung)}` +
-      `/birthdate/${encodeURIComponent(birthdate)}` +
-      `?type=${encodeURIComponent(type)}`;
-
-    const res = await fetch(url, {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-      },
-      signal: AbortSignal.timeout(TELC_REQUEST_TIMEOUT_MS),
-    });
+    const res = await fetchTelc(params, 'paper');
 
     const data: unknown = await res.json();
-
     if (isTelcSuccessResponse(data)) return data;
 
     return false;
   } catch (error) {
     // сеть / таймаут / JSON parse error
-    logger.error(`[utils/telcCheck/telcCheck] Request failed, error=${String(error)}`);
+    logger.error(`[utils/telcCheck/telcCheckPaper] Request failed, error=${String(error)}`);
     return null;
   }
+}
+
+/**
+ * Проверка цифрового сертификата.
+ * false -> telc вернул 404, сертификат не найден
+ * unknown -> telc вернул 200, возвращаем сырые данные ответа
+ * null -> техническая ошибка или неожиданный HTTP-статус
+ */
+export async function telcCheckDigital(params: TelcCheckParams): Promise<unknown | false | null> {
+  try {
+    const res = await fetchTelc(params, 'digital');
+
+    if (res.status === 404) return false;
+
+    if (res.status !== 200) {
+      logger.warn(
+        `[utils/telcCheck/telcCheckDigital] Unexpected status, status=${res.status}`
+      );
+      return null;
+    }
+
+    const data: unknown = await res.json();
+    return data;
+  } catch (error) {
+    logger.error(`[utils/telcCheck/telcCheckDigital] Request failed, error=${String(error)}`);
+    return null;
+  }
+}
+
+async function fetchTelc(params: TelcCheckParams, type: 'paper' | 'digital'): Promise<Response> {
+  // telc ожидает YYYY-MM-DD
+  const birthdate = toYmd(params.birthDate);
+  const pruefung = toYmd(params.evalDate);
+
+  const url =
+    `https://results.telc.net/api/results/loopkup/${encodeURIComponent(params.userNumber)}` +
+    `/pruefung/${encodeURIComponent(pruefung)}` +
+    `/birthdate/${encodeURIComponent(birthdate)}` +
+    `?type=${encodeURIComponent(type)}`;
+
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+    },
+    signal: AbortSignal.timeout(TELC_REQUEST_TIMEOUT_MS),
+  });
 }
 
 function toYmd(d: Date): string {
