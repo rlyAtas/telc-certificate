@@ -5,8 +5,7 @@ import type { Prisma } from '../generated/prisma/client.js';
 export type TelcCheckParams = {
   userNumber: string; // Teilnehmernummer
   birthDate: Date;    // Geburtsdatum
-  examDate: Date;     // Prüfungsdatum (в твоей терминологии)
-  evalDate: Date;     // дата проверки/выдачи (pruefung в URL из твоего примера)
+  evalDate: Date;     // дата проверки экзамена (pruefung в URL)
 };
 
 export type TelcSuccessResponse = {
@@ -28,6 +27,15 @@ export type TelcSuccessResponse = {
 export async function telcCheckPaper(params: TelcCheckParams): Promise<TelcSuccessResponse | false | null> {
   try {
     const res = await fetchTelc(params, 'paper');
+
+    if (res.status === 404) return false;
+
+    if (res.status !== 200) {
+      logger.warn(
+        `[utils/telcCheck/telcCheckPaper] Unexpected status, status=${res.status}`
+      );
+      return null;
+    }
 
     const data: unknown = await res.json();
     if (isTelcSuccessResponse(data)) return data;
